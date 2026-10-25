@@ -1,0 +1,346 @@
+Research Methods || Research Design || Cross-sectional
+Research Methods || Research Design || Longitudinal
+Research Methods || Research Design || Multimethod
+Research Methods || Research Design || Panel/pooled
+Research Methods || Quantitative Orientation || Archival
+Research Methods || Quantitative Orientation || Experience sampling methodology (ESM)
+Research Methods || Quantitative Orientation || Field experiment
+Research Methods || Quantitative Orientation || Lab experiment
+Research Methods || Quantitative Orientation || Machine learning
+Research Methods || Quantitative Orientation || Neuroscience/physiological measurement methods
+Research Methods || Quantitative Orientation || Survey
+Research Methods || Quantitative Orientation || Simulations and computational models
+Research Methods || Quantitative Orientation || Quantitative orientation (General)
+Research Methods || Qualitative Orientation || Action research/Collaborative inquiry
+Research Methods || Qualitative Orientation || Case studies
+Research Methods || Qualitative Orientation || Conversation analysis
+Research Methods || Qualitative Orientation || Design science
+Research Methods || Qualitative Orientation || Discourse/Narrative analysis
+Research Methods || Qualitative Orientation || Ethnography
+Research Methods || Qualitative Orientation || Grounded theory
+Research Methods || Qualitative Orientation || Historical analysis
+Research Methods || Qualitative Orientation || Linguistic/Sociolinguistic analysis
+Research Methods || Qualitative Orientation || Participant observation
+Research Methods || Qualitative Orientation || Text/content analysis
+Research Methods || Qualitative Orientation || Visual/image/video analysis
+Research Methods || Qualitative Orientation || Qualitative orientation (General)
+Research Methods || Analysis || Agent-based modelling
+Research Methods || Analysis || Categorical & limited dependent variables
+Research Methods || Analysis || Cluster analysis
+Research Methods || Analysis || Event history analysis/Survival models
+Research Methods || Analysis || Event studies
+Research Methods || Analysis || Image processing
+Research Methods || Analysis || Latent growth analysis
+Research Methods || Analysis || Meta-analysis
+Research Methods || Analysis || Multilevel (e.g., HLM, WABA, RCM)
+Research Methods || Analysis || Natural Language Processing
+Research Methods || Analysis || Network analysis
+Research Methods || Analysis || Principal Component Analysis
+Research Methods || Analysis || Set-analytic methods (QCA, etc.)
+Research Methods || Analysis || Sentiment analysis
+Research Methods || Analysis || Structural equation modeling
+Research Methods || Analysis || Topic modeling
+Research Methods || Analysis || Traditional (e.g., regression, ANOVA, etc.)
+Theoretical Perspectives || Actor-Network Theory
+Theoretical Perspectives || Affect theory
+Theoretical Perspectives || Agency theory
+Theoretical Perspectives || Behavioral decision theory
+Theoretical Perspectives || Behavioral theory of the firm
+Theoretical Perspectives || Complexity theory
+Theoretical Perspectives || Communication as constitutive of organizations (CCO)
+Theoretical Perspectives || Configurational theory
+Theoretical Perspectives || Contingency theory
+Theoretical Perspectives || Critical theory
+Theoretical Perspectives || Dynamic capabilities
+Theoretical Perspectives || Equity theory
+Theoretical Perspectives || Evolutionary theory/Path dependence
+Theoretical Perspectives || Goal-setting theory
+Theoretical Perspectives || Human capital theory
+Theoretical Perspectives || Industrial organization/economics
+Theoretical Perspectives || Information economics
+Theoretical Perspectives || Information processing theory
+Theoretical Perspectives || Innovation diffusion theory
+Theoretical Perspectives || Institutional theory
+Theoretical Perspectives || Knowledge-based view
+Theoretical Perspectives || Leadership theories
+Theoretical Perspectives || Modularity theory
+Theoretical Perspectives || Natural-resource-based view
+Theoretical Perspectives || Network theory
+Theoretical Perspectives || Organizational ambidexterity
+Theoretical Perspectives || Paradox theory and dialectics
+Theoretical Perspectives || Philosophy of science and/or sociology of knowledge
+Theoretical Perspectives || Population ecology theory
+Theoretical Perspectives || Practice theory
+Theoretical Perspectives || Prospect theory
+Theoretical Perspectives || Process theories
+Theoretical Perspectives || Real options theory
+Theoretical Perspectives || Resource dependence theory
+Theoretical Perspectives || Resource based view
+Theoretical Perspectives || Social capital theory
+Theoretical Perspectives || Social cognitive theory
+Theoretical Perspectives || Social exchange theory
+Theoretical Perspectives || Social identity theory
+Theoretical Perspectives || Social movement and collective action theories
+Theoretical Perspectives || Social practice theories
+Theoretical Perspectives || Stakeholder theory
+Theoretical Perspectives || Structuration theory
+Theoretical Perspectives || Systems theory
+Theoretical Perspectives || Technology acceptance theory
+Theoretical Perspectives || Transaction costs theory
+Topic Areas || Strategic Management || Competitive Strategy || Resources, capabilities, and routines
+Topic Areas || Strategic Management || Competitive Strategy || Competitive dynamics
+Topic Areas || Strategic Management || Competitive Strategy || Competitive heterogeneity
+Topic Areas || Strategic Management || Competitive Strategy || Industry convergence
+Topic Areas || Strategic Management || Competitive Strategy || Industry structure
+Topic Areas || Strategic Management || Competitive Strategy || Strategic factor markets
+Topic Areas || Strategic Management || Competitive Strategy || Value creation and appropriation
+Topic Areas || Strategic Management || Competitive Strategy || Competitive strategy (General)
+Topic Areas || Strategic Management || Cooperative Strategy || Alliance formation and governance
+Topic Areas || Strategic Management || Cooperative Strategy || Alliance networks and portfolios
+Topic Areas || Strategic Management || Cooperative Strategy || Ecosystems
+Topic Areas || Strategic Management || Cooperative Strategy || Meta-organizations/Industry associations
+Topic Areas || Strategic Management || Cooperative Strategy || Cooperative strategy (General)
+Topic Areas || Strategic Management || Corporate Strategy || Diversification
+Topic Areas || Strategic Management || Corporate Strategy || Mergers/Acquisitions and Divestitures/Spinoffs
+Topic Areas || Strategic Management || Corporate Strategy || Multinational strategy
+Topic Areas || Strategic Management || Corporate Strategy || Resource allocation, reconfiguration, and redeployment
+Topic Areas || Strategic Management || Corporate Strategy || Structure, organization design, and implementation
+Topic Areas || Strategic Management || Corporate Strategy || Vertical integration and outsourcing
+Topic Areas || Strategic Management || Corporate Strategy || Corporate strategy (General)
+Topic Areas || Strategic Management || Corporate Strategy || Non Market Strategy
+Topic Areas || Strategic Management || Strategic Management Process || Knowledge management
+Topic Areas || Strategic Management || Strategic Management Process || Open strategy
+Topic Areas || Strategic Management || Strategic Management Process || Strategy as practice
+Topic Areas || Strategic Management || Strategic Management Process || Strategic change processes
+Topic Areas || Strategic Management || Strategic Management Process || Strategic decision making
+Topic Areas || Strategic Management || Strategic Management Process || Strategy implementation
+Topic Areas || Strategic Management || Strategic Management Process || Strategic management process (General)
+Topic Areas || Strategic Management || Strategic Leadership and Governance || Board of directors
+Topic Areas || Strategic Management || Strategic Leadership and Governance || CEO/TMT decision making
+Topic Areas || Strategic Management || Strategic Leadership and Governance || Executive compensation
+Topic Areas || Strategic Management || Strategic Leadership and Governance || Executive succession
+Topic Areas || Strategic Management || Strategic Leadership and Governance || Middle management roles in strategy
+Topic Areas || Strategic Management || Strategic Leadership and Governance || Stakeholder management
+Topic Areas || Strategic Management || Strategic Leadership and Governance || TMT composition, -dynamics, -gender, and inclusion
+Topic Areas || Strategic Management || Strategic Leadership and Governance || Strategic leadership and governance (General)
+Topic Areas || Strategic Management || Strategic Leadership and Governance || Strategic management (General)
+Topic Areas || Careers || Career self-management/self-regulation
+Topic Areas || Careers || Career outcomes
+Topic Areas || Careers || Career and work patterns
+Topic Areas || Careers || Job, career, and international mobility
+Topic Areas || Careers || Organizational career management (succession, retirement, etc.)
+Topic Areas || Careers || Careers research (General)
+Topic Areas || Careers || Gig work/portfolio work
+Topic Areas || Careers || Vocational choice
+Topic Areas || Careers || Unemployment
+Topic Areas || Conflict Management || Alternative Dispute Resolution (ADR)
+Topic Areas || Conflict Management || Conflict resolution styles
+Topic Areas || Conflict Management || Dispute resolution process
+Topic Areas || Conflict Management || Negotiation
+Topic Areas || Conflict Management || Hierarchy: status/power/politics
+Topic Areas || Conflict Management || Aggression/abuse
+Topic Areas || Conflict Management || Conflict management (General)
+Topic Areas || Critical Management Studies
+Topic Areas || Entrepreneurship || Academic entrepreneurship
+Topic Areas || Entrepreneurship || Community-based entrepreneurship
+Topic Areas || Entrepreneurship || Corporate entrepreneurship
+Topic Areas || Entrepreneurship || Effectuation
+Topic Areas || Entrepreneurship || Entrepreneurial ecosystem
+Topic Areas || Entrepreneurship || Entrepreneurial strategies
+Topic Areas || Entrepreneurship || Family businesses
+Topic Areas || Entrepreneurship || Financing of new ventures
+Topic Areas || Entrepreneurship || Founders and founding teams
+Topic Areas || Entrepreneurship || Growth and Scaling
+Topic Areas || Entrepreneurship || Incubators and accelerators
+Topic Areas || Entrepreneurship || International entrepreneurship
+Topic Areas || Entrepreneurship || Necessity entrepreneurship
+Topic Areas || Entrepreneurship || Small and medium-sized enterprises
+Topic Areas || Entrepreneurship || Social and sustainable entrepreneurship
+Topic Areas || Entrepreneurship || Entrepreneurship (General)
+Topic Areas || Demography & Diversity in Organizations || Demography
+Topic Areas || Demography & Diversity in Organizations || Discrimination
+Topic Areas || Demography & Diversity in Organizations || Equity
+Topic Areas || Demography & Diversity in Organizations || Gender and gender identity
+Topic Areas || Demography & Diversity in Organizations || Group differences
+Topic Areas || Demography & Diversity in Organizations || Intersectionality
+Topic Areas || Demography & Diversity in Organizations || Social identification
+Topic Areas || Demography & Diversity in Organizations || Social justice
+Topic Areas || Demography & Diversity in Organizations || Inclusion
+Topic Areas || Demography & Diversity in Organizations || Diversity in Organizations (General)
+Topic Areas || Health Care Management || Health care delivery
+Topic Areas || Health Care Management || Health care organizations
+Topic Areas || Health Care Management || Health care technology
+Topic Areas || Health Care Management || Health care workforce
+Topic Areas || Health Care Management || High-reliability organizations
+Topic Areas || Health Care Management || Implementation science
+Topic Areas || Human Resource Management and Industrial Relations Development || Diversity management
+Topic Areas || Human Resource Management and Industrial Relations Development || International & cross-cultural HR management
+Topic Areas || Human Resource Management and Industrial Relations Development || Performance evaluation & management
+Topic Areas || Human Resource Management and Industrial Relations Development || Retention and separation
+Topic Areas || Human Resource Management and Industrial Relations Development || Compensation & rewards
+Topic Areas || Human Resource Management and Industrial Relations Development || Health & safety
+Topic Areas || Human Resource Management and Industrial Relations Development || Staffing (recruitment & selection)
+Topic Areas || Human Resource Management and Industrial Relations Development || Strategic HRM (division & organizational level)
+Topic Areas || Human Resource Management and Industrial Relations Development || Training
+Topic Areas || Human Resource Management and Industrial Relations Development || Unionization/collective bargaining/labor relations
+Topic Areas || Human Resource Management and Industrial Relations Development || Work and family
+Topic Areas || Human Resource Management and Industrial Relations Development || Workplace integration (e.g. migrants/refugees/disabled)
+Topic Areas || Human Resource Management and Industrial Relations Development || Changing nature of work || Alienation
+Topic Areas || Human Resource Management and Industrial Relations Development || Changing nature of work || Artificial intelligence (AI) augmentation and automation
+Topic Areas || Human Resource Management and Industrial Relations Development || Changing nature of work || Deskilling
+Topic Areas || Human Resource Management and Industrial Relations Development || Changing nature of work || Hybrid work models
+Topic Areas || Human Resource Management and Industrial Relations Development || Changing nature of work || Precarious work, telework, and global work
+Topic Areas || Human Resource Management and Industrial Relations Development || Changing nature of work || Shared economy and gig economy
+Topic Areas || Human Resource Management and Industrial Relations Development || Changing nature of work || Social isolation and loneliness
+Topic Areas || Human Resource Management and Industrial Relations Development || Changing nature of work || Technology-enabled HR practices
+Topic Areas || Human Resource Management and Industrial Relations Development || Human resource management and industrial relations (General)
+Topic Areas || International Management || Cross-Cultural Management || Cultural values and dimensions
+Topic Areas || International Management || Cross-Cultural Management || National business practices/systems
+Topic Areas || International Management || Cross-Cultural Management || Cross-cultural management (General)
+Topic Areas || International Management || Cross-Cultural Management || Market Entry and Exit strategies
+Topic Areas || International Management || Cross-Cultural Management || Cross-border mergers and acquisitions
+Topic Areas || International Management || Cross-Cultural Management || Determinants of entry mode
+Topic Areas || International Management || Cross-Cultural Management || International joint ventures and alliances
+Topic Areas || International Management || Cross-Cultural Management || Market exit
+Topic Areas || International Management || Cross-Cultural Management || Market entry and exit strategies (General)
+Topic Areas || International Management || Managing the Multinational Enterprise
+Topic Areas || International Management || Policy Environment || Emerging economies
+Topic Areas || International Management || Policy Environment || MNE impact on host countries
+Topic Areas || International Management || Policy Environment || Regulation, policy changes
+Topic Areas || International Management || Policy Environment || Policy environment (General)
+Topic Areas || International Management || International management (General)
+Topic Areas || Management Education and Development
+Topic Areas || Management History
+Topic Areas || Management Spirituality and Religion
+Topic Areas || Managerial and Organizational Cognition || Individual learning
+Topic Areas || Managerial and Organizational Cognition || Individual-level cognitive, motivational, and affective processes || Attributions, biases, and heuristics
+Topic Areas || Managerial and Organizational Cognition || Individual-level cognitive, motivational, and affective processes || Cognitive schema, scripts, mental models/maps
+Topic Areas || Managerial and Organizational Cognition || Individual-level cognitive, motivational, and affective processes || Intuition
+Topic Areas || Managerial and Organizational Cognition || Individual-level cognitive, motivational, and affective processes || Mindfulness
+Topic Areas || Managerial and Organizational Cognition || Social construction || Language: rhetoric, metaphor, and labeling
+Topic Areas || Managerial and Organizational Cognition || Social construction || Meaning-making at work, task design, job crafting
+Topic Areas || Managerial and Organizational Cognition || Social construction || Sensemaking
+Topic Areas || Managerial and Organizational Cognition || Managerial and organization cognition (General)
+Topic Areas || Managerial Consulting
+Topic Areas || Organization and Management Theory || Adaptation/Change
+Topic Areas || Organization and Management Theory || Alternative organizational forms
+Topic Areas || Organization and Management Theory || Categories
+Topic Areas || Organization and Management Theory || Decision making (macro perspectives)
+Topic Areas || Organization and Management Theory || Design/structure
+Topic Areas || Organization and Management Theory || Environmental components (conceptualizing and assessing)
+Topic Areas || Organization and Management Theory || Framing
+Topic Areas || Organization and Management Theory || Imprinting
+Topic Areas || Organization and Management Theory || Interorganizational linkages
+Topic Areas || Organization and Management Theory || Identity and identification || Individual identity (content, processes, and outcomes)
+Topic Areas || Organization and Management Theory || Identity and identification || Organizational identity and image
+Topic Areas || Organization and Management Theory || Knowledge management
+Topic Areas || Organization and Management Theory || Legitimacy
+Topic Areas || Organization and Management Theory || Logics
+Topic Areas || Organizational culture & climate || Organizational embeddedness
+Topic Areas || Organizational culture & climate || Organizational learning
+Topic Areas || Organizational culture & climate || Performance feedback/attainment discrepancy
+Topic Areas || Organizational culture & climate || Professions and professional work
+Topic Areas || Organizational culture & climate || Reputation
+Topic Areas || Organizational culture & climate || Risk
+Topic Areas || Organizational culture & climate || Routines/routine dynamics
+Topic Areas || Organizational culture & climate || Social networks
+Topic Areas || Organizational culture & climate || Social symbolic work
+Topic Areas || Organizational culture & climate || Time and temporality
+Topic Areas || Organizational culture & climate || Organization and management theory (General)
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Justice/fairness
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Mood and emotions
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Morality
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Motivation
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Resilience
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Satisfaction and commitment
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Stress, health, and well-being
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Trust
+Topic Areas || Organizational Behavior || Attitudes, cognitions, and affect || Attitudes, cognitions, and affect (General)
+Topic Areas || Organizational Behavior || Behavior || Creativity
+Topic Areas || Organizational Behavior || Behavior || Decision making (micro perspectives)
+Topic Areas || Organizational Behavior || Behavior || Deviance/counterproductive behaviors
+Topic Areas || Organizational Behavior || Behavior || Organizational citizenship behavior
+Topic Areas || Organizational Behavior || Behavior || Turnover, absenteeism, and withdrawal
+Topic Areas || Organizational Behavior || Behavior || Behavior (General)
+Topic Areas || Organizational Behavior || Group/team characteristics || Composition/diversity
+Topic Areas || Organizational Behavior || Group/team characteristics || Tasks (e.g., design, interdependence, complexity)
+Topic Areas || Organizational Behavior || Group/team characteristics || Group/team characteristics (general)
+Topic Areas || Organizational Behavior || Group/team emergent states || Collective efficacy
+Topic Areas || Organizational Behavior || Group/team emergent states || Empowerment
+Topic Areas || Organizational Behavior || Group/team emergent states || Group/team emergent states (General)
+Topic Areas || Organizational Behavior || Group/team processes || Communication
+Topic Areas || Organizational Behavior || Group/team processes || Conflict management
+Topic Areas || Organizational Behavior || Group/team processes || Coordination
+Topic Areas || Organizational Behavior || Group/team processes || Intergroup relations
+Topic Areas || Organizational Behavior || Group/team processes || Social networks
+Topic Areas || Organizational Behavior || Group/team processes || Team emotions
+Topic Areas || Organizational Behavior || Group/team processes || Group/team processes (General)
+Topic Areas || Organizational Behavior || Impression management
+Topic Areas || Organizational Behavior || Job design, roles, and tasks
+Topic Areas || Organizational Behavior || Leadership
+Topic Areas || Organizational Behavior || Multiteam systems
+Topic Areas || Organizational Behavior || Participation
+Topic Areas || Organizational Behavior || Person-organization/person-environment fit
+Topic Areas || Organizational Behavior || Personality and individual differences
+Topic Areas || Organizational Behavior || Organizational behavior (General)
+Topic Areas || Communication, Digital Technology, and Organizations || Affordances
+Topic Areas || Communication, Digital Technology, and Organizations || Artificial intelligence/machine learning in organizing
+Topic Areas || Communication, Digital Technology, and Organizations || Communication networks
+Topic Areas || Communication, Digital Technology, and Organizations || Computing
+Topic Areas || Communication, Digital Technology, and Organizations || Digital business, digital commerce, and digital platforms
+Topic Areas || Communication, Digital Technology, and Organizations || Interpersonal communication
+Topic Areas || Communication, Digital Technology, and Organizations || Online communities
+Topic Areas || Communication, Digital Technology, and Organizations || Social media
+Topic Areas || Communication, Digital Technology, and Organizations || Systems design, implementation
+Topic Areas || Communication, Digital Technology, and Organizations || Virtual teams, virtual work, and virtual organizations
+Topic Areas || Communication, Digital Technology, and Organizations || Communication, Digital Technology and Organizations (General)
+Topic Areas || Organizational Development, Transformation and Change || Creation/testing of theories and models of change
+Topic Areas || Organizational Development, Transformation and Change || Political dynamics
+Topic Areas || Organizational Development, Transformation and Change || Role of change agents
+Topic Areas || Organizational Development, Transformation and Change || Organization development, transformation and change
+Topic Areas || Organizational Development, Transformation and Change || Organizational accountability, legitimacy (General)
+Topic Areas || Environmental Sustainability || Biodiversity/land use
+Topic Areas || Environmental Sustainability || Certification/B Corp
+Topic Areas || Environmental Sustainability || Climate change/carbon neutrality
+Topic Areas || Environmental Sustainability || Grand challenges
+Topic Areas || Environmental Sustainability || Renewable energy
+Topic Areas || Environmental Sustainability || Resilience
+Topic Areas || Environmental Sustainability || Systems thinking/social-ecological systems
+Topic Areas || Environmental Sustainability || Environmental sustainability (General)
+Topic Areas || Production and Operations Management || Quality management
+Topic Areas || Production and Operations Management || Supply chain management
+Topic Areas || Production and Operations Management || Production and operations management (General)
+Topic Areas || Public Sector Management
+Topic Areas || Social Issues in Management || Codes of conduct
+Topic Areas || Social Issues in Management || Corporate corruption
+Topic Areas || Social Issues in Management || Corporate political activity
+Topic Areas || Social Issues in Management || Corporate social responsibility
+Topic Areas || Social Issues in Management || Crisis and issue management
+Topic Areas || Social Issues in Management || Ethics
+Topic Areas || Social Issues in Management || Grand challenges
+Topic Areas || Social Issues in Management || Organizational governance
+Topic Areas || Social Issues in Management || Regulation
+Topic Areas || Social Issues in Management || Social issues in management (General)
+Topic Areas || Technology and Innovation Management || Business model innovation
+Topic Areas || Technology and Innovation Management || Corporate science
+Topic Areas || Technology and Innovation Management || Digital technology
+Topic Areas || Technology and Innovation Management || Disruptive technology, discontinuities
+Topic Areas || Technology and Innovation Management || Emerging technologies
+Topic Areas || Technology and Innovation Management || General purpose technology (GPT)
+Topic Areas || Technology and Innovation Management || Idea generation and evaluation
+Topic Areas || Technology and Innovation Management || Innovation diffusion/implementation/use of technologies
+Topic Areas || Technology and Innovation Management || Innovation processes
+Topic Areas || Technology and Innovation Management || Intellectual property
+Topic Areas || Technology and Innovation Management || Management of technology
+Topic Areas || Technology and Innovation Management || Modularity
+Topic Areas || Technology and Innovation Management || Open innovation, crowdsourcing and open science
+Topic Areas || Technology and Innovation Management || Problem solving
+Topic Areas || Technology and Innovation Management || Product development strategies
+Topic Areas || Technology and Innovation Management || Research and development
+Topic Areas || Technology and Innovation Management || Search space, search strategy
+Topic Areas || Technology and Innovation Management || Technological change, trajectories, convergence
+Topic Areas || Technology and Innovation Management || Influence of new technologies on management and organizations
+Topic Areas || Technology and Innovation Management || Standards
+Topic Areas || Technology and Innovation Management || Sustainability transitions
+Topic Areas || Technology and Innovation Management || User innovation
+Topic Areas || Technology and Innovation Management || Technology and innovation management (General)

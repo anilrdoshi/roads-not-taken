@@ -1,0 +1,497 @@
+{
+  "version": "corpus-2016-2025-v2",
+  "builtAt": "2026-10-25T13:43:49.894Z",
+  "window": {
+    "fromYear": 2016,
+    "toYear": 2025
+  },
+  "sources": [
+    "OpenAlex works API (titles, abstracts, primary topics)",
+    "Crossref REST API (abstracts missing from OpenAlex)"
+  ],
+  "openalexWorks": 15826,
+  "excluded": {
+    "noTitle": 0,
+    "nonResearch": 26,
+    "duplicates": 0,
+    "reviewsAndFrontMatter": 273,
+    "otherSource": 251,
+    "noAbstract": 1105,
+    "noField": 2387
+  },
+  "records": 11784,
+  "fieldCounts": {
+    "strategy": 2249,
+    "ob": 2142,
+    "is": 2050,
+    "marketing": 1894,
+    "operations": 3449
+  },
+  "idsSha256": "36c8b39e130df84204546553d47cefbada985e530f6c43df4a2119892846cd26",
+  "journals": [
+    {
+      "id": "smj",
+      "label": "Strategic Management Journal",
+      "field": "strategy",
+      "openalexSourceNames": [
+        "Strategic Management Journal"
+      ],
+      "openalexWorks": 1010,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 1,
+        "otherSource": 4,
+        "noAbstract": 13,
+        "noField": 0
+      },
+      "records": 992,
+      "byField": {
+        "strategy": 992,
+        "ob": 0,
+        "is": 0,
+        "marketing": 0,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 32
+    },
+    {
+      "id": "strategy-science",
+      "label": "Strategy Science",
+      "field": "strategy",
+      "openalexSourceNames": [
+        "Strategy Science"
+      ],
+      "openalexWorks": 240,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 3,
+        "otherSource": 0,
+        "noAbstract": 14,
+        "noField": 0
+      },
+      "records": 223,
+      "byField": {
+        "strategy": 223,
+        "ob": 0,
+        "is": 0,
+        "marketing": 0,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 6
+    },
+    {
+      "id": "asq",
+      "label": "Administrative Science Quarterly",
+      "field": "split",
+      "openalexSourceNames": [
+        "Administrative Science Quarterly"
+      ],
+      "openalexWorks": 436,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 43,
+        "otherSource": 2,
+        "noAbstract": 137,
+        "noField": 41
+      },
+      "records": 213,
+      "byField": {
+        "strategy": 75,
+        "ob": 129,
+        "is": 7,
+        "marketing": 2,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 1
+    },
+    {
+      "id": "orsc",
+      "label": "Organization Science",
+      "field": "split",
+      "openalexSourceNames": [
+        "Organization Science"
+      ],
+      "openalexWorks": 901,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 2,
+        "otherSource": 33,
+        "noAbstract": 2,
+        "noField": 173
+      },
+      "records": 691,
+      "byField": {
+        "strategy": 341,
+        "ob": 283,
+        "is": 49,
+        "marketing": 7,
+        "operations": 11
+      },
+      "abstractsFromCrossref": 19
+    },
+    {
+      "id": "amj",
+      "label": "Academy of Management Journal",
+      "field": "split",
+      "openalexSourceNames": [
+        "Academy of Management Journal"
+      ],
+      "openalexWorks": 705,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 0,
+        "otherSource": 1,
+        "noAbstract": 40,
+        "noField": 108
+      },
+      "records": 556,
+      "byField": {
+        "strategy": 194,
+        "ob": 336,
+        "is": 17,
+        "marketing": 5,
+        "operations": 4
+      },
+      "abstractsFromCrossref": 0
+    },
+    {
+      "id": "mnsc",
+      "label": "Management Science",
+      "field": "split",
+      "openalexSourceNames": [
+        "Management Science"
+      ],
+      "openalexWorks": 3846,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 3,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 19,
+        "otherSource": 152,
+        "noAbstract": 28,
+        "noField": 2065
+      },
+      "records": 1579,
+      "byField": {
+        "strategy": 424,
+        "ob": 108,
+        "is": 530,
+        "marketing": 219,
+        "operations": 298
+      },
+      "abstractsFromCrossref": 181
+    },
+    {
+      "id": "jap",
+      "label": "Journal of Applied Psychology",
+      "field": "ob",
+      "openalexSourceNames": [
+        "Journal of Applied Psychology"
+      ],
+      "openalexWorks": 959,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 0,
+        "otherSource": 2,
+        "noAbstract": 4,
+        "noField": 0
+      },
+      "records": 953,
+      "byField": {
+        "strategy": 0,
+        "ob": 953,
+        "is": 0,
+        "marketing": 0,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 0
+    },
+    {
+      "id": "obhdp",
+      "label": "Organizational Behavior and Human Decision Processes",
+      "field": "ob",
+      "openalexSourceNames": [
+        "Organizational Behavior and Human Decision Processes"
+      ],
+      "openalexWorks": 499,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 0,
+        "otherSource": 0,
+        "noAbstract": 421,
+        "noField": 0
+      },
+      "records": 78,
+      "byField": {
+        "strategy": 0,
+        "ob": 78,
+        "is": 0,
+        "marketing": 0,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 0
+    },
+    {
+      "id": "ppsych",
+      "label": "Personnel Psychology",
+      "field": "ob",
+      "openalexSourceNames": [
+        "Personnel Psychology"
+      ],
+      "openalexWorks": 443,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 2,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 129,
+        "otherSource": 0,
+        "noAbstract": 57,
+        "noField": 0
+      },
+      "records": 255,
+      "byField": {
+        "strategy": 0,
+        "ob": 255,
+        "is": 0,
+        "marketing": 0,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 0
+    },
+    {
+      "id": "isr",
+      "label": "Information Systems Research",
+      "field": "is",
+      "openalexSourceNames": [
+        "Information Systems Research"
+      ],
+      "openalexWorks": 904,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 0,
+        "otherSource": 3,
+        "noAbstract": 103,
+        "noField": 0
+      },
+      "records": 798,
+      "byField": {
+        "strategy": 0,
+        "ob": 0,
+        "is": 798,
+        "marketing": 0,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 37
+    },
+    {
+      "id": "misq",
+      "label": "MIS Quarterly",
+      "field": "is",
+      "openalexSourceNames": [
+        "MIS Quarterly"
+      ],
+      "openalexWorks": 745,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 0,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 43,
+        "otherSource": 43,
+        "noAbstract": 10,
+        "noField": 0
+      },
+      "records": 649,
+      "byField": {
+        "strategy": 0,
+        "ob": 0,
+        "is": 649,
+        "marketing": 0,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 0
+    },
+    {
+      "id": "jm",
+      "label": "Journal of Marketing",
+      "field": "marketing",
+      "openalexSourceNames": [
+        "Journal of Marketing"
+      ],
+      "openalexWorks": 529,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 1,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 0,
+        "otherSource": 1,
+        "noAbstract": 16,
+        "noField": 0
+      },
+      "records": 511,
+      "byField": {
+        "strategy": 0,
+        "ob": 0,
+        "is": 0,
+        "marketing": 511,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 2
+    },
+    {
+      "id": "jmr",
+      "label": "Journal of Marketing Research",
+      "field": "marketing",
+      "openalexSourceNames": [
+        "Journal of Marketing Research"
+      ],
+      "openalexWorks": 624,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 1,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 0,
+        "otherSource": 0,
+        "noAbstract": 6,
+        "noField": 0
+      },
+      "records": 617,
+      "byField": {
+        "strategy": 0,
+        "ob": 0,
+        "is": 0,
+        "marketing": 617,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 10
+    },
+    {
+      "id": "mksc",
+      "label": "Marketing Science",
+      "field": "marketing",
+      "openalexSourceNames": [
+        "Marketing Science"
+      ],
+      "openalexWorks": 654,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 1,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 13,
+        "otherSource": 5,
+        "noAbstract": 102,
+        "noField": 0
+      },
+      "records": 533,
+      "byField": {
+        "strategy": 0,
+        "ob": 0,
+        "is": 0,
+        "marketing": 533,
+        "operations": 0
+      },
+      "abstractsFromCrossref": 16
+    },
+    {
+      "id": "msom",
+      "label": "Manufacturing & Service Operations Management",
+      "field": "operations",
+      "openalexSourceNames": [
+        "Manufacturing & Service Operations Management"
+      ],
+      "openalexWorks": 956,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 1,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 20,
+        "otherSource": 2,
+        "noAbstract": 14,
+        "noField": 0
+      },
+      "records": 919,
+      "byField": {
+        "strategy": 0,
+        "ob": 0,
+        "is": 0,
+        "marketing": 0,
+        "operations": 919
+      },
+      "abstractsFromCrossref": 118
+    },
+    {
+      "id": "pom",
+      "label": "Production and Operations Management",
+      "field": "operations",
+      "openalexSourceNames": [
+        "Production and Operations Management"
+      ],
+      "openalexWorks": 1939,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 1,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 0,
+        "otherSource": 2,
+        "noAbstract": 128,
+        "noField": 0
+      },
+      "records": 1808,
+      "byField": {
+        "strategy": 0,
+        "ob": 0,
+        "is": 0,
+        "marketing": 0,
+        "operations": 1808
+      },
+      "abstractsFromCrossref": 106
+    },
+    {
+      "id": "jom",
+      "label": "Journal of Operations Management",
+      "field": "operations",
+      "openalexSourceNames": [
+        "Journal of Operations Management"
+      ],
+      "openalexWorks": 436,
+      "excluded": {
+        "noTitle": 0,
+        "nonResearch": 16,
+        "duplicates": 0,
+        "reviewsAndFrontMatter": 0,
+        "otherSource": 1,
+        "noAbstract": 10,
+        "noField": 0
+      },
+      "records": 409,
+      "byField": {
+        "strategy": 0,
+        "ob": 0,
+        "is": 0,
+        "marketing": 0,
+        "operations": 409
+      },
+      "abstractsFromCrossref": 2
+    }
+  ],
+  "notes": [
+    "Works are left out, in this order, if: the title is missing or marks a non-research item (editorials, errata, retractions, calls for papers); the work repeats one already kept; the title marks a book review or front matter (award notices, lists of reviewers, editors' comments); its DOI is missing or not under the journal's publisher prefixes (config/fields.json doiPrefixes), which drops preprint copies and same-named journals that OpenAlex filed under ours; it has no abstract of at least 100 characters, which drops book reviews and front matter; or it comes from a split journal and its topic maps to none of the five fields.",
+    "Multi-field journals are split by OpenAlex primary-topic subfield (config/fields.json splitRule); these topic labels are automated and imperfect.",
+    "OpenAlex and Crossref change over time, so a later rebuild can differ slightly; compare corpus/ids.txt and idsSha256."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "roads-not-taken",
+  "version": "3.0.0-alpha",
+  "description": "Roads not taken: deconstruct an empirical paper, hold its evidence fixed, and generate and score alternative papers across theories and fields.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "app": "node scripts/app.mjs",
+    "build-explorer": "node scripts/build-explorer.mjs",
+    "export-explorer": "node scripts/export-explorer.mjs",
+    "build-corpus": "node scripts/build-corpus.mjs",
+    "build-embeddings": "node scripts/build-embeddings.mjs",
+    "validate-embeddings": "node scripts/validate-embeddings.mjs",
+    "build-taxonomy": "node scripts/build-taxonomy.mjs",
+    "extract": "node scripts/extract.mjs",
+    "original-abstract": "node scripts/original-abstract.mjs",
+    "test-run": "node scripts/run-test.mjs",
+    "report": "node scripts/report.mjs",
+    "distance": "node scripts/distance.mjs",
+    "check-key": "node scripts/check-key.mjs",
+    "check": "node --test \"test/*.test.mjs\""
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.131.0",
+    "@huggingface/transformers": "4.3.1"
+  }
+}

@@ -1,0 +1,322 @@
+{
+  "version": "fields-v2",
+  "homeField": "strategy",
+  "corpusWindow": {
+    "fromYear": 2016,
+    "toYear": 2025
+  },
+  "fields": [
+    {
+      "id": "strategy",
+      "label": "Strategy & organization theory",
+      "description": "Firm- and organization-level questions about competitive advantage, corporate and competitive strategy, governance, innovation strategy, organizational design and change, and how organizations relate to markets, institutions and other organizations.",
+      "typicalUnits": [
+        "firm",
+        "business unit",
+        "organization",
+        "product line",
+        "alliance",
+        "industry"
+      ],
+      "audienceJournals": [
+        "smj",
+        "strategy-science",
+        "asq"
+      ]
+    },
+    {
+      "id": "ob",
+      "label": "Organizational behavior",
+      "description": "Individual- and team-level questions inside organizations: attitudes, motivation, leadership, teams, careers, decision making, and human resource practices.",
+      "typicalUnits": [
+        "individual",
+        "employee",
+        "manager",
+        "team"
+      ],
+      "audienceJournals": [
+        "jap",
+        "obhdp",
+        "ppsych"
+      ]
+    },
+    {
+      "id": "is",
+      "label": "Information systems",
+      "description": "Questions about how information technologies, digital platforms, online communities and data are designed, adopted and used, and how they create value for users, firms and markets.",
+      "typicalUnits": [
+        "user",
+        "platform",
+        "online community",
+        "firm",
+        "IT artifact"
+      ],
+      "audienceJournals": [
+        "isr",
+        "misq"
+      ]
+    },
+    {
+      "id": "marketing",
+      "label": "Marketing",
+      "description": "Questions about customers and consumers, demand, products and brands, pricing, advertising, word of mouth, and market response.",
+      "typicalUnits": [
+        "consumer",
+        "customer",
+        "product",
+        "brand",
+        "market"
+      ],
+      "audienceJournals": [
+        "jm",
+        "jmr",
+        "mksc"
+      ]
+    },
+    {
+      "id": "operations",
+      "label": "Operations",
+      "description": "Questions about operating processes, supply chains, service systems, capacity, inventory, quality, scheduling and operational decision making.",
+      "typicalUnits": [
+        "process",
+        "plant",
+        "service system",
+        "supply chain",
+        "firm"
+      ],
+      "audienceJournals": [
+        "msom",
+        "pom",
+        "jom"
+      ]
+    }
+  ],
+  "journals": [
+    {
+      "id": "smj",
+      "label": "Strategic Management Journal",
+      "issn": [
+        "0143-2095",
+        "1097-0266"
+      ],
+      "field": "strategy",
+      "doiPrefixes": [
+        "10.1002"
+      ]
+    },
+    {
+      "id": "strategy-science",
+      "label": "Strategy Science",
+      "issn": [
+        "2333-2050",
+        "2333-2077"
+      ],
+      "field": "strategy",
+      "doiPrefixes": [
+        "10.1287"
+      ]
+    },
+    {
+      "id": "asq",
+      "label": "Administrative Science Quarterly",
+      "issn": [
+        "0001-8392",
+        "1930-3815"
+      ],
+      "field": "split",
+      "doiPrefixes": [
+        "10.1177"
+      ]
+    },
+    {
+      "id": "orsc",
+      "label": "Organization Science",
+      "issn": [
+        "1047-7039",
+        "1526-5455"
+      ],
+      "field": "split",
+      "doiPrefixes": [
+        "10.1287"
+      ]
+    },
+    {
+      "id": "amj",
+      "label": "Academy of Management Journal",
+      "issn": [
+        "0001-4273",
+        "1948-0989"
+      ],
+      "field": "split",
+      "doiPrefixes": [
+        "10.5465"
+      ]
+    },
+    {
+      "id": "mnsc",
+      "label": "Management Science",
+      "issn": [
+        "0025-1909",
+        "1526-5501"
+      ],
+      "field": "split",
+      "doiPrefixes": [
+        "10.1287"
+      ]
+    },
+    {
+      "id": "jap",
+      "label": "Journal of Applied Psychology",
+      "issn": [
+        "0021-9010",
+        "1939-1854"
+      ],
+      "field": "ob",
+      "doiPrefixes": [
+        "10.1037"
+      ]
+    },
+    {
+      "id": "obhdp",
+      "label": "Organizational Behavior and Human Decision Processes",
+      "issn": [
+        "0749-5978",
+        "1095-9920"
+      ],
+      "field": "ob",
+      "doiPrefixes": [
+        "10.1016"
+      ]
+    },
+    {
+      "id": "ppsych",
+      "label": "Personnel Psychology",
+      "issn": [
+        "0031-5826",
+        "1744-6570"
+      ],
+      "field": "ob",
+      "doiPrefixes": [
+        "10.1111"
+      ]
+    },
+    {
+      "id": "isr",
+      "label": "Information Systems Research",
+      "issn": [
+        "1047-7047",
+        "1526-5536"
+      ],
+      "field": "is",
+      "doiPrefixes": [
+        "10.1287"
+      ]
+    },
+    {
+      "id": "misq",
+      "label": "MIS Quarterly",
+      "issn": [
+        "0276-7783",
+        "2162-9730"
+      ],
+      "field": "is",
+      "doiPrefixes": [
+        "10.25300"
+      ]
+    },
+    {
+      "id": "jm",
+      "label": "Journal of Marketing",
+      "issn": [
+        "0022-2429",
+        "1547-7185"
+      ],
+      "field": "marketing",
+      "doiPrefixes": [
+        "10.1177",
+        "10.1509"
+      ]
+    },
+    {
+      "id": "jmr",
+      "label": "Journal of Marketing Research",
+      "issn": [
+        "0022-2437",
+        "1547-7193"
+      ],
+      "field": "marketing",
+      "doiPrefixes": [
+        "10.1177",
+        "10.1509"
+      ]
+    },
+    {
+      "id": "mksc",
+      "label": "Marketing Science",
+      "issn": [
+        "0732-2399",
+        "1526-548X"
+      ],
+      "field": "marketing",
+      "doiPrefixes": [
+        "10.1287"
+      ]
+    },
+    {
+      "id": "msom",
+      "label": "Manufacturing & Service Operations Management",
+      "issn": [
+        "1523-4614",
+        "1526-5498"
+      ],
+      "field": "operations",
+      "doiPrefixes": [
+        "10.1287"
+      ]
+    },
+    {
+      "id": "pom",
+      "label": "Production and Operations Management",
+      "issn": [
+        "1059-1478",
+        "1937-5956"
+      ],
+      "field": "operations",
+      "doiPrefixes": [
+        "10.1111",
+        "10.1177"
+      ]
+    },
+    {
+      "id": "jom",
+      "label": "Journal of Operations Management",
+      "issn": [
+        "0272-6963",
+        "1873-1317"
+      ],
+      "field": "operations",
+      "doiPrefixes": [
+        "10.1002",
+        "10.1016"
+      ]
+    }
+  ],
+  "splitRule": "Articles in multi-field journals (field = split) are assigned by their OpenAlex primary-topic subfield using subfieldToField. Articles whose subfield is not listed are left out of the corpus.",
+  "subfieldToField": {
+    "Strategy and Management": "strategy",
+    "Management of Technology and Innovation": "strategy",
+    "Business and International Management": "strategy",
+    "Organizational Behavior and Human Resource Management": "ob",
+    "Management Information Systems": "is",
+    "Information Systems and Management": "is",
+    "Information Systems": "is",
+    "Marketing": "marketing",
+    "Management Science and Operations Research": "operations",
+    "Sociology and Political Science": "strategy",
+    "Social Psychology": "ob",
+    "Experimental and Cognitive Psychology": "ob",
+    "Applied Psychology": "ob",
+    "Gender Studies": "ob",
+    "Industrial and Manufacturing Engineering": "operations"
+  }
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roads Not Taken</title>
+  <meta name="description" content="What else could a focal paper have been? AI alternatives built on its data and results, mapped by field and distance.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="wordmark" href="#/">
+      <svg class="wordmark-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4"/><path d="M16 12V3M19.5 14.5l7-5M19.5 17.5l7 5M12.5 17.5l-7 5M12.5 14.5l-7-5"/></svg>
+      <span>Roads Not Taken</span>
+    </a>
+    <label class="case-picker">
+      <span class="visually-hidden">Focal paper</span>
+      <select id="case-select" aria-label="Choose a focal paper"></select>
+    </label>
+  </header>
+
+  <section class="paper-head" aria-labelledby="paper-title">
+    <h1 id="paper-title" class="paper-title"></h1>
+    <p id="paper-byline" class="paper-byline"></p>
+    <nav class="tabs" aria-label="Views">
+      <a href="#" data-view="paper">Focal paper</a>
+      <a href="#" data-view="results">Results</a>
+      <a href="#" data-view="alternatives">AI alternatives</a>
+      <a href="#" data-view="measures">Measures</a>
+      <a href="#" data-view="method">How it works</a>
+    </nav>
+  </section>
+
+  <main id="main" tabindex="-1"></main>
+
+  <aside id="drawer" class="drawer" aria-hidden="true" aria-labelledby="drawer-title" role="dialog" aria-modal="true">
+    <div class="drawer-backdrop" data-close></div>
+    <div class="drawer-panel">
+      <div class="drawer-bar">
+        <span id="drawer-kind" class="drawer-kind"></span>
+        <button class="drawer-close" type="button" data-close>Close</button>
+      </div>
+      <div id="drawer-body"></div>
+    </div>
+  </aside>
+  <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

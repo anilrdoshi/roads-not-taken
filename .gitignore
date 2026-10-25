@@ -1,0 +1,17 @@
+node_modules/
+.env
+# Paper PDFs are never committed (publisher copyright).
+papers/
+# The corpus is rebuilt from Crossref/OpenAlex by scripts/build-corpus.mjs; abstracts are not redistributed.
+corpus/records.jsonl
+corpus/cache/
+# Corpus embeddings are rebuilt locally by scripts/build-embeddings.mjs (corpus/embeddings.json records the model and checks).
+corpus/embeddings.bin
+corpus/embeddings.bin.partial
+# The local embedding model, downloaded on first use.
+.models/
+.DS_Store
+# Your focal papers' runs, and the explorer data built from them, stay on your machine. Each run's
+# private/ folder holds full call logs (with corpus abstracts) and the focal paper's own abstract.
+runs/
+ui/data/

@@ -1,0 +1,11 @@
+{
+  "model": "Xenova/bge-base-en-v1.5",
+  "dtype": "fp32",
+  "pooling": "cls",
+  "dims": 768,
+  "text": "title + \". \" + abstract, with publisher boilerplate removed (src/embeddings.js cleanAbstract)",
+  "count": 11784,
+  "withAbstract": 11784,
+  "idsSha256": "36c8b39e130df84204546553d47cefbada985e530f6c43df4a2119892846cd26",
+  "builtAt": "2026-10-25T14:08:37.942Z"
+}

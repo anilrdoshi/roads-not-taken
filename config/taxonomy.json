@@ -1,0 +1,1216 @@
+{
+  "version": "amj-keywords-v1",
+  "source": "Academy of Management Journal submission keywords (Topic Areas and Research Methods), config/source/amj_keywords_cleaned.txt",
+  "corrections": [
+    "\"Organizational culture & climate\" and the subtopics listed after it are filed under \"Organization and Management Theory\".",
+    "Exact duplicate entries are removed."
+  ],
+  "topics": [
+    {
+      "id": "T001",
+      "label": "Strategic Management > Competitive Strategy > Resources, capabilities, and routines"
+    },
+    {
+      "id": "T002",
+      "label": "Strategic Management > Competitive Strategy > Competitive dynamics"
+    },
+    {
+      "id": "T003",
+      "label": "Strategic Management > Competitive Strategy > Competitive heterogeneity"
+    },
+    {
+      "id": "T004",
+      "label": "Strategic Management > Competitive Strategy > Industry convergence"
+    },
+    {
+      "id": "T005",
+      "label": "Strategic Management > Competitive Strategy > Industry structure"
+    },
+    {
+      "id": "T006",
+      "label": "Strategic Management > Competitive Strategy > Strategic factor markets"
+    },
+    {
+      "id": "T007",
+      "label": "Strategic Management > Competitive Strategy > Value creation and appropriation"
+    },
+    {
+      "id": "T008",
+      "label": "Strategic Management > Competitive Strategy > Competitive strategy (General)"
+    },
+    {
+      "id": "T009",
+      "label": "Strategic Management > Cooperative Strategy > Alliance formation and governance"
+    },
+    {
+      "id": "T010",
+      "label": "Strategic Management > Cooperative Strategy > Alliance networks and portfolios"
+    },
+    {
+      "id": "T011",
+      "label": "Strategic Management > Cooperative Strategy > Ecosystems"
+    },
+    {
+      "id": "T012",
+      "label": "Strategic Management > Cooperative Strategy > Meta-organizations/Industry associations"
+    },
+    {
+      "id": "T013",
+      "label": "Strategic Management > Cooperative Strategy > Cooperative strategy (General)"
+    },
+    {
+      "id": "T014",
+      "label": "Strategic Management > Corporate Strategy > Diversification"
+    },
+    {
+      "id": "T015",
+      "label": "Strategic Management > Corporate Strategy > Mergers/Acquisitions and Divestitures/Spinoffs"
+    },
+    {
+      "id": "T016",
+      "label": "Strategic Management > Corporate Strategy > Multinational strategy"
+    },
+    {
+      "id": "T017",
+      "label": "Strategic Management > Corporate Strategy > Resource allocation, reconfiguration, and redeployment"
+    },
+    {
+      "id": "T018",
+      "label": "Strategic Management > Corporate Strategy > Structure, organization design, and implementation"
+    },
+    {
+      "id": "T019",
+      "label": "Strategic Management > Corporate Strategy > Vertical integration and outsourcing"
+    },
+    {
+      "id": "T020",
+      "label": "Strategic Management > Corporate Strategy > Corporate strategy (General)"
+    },
+    {
+      "id": "T021",
+      "label": "Strategic Management > Corporate Strategy > Non Market Strategy"
+    },
+    {
+      "id": "T022",
+      "label": "Strategic Management > Strategic Management Process > Knowledge management"
+    },
+    {
+      "id": "T023",
+      "label": "Strategic Management > Strategic Management Process > Open strategy"
+    },
+    {
+      "id": "T024",
+      "label": "Strategic Management > Strategic Management Process > Strategy as practice"
+    },
+    {
+      "id": "T025",
+      "label": "Strategic Management > Strategic Management Process > Strategic change processes"
+    },
+    {
+      "id": "T026",
+      "label": "Strategic Management > Strategic Management Process > Strategic decision making"
+    },
+    {
+      "id": "T027",
+      "label": "Strategic Management > Strategic Management Process > Strategy implementation"
+    },
+    {
+      "id": "T028",
+      "label": "Strategic Management > Strategic Management Process > Strategic management process (General)"
+    },
+    {
+      "id": "T029",
+      "label": "Strategic Management > Strategic Leadership and Governance > Board of directors"
+    },
+    {
+      "id": "T030",
+      "label": "Strategic Management > Strategic Leadership and Governance > CEO/TMT decision making"
+    },
+    {
+      "id": "T031",
+      "label": "Strategic Management > Strategic Leadership and Governance > Executive compensation"
+    },
+    {
+      "id": "T032",
+      "label": "Strategic Management > Strategic Leadership and Governance > Executive succession"
+    },
+    {
+      "id": "T033",
+      "label": "Strategic Management > Strategic Leadership and Governance > Middle management roles in strategy"
+    },
+    {
+      "id": "T034",
+      "label": "Strategic Management > Strategic Leadership and Governance > Stakeholder management"
+    },
+    {
+      "id": "T035",
+      "label": "Strategic Management > Strategic Leadership and Governance > TMT composition, -dynamics, -gender, and inclusion"
+    },
+    {
+      "id": "T036",
+      "label": "Strategic Management > Strategic Leadership and Governance > Strategic leadership and governance (General)"
+    },
+    {
+      "id": "T037",
+      "label": "Strategic Management > Strategic Leadership and Governance > Strategic management (General)"
+    },
+    {
+      "id": "T038",
+      "label": "Careers > Career self-management/self-regulation"
+    },
+    {
+      "id": "T039",
+      "label": "Careers > Career outcomes"
+    },
+    {
+      "id": "T040",
+      "label": "Careers > Career and work patterns"
+    },
+    {
+      "id": "T041",
+      "label": "Careers > Job, career, and international mobility"
+    },
+    {
+      "id": "T042",
+      "label": "Careers > Organizational career management (succession, retirement, etc.)"
+    },
+    {
+      "id": "T043",
+      "label": "Careers > Careers research (General)"
+    },
+    {
+      "id": "T044",
+      "label": "Careers > Gig work/portfolio work"
+    },
+    {
+      "id": "T045",
+      "label": "Careers > Vocational choice"
+    },
+    {
+      "id": "T046",
+      "label": "Careers > Unemployment"
+    },
+    {
+      "id": "T047",
+      "label": "Conflict Management > Alternative Dispute Resolution (ADR)"
+    },
+    {
+      "id": "T048",
+      "label": "Conflict Management > Conflict resolution styles"
+    },
+    {
+      "id": "T049",
+      "label": "Conflict Management > Dispute resolution process"
+    },
+    {
+      "id": "T050",
+      "label": "Conflict Management > Negotiation"
+    },
+    {
+      "id": "T051",
+      "label": "Conflict Management > Hierarchy: status/power/politics"
+    },
+    {
+      "id": "T052",
+      "label": "Conflict Management > Aggression/abuse"
+    },
+    {
+      "id": "T053",
+      "label": "Conflict Management > Conflict management (General)"
+    },
+    {
+      "id": "T054",
+      "label": "Critical Management Studies"
+    },
+    {
+      "id": "T055",
+      "label": "Entrepreneurship > Academic entrepreneurship"
+    },
+    {
+      "id": "T056",
+      "label": "Entrepreneurship > Community-based entrepreneurship"
+    },
+    {
+      "id": "T057",
+      "label": "Entrepreneurship > Corporate entrepreneurship"
+    },
+    {
+      "id": "T058",
+      "label": "Entrepreneurship > Effectuation"
+    },
+    {
+      "id": "T059",
+      "label": "Entrepreneurship > Entrepreneurial ecosystem"
+    },
+    {
+      "id": "T060",
+      "label": "Entrepreneurship > Entrepreneurial strategies"
+    },
+    {
+      "id": "T061",
+      "label": "Entrepreneurship > Family businesses"
+    },
+    {
+      "id": "T062",
+      "label": "Entrepreneurship > Financing of new ventures"
+    },
+    {
+      "id": "T063",
+      "label": "Entrepreneurship > Founders and founding teams"
+    },
+    {
+      "id": "T064",
+      "label": "Entrepreneurship > Growth and Scaling"
+    },
+    {
+      "id": "T065",
+      "label": "Entrepreneurship > Incubators and accelerators"
+    },
+    {
+      "id": "T066",
+      "label": "Entrepreneurship > International entrepreneurship"
+    },
+    {
+      "id": "T067",
+      "label": "Entrepreneurship > Necessity entrepreneurship"
+    },
+    {
+      "id": "T068",
+      "label": "Entrepreneurship > Small and medium-sized enterprises"
+    },
+    {
+      "id": "T069",
+      "label": "Entrepreneurship > Social and sustainable entrepreneurship"
+    },
+    {
+      "id": "T070",
+      "label": "Entrepreneurship > Entrepreneurship (General)"
+    },
+    {
+      "id": "T071",
+      "label": "Demography & Diversity in Organizations > Demography"
+    },
+    {
+      "id": "T072",
+      "label": "Demography & Diversity in Organizations > Discrimination"
+    },
+    {
+      "id": "T073",
+      "label": "Demography & Diversity in Organizations > Equity"
+    },
+    {
+      "id": "T074",
+      "label": "Demography & Diversity in Organizations > Gender and gender identity"
+    },
+    {
+      "id": "T075",
+      "label": "Demography & Diversity in Organizations > Group differences"
+    },
+    {
+      "id": "T076",
+      "label": "Demography & Diversity in Organizations > Intersectionality"
+    },
+    {
+      "id": "T077",
+      "label": "Demography & Diversity in Organizations > Social identification"
+    },
+    {
+      "id": "T078",
+      "label": "Demography & Diversity in Organizations > Social justice"
+    },
+    {
+      "id": "T079",
+      "label": "Demography & Diversity in Organizations > Inclusion"
+    },
+    {
+      "id": "T080",
+      "label": "Demography & Diversity in Organizations > Diversity in Organizations (General)"
+    },
+    {
+      "id": "T081",
+      "label": "Health Care Management > Health care delivery"
+    },
+    {
+      "id": "T082",
+      "label": "Health Care Management > Health care organizations"
+    },
+    {
+      "id": "T083",
+      "label": "Health Care Management > Health care technology"
+    },
+    {
+      "id": "T084",
+      "label": "Health Care Management > Health care workforce"
+    },
+    {
+      "id": "T085",
+      "label": "Health Care Management > High-reliability organizations"
+    },
+    {
+      "id": "T086",
+      "label": "Health Care Management > Implementation science"
+    },
+    {
+      "id": "T087",
+      "label": "Human Resource Management and Industrial Relations Development > Diversity management"
+    },
+    {
+      "id": "T088",
+      "label": "Human Resource Management and Industrial Relations Development > International & cross-cultural HR management"
+    },
+    {
+      "id": "T089",
+      "label": "Human Resource Management and Industrial Relations Development > Performance evaluation & management"
+    },
+    {
+      "id": "T090",
+      "label": "Human Resource Management and Industrial Relations Development > Retention and separation"
+    },
+    {
+      "id": "T091",
+      "label": "Human Resource Management and Industrial Relations Development > Compensation & rewards"
+    },
+    {
+      "id": "T092",
+      "label": "Human Resource Management and Industrial Relations Development > Health & safety"
+    },
+    {
+      "id": "T093",
+      "label": "Human Resource Management and Industrial Relations Development > Staffing (recruitment & selection)"
+    },
+    {
+      "id": "T094",
+      "label": "Human Resource Management and Industrial Relations Development > Strategic HRM (division & organizational level)"
+    },
+    {
+      "id": "T095",
+      "label": "Human Resource Management and Industrial Relations Development > Training"
+    },
+    {
+      "id": "T096",
+      "label": "Human Resource Management and Industrial Relations Development > Unionization/collective bargaining/labor relations"
+    },
+    {
+      "id": "T097",
+      "label": "Human Resource Management and Industrial Relations Development > Work and family"
+    },
+    {
+      "id": "T098",
+      "label": "Human Resource Management and Industrial Relations Development > Workplace integration (e.g. migrants/refugees/disabled)"
+    },
+    {
+      "id": "T099",
+      "label": "Human Resource Management and Industrial Relations Development > Changing nature of work > Alienation"
+    },
+    {
+      "id": "T100",
+      "label": "Human Resource Management and Industrial Relations Development > Changing nature of work > Artificial intelligence (AI) augmentation and automation"
+    },
+    {
+      "id": "T101",
+      "label": "Human Resource Management and Industrial Relations Development > Changing nature of work > Deskilling"
+    },
+    {
+      "id": "T102",
+      "label": "Human Resource Management and Industrial Relations Development > Changing nature of work > Hybrid work models"
+    },
+    {
+      "id": "T103",
+      "label": "Human Resource Management and Industrial Relations Development > Changing nature of work > Precarious work, telework, and global work"
+    },
+    {
+      "id": "T104",
+      "label": "Human Resource Management and Industrial Relations Development > Changing nature of work > Shared economy and gig economy"
+    },
+    {
+      "id": "T105",
+      "label": "Human Resource Management and Industrial Relations Development > Changing nature of work > Social isolation and loneliness"
+    },
+    {
+      "id": "T106",
+      "label": "Human Resource Management and Industrial Relations Development > Changing nature of work > Technology-enabled HR practices"
+    },
+    {
+      "id": "T107",
+      "label": "Human Resource Management and Industrial Relations Development > Human resource management and industrial relations (General)"
+    },
+    {
+      "id": "T108",
+      "label": "International Management > Cross-Cultural Management > Cultural values and dimensions"
+    },
+    {
+      "id": "T109",
+      "label": "International Management > Cross-Cultural Management > National business practices/systems"
+    },
+    {
+      "id": "T110",
+      "label": "International Management > Cross-Cultural Management > Cross-cultural management (General)"
+    },
+    {
+      "id": "T111",
+      "label": "International Management > Cross-Cultural Management > Market Entry and Exit strategies"
+    },
+    {
+      "id": "T112",
+      "label": "International Management > Cross-Cultural Management > Cross-border mergers and acquisitions"
+    },
+    {
+      "id": "T113",
+      "label": "International Management > Cross-Cultural Management > Determinants of entry mode"
+    },
+    {
+      "id": "T114",
+      "label": "International Management > Cross-Cultural Management > International joint ventures and alliances"
+    },
+    {
+      "id": "T115",
+      "label": "International Management > Cross-Cultural Management > Market exit"
+    },
+    {
+      "id": "T116",
+      "label": "International Management > Cross-Cultural Management > Market entry and exit strategies (General)"
+    },
+    {
+      "id": "T117",
+      "label": "International Management > Managing the Multinational Enterprise"
+    },
+    {
+      "id": "T118",
+      "label": "International Management > Policy Environment > Emerging economies"
+    },
+    {
+      "id": "T119",
+      "label": "International Management > Policy Environment > MNE impact on host countries"
+    },
+    {
+      "id": "T120",
+      "label": "International Management > Policy Environment > Regulation, policy changes"
+    },
+    {
+      "id": "T121",
+      "label": "International Management > Policy Environment > Policy environment (General)"
+    },
+    {
+      "id": "T122",
+      "label": "International Management > International management (General)"
+    },
+    {
+      "id": "T123",
+      "label": "Management Education and Development"
+    },
+    {
+      "id": "T124",
+      "label": "Management History"
+    },
+    {
+      "id": "T125",
+      "label": "Management Spirituality and Religion"
+    },
+    {
+      "id": "T126",
+      "label": "Managerial and Organizational Cognition > Individual learning"
+    },
+    {
+      "id": "T127",
+      "label": "Managerial and Organizational Cognition > Individual-level cognitive, motivational, and affective processes > Attributions, biases, and heuristics"
+    },
+    {
+      "id": "T128",
+      "label": "Managerial and Organizational Cognition > Individual-level cognitive, motivational, and affective processes > Cognitive schema, scripts, mental models/maps"
+    },
+    {
+      "id": "T129",
+      "label": "Managerial and Organizational Cognition > Individual-level cognitive, motivational, and affective processes > Intuition"
+    },
+    {
+      "id": "T130",
+      "label": "Managerial and Organizational Cognition > Individual-level cognitive, motivational, and affective processes > Mindfulness"
+    },
+    {
+      "id": "T131",
+      "label": "Managerial and Organizational Cognition > Social construction > Language: rhetoric, metaphor, and labeling"
+    },
+    {
+      "id": "T132",
+      "label": "Managerial and Organizational Cognition > Social construction > Meaning-making at work, task design, job crafting"
+    },
+    {
+      "id": "T133",
+      "label": "Managerial and Organizational Cognition > Social construction > Sensemaking"
+    },
+    {
+      "id": "T134",
+      "label": "Managerial and Organizational Cognition > Managerial and organization cognition (General)"
+    },
+    {
+      "id": "T135",
+      "label": "Managerial Consulting"
+    },
+    {
+      "id": "T136",
+      "label": "Organization and Management Theory > Adaptation/Change"
+    },
+    {
+      "id": "T137",
+      "label": "Organization and Management Theory > Alternative organizational forms"
+    },
+    {
+      "id": "T138",
+      "label": "Organization and Management Theory > Categories"
+    },
+    {
+      "id": "T139",
+      "label": "Organization and Management Theory > Decision making (macro perspectives)"
+    },
+    {
+      "id": "T140",
+      "label": "Organization and Management Theory > Design/structure"
+    },
+    {
+      "id": "T141",
+      "label": "Organization and Management Theory > Environmental components (conceptualizing and assessing)"
+    },
+    {
+      "id": "T142",
+      "label": "Organization and Management Theory > Framing"
+    },
+    {
+      "id": "T143",
+      "label": "Organization and Management Theory > Imprinting"
+    },
+    {
+      "id": "T144",
+      "label": "Organization and Management Theory > Interorganizational linkages"
+    },
+    {
+      "id": "T145",
+      "label": "Organization and Management Theory > Identity and identification > Individual identity (content, processes, and outcomes)"
+    },
+    {
+      "id": "T146",
+      "label": "Organization and Management Theory > Identity and identification > Organizational identity and image"
+    },
+    {
+      "id": "T147",
+      "label": "Organization and Management Theory > Knowledge management"
+    },
+    {
+      "id": "T148",
+      "label": "Organization and Management Theory > Legitimacy"
+    },
+    {
+      "id": "T149",
+      "label": "Organization and Management Theory > Logics"
+    },
+    {
+      "id": "T150",
+      "label": "Organization and Management Theory > Organizational culture & climate"
+    },
+    {
+      "id": "T151",
+      "label": "Organization and Management Theory > Organizational embeddedness"
+    },
+    {
+      "id": "T152",
+      "label": "Organization and Management Theory > Organizational learning"
+    },
+    {
+      "id": "T153",
+      "label": "Organization and Management Theory > Performance feedback/attainment discrepancy"
+    },
+    {
+      "id": "T154",
+      "label": "Organization and Management Theory > Professions and professional work"
+    },
+    {
+      "id": "T155",
+      "label": "Organization and Management Theory > Reputation"
+    },
+    {
+      "id": "T156",
+      "label": "Organization and Management Theory > Risk"
+    },
+    {
+      "id": "T157",
+      "label": "Organization and Management Theory > Routines/routine dynamics"
+    },
+    {
+      "id": "T158",
+      "label": "Organization and Management Theory > Social networks"
+    },
+    {
+      "id": "T159",
+      "label": "Organization and Management Theory > Social symbolic work"
+    },
+    {
+      "id": "T160",
+      "label": "Organization and Management Theory > Time and temporality"
+    },
+    {
+      "id": "T161",
+      "label": "Organization and Management Theory > Organization and management theory (General)"
+    },
+    {
+      "id": "T162",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Justice/fairness"
+    },
+    {
+      "id": "T163",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Mood and emotions"
+    },
+    {
+      "id": "T164",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Morality"
+    },
+    {
+      "id": "T165",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Motivation"
+    },
+    {
+      "id": "T166",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Resilience"
+    },
+    {
+      "id": "T167",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Satisfaction and commitment"
+    },
+    {
+      "id": "T168",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Stress, health, and well-being"
+    },
+    {
+      "id": "T169",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Trust"
+    },
+    {
+      "id": "T170",
+      "label": "Organizational Behavior > Attitudes, cognitions, and affect > Attitudes, cognitions, and affect (General)"
+    },
+    {
+      "id": "T171",
+      "label": "Organizational Behavior > Behavior > Creativity"
+    },
+    {
+      "id": "T172",
+      "label": "Organizational Behavior > Behavior > Decision making (micro perspectives)"
+    },
+    {
+      "id": "T173",
+      "label": "Organizational Behavior > Behavior > Deviance/counterproductive behaviors"
+    },
+    {
+      "id": "T174",
+      "label": "Organizational Behavior > Behavior > Organizational citizenship behavior"
+    },
+    {
+      "id": "T175",
+      "label": "Organizational Behavior > Behavior > Turnover, absenteeism, and withdrawal"
+    },
+    {
+      "id": "T176",
+      "label": "Organizational Behavior > Behavior > Behavior (General)"
+    },
+    {
+      "id": "T177",
+      "label": "Organizational Behavior > Group/team characteristics > Composition/diversity"
+    },
+    {
+      "id": "T178",
+      "label": "Organizational Behavior > Group/team characteristics > Tasks (e.g., design, interdependence, complexity)"
+    },
+    {
+      "id": "T179",
+      "label": "Organizational Behavior > Group/team characteristics > Group/team characteristics (general)"
+    },
+    {
+      "id": "T180",
+      "label": "Organizational Behavior > Group/team emergent states > Collective efficacy"
+    },
+    {
+      "id": "T181",
+      "label": "Organizational Behavior > Group/team emergent states > Empowerment"
+    },
+    {
+      "id": "T182",
+      "label": "Organizational Behavior > Group/team emergent states > Group/team emergent states (General)"
+    },
+    {
+      "id": "T183",
+      "label": "Organizational Behavior > Group/team processes > Communication"
+    },
+    {
+      "id": "T184",
+      "label": "Organizational Behavior > Group/team processes > Conflict management"
+    },
+    {
+      "id": "T185",
+      "label": "Organizational Behavior > Group/team processes > Coordination"
+    },
+    {
+      "id": "T186",
+      "label": "Organizational Behavior > Group/team processes > Intergroup relations"
+    },
+    {
+      "id": "T187",
+      "label": "Organizational Behavior > Group/team processes > Social networks"
+    },
+    {
+      "id": "T188",
+      "label": "Organizational Behavior > Group/team processes > Team emotions"
+    },
+    {
+      "id": "T189",
+      "label": "Organizational Behavior > Group/team processes > Group/team processes (General)"
+    },
+    {
+      "id": "T190",
+      "label": "Organizational Behavior > Impression management"
+    },
+    {
+      "id": "T191",
+      "label": "Organizational Behavior > Job design, roles, and tasks"
+    },
+    {
+      "id": "T192",
+      "label": "Organizational Behavior > Leadership"
+    },
+    {
+      "id": "T193",
+      "label": "Organizational Behavior > Multiteam systems"
+    },
+    {
+      "id": "T194",
+      "label": "Organizational Behavior > Participation"
+    },
+    {
+      "id": "T195",
+      "label": "Organizational Behavior > Person-organization/person-environment fit"
+    },
+    {
+      "id": "T196",
+      "label": "Organizational Behavior > Personality and individual differences"
+    },
+    {
+      "id": "T197",
+      "label": "Organizational Behavior > Organizational behavior (General)"
+    },
+    {
+      "id": "T198",
+      "label": "Communication, Digital Technology, and Organizations > Affordances"
+    },
+    {
+      "id": "T199",
+      "label": "Communication, Digital Technology, and Organizations > Artificial intelligence/machine learning in organizing"
+    },
+    {
+      "id": "T200",
+      "label": "Communication, Digital Technology, and Organizations > Communication networks"
+    },
+    {
+      "id": "T201",
+      "label": "Communication, Digital Technology, and Organizations > Computing"
+    },
+    {
+      "id": "T202",
+      "label": "Communication, Digital Technology, and Organizations > Digital business, digital commerce, and digital platforms"
+    },
+    {
+      "id": "T203",
+      "label": "Communication, Digital Technology, and Organizations > Interpersonal communication"
+    },
+    {
+      "id": "T204",
+      "label": "Communication, Digital Technology, and Organizations > Online communities"
+    },
+    {
+      "id": "T205",
+      "label": "Communication, Digital Technology, and Organizations > Social media"
+    },
+    {
+      "id": "T206",
+      "label": "Communication, Digital Technology, and Organizations > Systems design, implementation"
+    },
+    {
+      "id": "T207",
+      "label": "Communication, Digital Technology, and Organizations > Virtual teams, virtual work, and virtual organizations"
+    },
+    {
+      "id": "T208",
+      "label": "Communication, Digital Technology, and Organizations > Communication, Digital Technology and Organizations (General)"
+    },
+    {
+      "id": "T209",
+      "label": "Organizational Development, Transformation and Change > Creation/testing of theories and models of change"
+    },
+    {
+      "id": "T210",
+      "label": "Organizational Development, Transformation and Change > Political dynamics"
+    },
+    {
+      "id": "T211",
+      "label": "Organizational Development, Transformation and Change > Role of change agents"
+    },
+    {
+      "id": "T212",
+      "label": "Organizational Development, Transformation and Change > Organization development, transformation and change"
+    },
+    {
+      "id": "T213",
+      "label": "Organizational Development, Transformation and Change > Organizational accountability, legitimacy (General)"
+    },
+    {
+      "id": "T214",
+      "label": "Environmental Sustainability > Biodiversity/land use"
+    },
+    {
+      "id": "T215",
+      "label": "Environmental Sustainability > Certification/B Corp"
+    },
+    {
+      "id": "T216",
+      "label": "Environmental Sustainability > Climate change/carbon neutrality"
+    },
+    {
+      "id": "T217",
+      "label": "Environmental Sustainability > Grand challenges"
+    },
+    {
+      "id": "T218",
+      "label": "Environmental Sustainability > Renewable energy"
+    },
+    {
+      "id": "T219",
+      "label": "Environmental Sustainability > Resilience"
+    },
+    {
+      "id": "T220",
+      "label": "Environmental Sustainability > Systems thinking/social-ecological systems"
+    },
+    {
+      "id": "T221",
+      "label": "Environmental Sustainability > Environmental sustainability (General)"
+    },
+    {
+      "id": "T222",
+      "label": "Production and Operations Management > Quality management"
+    },
+    {
+      "id": "T223",
+      "label": "Production and Operations Management > Supply chain management"
+    },
+    {
+      "id": "T224",
+      "label": "Production and Operations Management > Production and operations management (General)"
+    },
+    {
+      "id": "T225",
+      "label": "Public Sector Management"
+    },
+    {
+      "id": "T226",
+      "label": "Social Issues in Management > Codes of conduct"
+    },
+    {
+      "id": "T227",
+      "label": "Social Issues in Management > Corporate corruption"
+    },
+    {
+      "id": "T228",
+      "label": "Social Issues in Management > Corporate political activity"
+    },
+    {
+      "id": "T229",
+      "label": "Social Issues in Management > Corporate social responsibility"
+    },
+    {
+      "id": "T230",
+      "label": "Social Issues in Management > Crisis and issue management"
+    },
+    {
+      "id": "T231",
+      "label": "Social Issues in Management > Ethics"
+    },
+    {
+      "id": "T232",
+      "label": "Social Issues in Management > Grand challenges"
+    },
+    {
+      "id": "T233",
+      "label": "Social Issues in Management > Organizational governance"
+    },
+    {
+      "id": "T234",
+      "label": "Social Issues in Management > Regulation"
+    },
+    {
+      "id": "T235",
+      "label": "Social Issues in Management > Social issues in management (General)"
+    },
+    {
+      "id": "T236",
+      "label": "Technology and Innovation Management > Business model innovation"
+    },
+    {
+      "id": "T237",
+      "label": "Technology and Innovation Management > Corporate science"
+    },
+    {
+      "id": "T238",
+      "label": "Technology and Innovation Management > Digital technology"
+    },
+    {
+      "id": "T239",
+      "label": "Technology and Innovation Management > Disruptive technology, discontinuities"
+    },
+    {
+      "id": "T240",
+      "label": "Technology and Innovation Management > Emerging technologies"
+    },
+    {
+      "id": "T241",
+      "label": "Technology and Innovation Management > General purpose technology (GPT)"
+    },
+    {
+      "id": "T242",
+      "label": "Technology and Innovation Management > Idea generation and evaluation"
+    },
+    {
+      "id": "T243",
+      "label": "Technology and Innovation Management > Innovation diffusion/implementation/use of technologies"
+    },
+    {
+      "id": "T244",
+      "label": "Technology and Innovation Management > Innovation processes"
+    },
+    {
+      "id": "T245",
+      "label": "Technology and Innovation Management > Intellectual property"
+    },
+    {
+      "id": "T246",
+      "label": "Technology and Innovation Management > Management of technology"
+    },
+    {
+      "id": "T247",
+      "label": "Technology and Innovation Management > Modularity"
+    },
+    {
+      "id": "T248",
+      "label": "Technology and Innovation Management > Open innovation, crowdsourcing and open science"
+    },
+    {
+      "id": "T249",
+      "label": "Technology and Innovation Management > Problem solving"
+    },
+    {
+      "id": "T250",
+      "label": "Technology and Innovation Management > Product development strategies"
+    },
+    {
+      "id": "T251",
+      "label": "Technology and Innovation Management > Research and development"
+    },
+    {
+      "id": "T252",
+      "label": "Technology and Innovation Management > Search space, search strategy"
+    },
+    {
+      "id": "T253",
+      "label": "Technology and Innovation Management > Technological change, trajectories, convergence"
+    },
+    {
+      "id": "T254",
+      "label": "Technology and Innovation Management > Influence of new technologies on management and organizations"
+    },
+    {
+      "id": "T255",
+      "label": "Technology and Innovation Management > Standards"
+    },
+    {
+      "id": "T256",
+      "label": "Technology and Innovation Management > Sustainability transitions"
+    },
+    {
+      "id": "T257",
+      "label": "Technology and Innovation Management > User innovation"
+    },
+    {
+      "id": "T258",
+      "label": "Technology and Innovation Management > Technology and innovation management (General)"
+    }
+  ],
+  "methods": [
+    {
+      "id": "M001",
+      "label": "Research Design > Cross-sectional"
+    },
+    {
+      "id": "M002",
+      "label": "Research Design > Longitudinal"
+    },
+    {
+      "id": "M003",
+      "label": "Research Design > Multimethod"
+    },
+    {
+      "id": "M004",
+      "label": "Research Design > Panel/pooled"
+    },
+    {
+      "id": "M005",
+      "label": "Quantitative Orientation > Archival"
+    },
+    {
+      "id": "M006",
+      "label": "Quantitative Orientation > Experience sampling methodology (ESM)"
+    },
+    {
+      "id": "M007",
+      "label": "Quantitative Orientation > Field experiment"
+    },
+    {
+      "id": "M008",
+      "label": "Quantitative Orientation > Lab experiment"
+    },
+    {
+      "id": "M009",
+      "label": "Quantitative Orientation > Machine learning"
+    },
+    {
+      "id": "M010",
+      "label": "Quantitative Orientation > Neuroscience/physiological measurement methods"
+    },
+    {
+      "id": "M011",
+      "label": "Quantitative Orientation > Survey"
+    },
+    {
+      "id": "M012",
+      "label": "Quantitative Orientation > Simulations and computational models"
+    },
+    {
+      "id": "M013",
+      "label": "Quantitative Orientation > Quantitative orientation (General)"
+    },
+    {
+      "id": "M014",
+      "label": "Qualitative Orientation > Action research/Collaborative inquiry"
+    },
+    {
+      "id": "M015",
+      "label": "Qualitative Orientation > Case studies"
+    },
+    {
+      "id": "M016",
+      "label": "Qualitative Orientation > Conversation analysis"
+    },
+    {
+      "id": "M017",
+      "label": "Qualitative Orientation > Design science"
+    },
+    {
+      "id": "M018",
+      "label": "Qualitative Orientation > Discourse/Narrative analysis"
+    },
+    {
+      "id": "M019",
+      "label": "Qualitative Orientation > Ethnography"
+    },
+    {
+      "id": "M020",
+      "label": "Qualitative Orientation > Grounded theory"
+    },
+    {
+      "id": "M021",
+      "label": "Qualitative Orientation > Historical analysis"
+    },
+    {
+      "id": "M022",
+      "label": "Qualitative Orientation > Linguistic/Sociolinguistic analysis"
+    },
+    {
+      "id": "M023",
+      "label": "Qualitative Orientation > Participant observation"
+    },
+    {
+      "id": "M024",
+      "label": "Qualitative Orientation > Text/content analysis"
+    },
+    {
+      "id": "M025",
+      "label": "Qualitative Orientation > Visual/image/video analysis"
+    },
+    {
+      "id": "M026",
+      "label": "Qualitative Orientation > Qualitative orientation (General)"
+    },
+    {
+      "id": "M027",
+      "label": "Analysis > Agent-based modelling"
+    },
+    {
+      "id": "M028",
+      "label": "Analysis > Categorical & limited dependent variables"
+    },
+    {
+      "id": "M029",
+      "label": "Analysis > Cluster analysis"
+    },
+    {
+      "id": "M030",
+      "label": "Analysis > Event history analysis/Survival models"
+    },
+    {
+      "id": "M031",
+      "label": "Analysis > Event studies"
+    },
+    {
+      "id": "M032",
+      "label": "Analysis > Image processing"
+    },
+    {
+      "id": "M033",
+      "label": "Analysis > Latent growth analysis"
+    },
+    {
+      "id": "M034",
+      "label": "Analysis > Meta-analysis"
+    },
+    {
+      "id": "M035",
+      "label": "Analysis > Multilevel (e.g., HLM, WABA, RCM)"
+    },
+    {
+      "id": "M036",
+      "label": "Analysis > Natural Language Processing"
+    },
+    {
+      "id": "M037",
+      "label": "Analysis > Network analysis"
+    },
+    {
+      "id": "M038",
+      "label": "Analysis > Principal Component Analysis"
+    },
+    {
+      "id": "M039",
+      "label": "Analysis > Set-analytic methods (QCA, etc.)"
+    },
+    {
+      "id": "M040",
+      "label": "Analysis > Sentiment analysis"
+    },
+    {
+      "id": "M041",
+      "label": "Analysis > Structural equation modeling"
+    },
+    {
+      "id": "M042",
+      "label": "Analysis > Topic modeling"
+    },
+    {
+      "id": "M043",
+      "label": "Analysis > Traditional (e.g., regression, ANOVA, etc.)"
+    }
+  ]
+}

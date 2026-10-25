@@ -1,0 +1,227 @@
+{
+  "version": "theories-v1",
+  "description": "Theory menu for fine perturbation. All 46 entries of the Academy of Management Journal's 'Theoretical Perspectives' submission keywords are included; the default set used for theory-targeted runs is the 20 that suit firm-level strategy research plus 7 additions (marked source 'added', 'orsc' or 'amj-topic'). Definitions are short working summaries for the generator and coder, with two canonical references each for the default set.",
+  "sources": {
+    "amj": "Academy of Management Journal submission keywords, Theoretical Perspectives",
+    "orsc": "Organization Science submission keywords",
+    "amj-topic": "Academy of Management Journal submission keywords, Topic Areas",
+    "added": "Added by the project because it is widely used in strategy research but absent from both keyword lists"
+  },
+  "theories": [
+    {
+      "id": "rbv", "name": "Resource-based view", "source": "amj", "default": true,
+      "core": "Firms differ in the resources and capabilities they control; resources that are valuable, rare, hard to imitate and well organized produce sustained competitive advantage.",
+      "mechanism": "Performance differences persist because resources are heterogeneous, imperfectly mobile and protected by isolating mechanisms.",
+      "constructs": ["resources", "capabilities", "resource heterogeneity", "isolating mechanisms", "sustained competitive advantage"],
+      "references": ["Wernerfelt (1984)", "Barney (1991)"]
+    },
+    {
+      "id": "dynamic-capabilities", "name": "Dynamic capabilities", "source": "amj", "default": true,
+      "core": "Advantage in changing environments comes from a firm's ability to sense opportunities, seize them and reconfigure its resource base.",
+      "mechanism": "Higher-order routines integrate, build and reconfigure competences faster or better than rivals.",
+      "constructs": ["sensing", "seizing", "reconfiguring", "asset orchestration", "environmental dynamism"],
+      "references": ["Teece, Pisano & Shuen (1997)", "Eisenhardt & Martin (2000)"]
+    },
+    {
+      "id": "kbv", "name": "Knowledge-based view", "source": "amj", "default": true,
+      "core": "Firms exist to integrate specialized knowledge, which is their most strategically important resource.",
+      "mechanism": "Combinative capabilities let firms integrate and transfer tacit knowledge more efficiently than markets.",
+      "constructs": ["tacit knowledge", "knowledge integration", "combinative capabilities", "knowledge transfer"],
+      "references": ["Kogut & Zander (1992)", "Grant (1996)"]
+    },
+    {
+      "id": "tce", "name": "Transaction cost economics", "source": "amj", "default": true,
+      "core": "Firms choose governance structures (market, hybrid, hierarchy) that economize on the costs of transacting.",
+      "mechanism": "Asset specificity, uncertainty and frequency raise the hazards of opportunism under bounded rationality, favoring more integrated governance.",
+      "constructs": ["asset specificity", "opportunism", "governance mode", "make-or-buy", "hold-up"],
+      "references": ["Coase (1937)", "Williamson (1985)"]
+    },
+    {
+      "id": "agency", "name": "Agency theory", "source": "amj", "default": true,
+      "core": "When principals delegate to agents with different goals and private information, outcomes depend on monitoring and incentive alignment.",
+      "mechanism": "Information asymmetry creates moral hazard and adverse selection, which contracts, monitoring and governance try to contain.",
+      "constructs": ["principal", "agent", "monitoring", "incentive alignment", "agency costs"],
+      "references": ["Jensen & Meckling (1976)", "Eisenhardt (1989)"]
+    },
+    {
+      "id": "btf", "name": "Behavioral theory of the firm", "source": "amj", "default": true,
+      "core": "Boundedly rational organizations set aspirations, search when performance falls short of them, and resolve conflicting goals among coalitions.",
+      "mechanism": "Performance feedback relative to aspiration levels triggers problemistic search, risk taking and change; slack buffers these responses.",
+      "constructs": ["aspiration levels", "performance feedback", "problemistic search", "organizational slack", "dominant coalition"],
+      "references": ["Cyert & March (1963)", "Greve (2003)"]
+    },
+    {
+      "id": "real-options", "name": "Real options theory", "source": "amj", "default": true,
+      "core": "Strategic investments under uncertainty create rights, not obligations, to act later, so flexibility has value.",
+      "mechanism": "Staged, reversible commitments let firms defer, expand or abandon as uncertainty resolves; greater uncertainty raises option value.",
+      "constructs": ["uncertainty", "irreversibility", "flexibility", "staged investment", "growth options"],
+      "references": ["Bowman & Hurry (1993)", "Trigeorgis (1996)"]
+    },
+    {
+      "id": "rdt", "name": "Resource dependence theory", "source": "amj", "default": true,
+      "core": "Organizations depend on external actors for critical resources and act to reduce that dependence and the uncertainty it creates.",
+      "mechanism": "Power follows dependence; organizations manage it through co-optation, alliances, board ties, mergers and diversification of resource sources.",
+      "constructs": ["resource dependence", "power imbalance", "mutual dependence", "constraint absorption"],
+      "references": ["Pfeffer & Salancik (1978)", "Hillman, Withers & Collins (2009)"]
+    },
+    {
+      "id": "institutional", "name": "Institutional theory", "source": "amj", "default": true,
+      "core": "Organizations adopt structures and practices that are seen as legitimate in their environment, often independent of efficiency.",
+      "mechanism": "Coercive, normative and mimetic pressures produce isomorphism; conformity earns legitimacy and access to resources.",
+      "constructs": ["legitimacy", "isomorphism", "institutional logics", "organizational field"],
+      "references": ["Meyer & Rowan (1977)", "DiMaggio & Powell (1983)"]
+    },
+    {
+      "id": "network", "name": "Network theory", "source": "amj", "default": true,
+      "core": "An actor's ties and position in a network shape its access to information, resources and opportunities.",
+      "mechanism": "Weak ties and structural holes supply non-redundant information and brokerage benefits; dense closure supports trust and coordination.",
+      "constructs": ["tie strength", "centrality", "structural holes", "embeddedness", "network closure"],
+      "references": ["Granovetter (1973)", "Burt (1992)"]
+    },
+    {
+      "id": "social-capital", "name": "Social capital theory", "source": "amj", "default": true,
+      "core": "Resources embedded in relationships create value for the actors and organizations that hold them.",
+      "mechanism": "Structural, relational and cognitive social capital provide access, trust and shared understanding that ease exchange and combination.",
+      "constructs": ["structural social capital", "relational social capital", "cognitive social capital", "trust"],
+      "references": ["Coleman (1988)", "Nahapiet & Ghoshal (1998)"]
+    },
+    {
+      "id": "stakeholder", "name": "Stakeholder theory", "source": "amj", "default": true,
+      "core": "Firms create value through relationships with many stakeholders, not only shareholders.",
+      "mechanism": "Attending to stakeholder claims builds trust and cooperation that increase joint value creation; salience determines whose claims get attention.",
+      "constructs": ["stakeholder salience", "stakeholder value creation", "trust", "competing claims"],
+      "references": ["Freeman (1984)", "Mitchell, Agle & Wood (1997)"]
+    },
+    {
+      "id": "io-economics", "name": "Industrial organization economics", "source": "amj", "default": true,
+      "core": "Industry structure shapes firm conduct and performance; advantage comes from positioning within that structure.",
+      "mechanism": "Entry barriers, concentration and buyer or supplier power determine market power and achievable margins.",
+      "constructs": ["entry barriers", "market power", "five forces", "positioning", "structure-conduct-performance"],
+      "references": ["Bain (1956)", "Porter (1980)"]
+    },
+    {
+      "id": "information-economics", "name": "Information economics", "source": "amj", "default": true,
+      "core": "When parties hold different information, markets suffer adverse selection and moral hazard, and actors respond with screening, contracts and disclosure.",
+      "mechanism": "Information asymmetry distorts exchange; mechanisms that reveal or verify information restore efficient trade.",
+      "constructs": ["information asymmetry", "adverse selection", "screening", "disclosure"],
+      "references": ["Akerlof (1970)", "Stiglitz (2000)"]
+    },
+    {
+      "id": "evolutionary", "name": "Evolutionary theory / path dependence", "source": "amj", "default": true,
+      "core": "Firms act through routines that change by variation, selection and retention; history constrains which paths remain open.",
+      "mechanism": "Routines act as organizational memory; local search and increasing returns can lock firms and markets into particular paths.",
+      "constructs": ["routines", "local search", "selection", "path dependence", "lock-in"],
+      "references": ["Nelson & Winter (1982)", "Arthur (1989)"]
+    },
+    {
+      "id": "population-ecology", "name": "Population ecology", "source": "amj", "default": true,
+      "core": "Change in populations of organizations comes mainly from environmental selection rather than adaptation.",
+      "mechanism": "Density first legitimates and then intensifies competition within a population; structural inertia limits individual adaptation.",
+      "constructs": ["density dependence", "niche width", "structural inertia", "founding and mortality rates"],
+      "references": ["Hannan & Freeman (1977)", "Hannan & Freeman (1984)"]
+    },
+    {
+      "id": "contingency", "name": "Contingency theory", "source": "amj", "default": true,
+      "core": "There is no single best way to organize; performance depends on the fit between organizational design and contingencies such as environment, technology and size.",
+      "mechanism": "Fit between structure and contingencies raises performance; misfit lowers it until the organization adjusts.",
+      "constructs": ["environmental uncertainty", "differentiation", "integration", "fit"],
+      "references": ["Lawrence & Lorsch (1967)", "Donaldson (2001)"]
+    },
+    {
+      "id": "diffusion", "name": "Innovation diffusion theory", "source": "amj", "default": true,
+      "core": "Innovations spread through social systems over time via communication channels; adoption depends on the innovation's attributes and adopters' positions.",
+      "mechanism": "Social contagion and word of mouth drive adoption along an S-shaped curve, moderated by observability and relative advantage.",
+      "constructs": ["relative advantage", "observability", "adopter categories", "social contagion", "S-curve"],
+      "references": ["Rogers (1962/2003)", "Bass (1969)"]
+    },
+    {
+      "id": "ambidexterity", "name": "Organizational ambidexterity", "source": "amj", "default": true,
+      "core": "Long-run performance requires balancing exploration of new possibilities with exploitation of existing capabilities.",
+      "mechanism": "Structural or contextual separation lets organizations pursue exploration and exploitation without one crowding out the other.",
+      "constructs": ["exploration", "exploitation", "structural ambidexterity", "contextual ambidexterity"],
+      "references": ["March (1991)", "Tushman & O'Reilly (1996)"]
+    },
+    {
+      "id": "information-processing", "name": "Information processing theory", "source": "amj", "default": true,
+      "core": "Organizations must match their capacity to process information to the uncertainty of their tasks and environment.",
+      "mechanism": "Design choices such as lateral relations, slack and vertical information systems either add processing capacity or reduce the need for it.",
+      "constructs": ["task uncertainty", "information-processing requirements", "information-processing capacity"],
+      "references": ["Galbraith (1973)", "Tushman & Nadler (1978)"]
+    },
+    {
+      "id": "abv", "name": "Attention-based view", "source": "added", "default": true,
+      "core": "Firm behavior results from how decision makers' limited attention is focused, situated and channeled by organizational structures.",
+      "mechanism": "Attention structures determine which issues and answers get noticed and acted on; salience drives allocation of effort and resources.",
+      "constructs": ["attentional focus", "situated attention", "attention structures", "issue salience"],
+      "references": ["Ocasio (1997)", "Ocasio (2011)"]
+    },
+    {
+      "id": "signaling", "name": "Signaling theory", "source": "added", "default": true,
+      "core": "When one party knows more than another, observable and costly signals can credibly convey unobservable quality.",
+      "mechanism": "Signal cost, observability and consistency let receivers infer quality and reduce information asymmetry.",
+      "constructs": ["signaler", "receiver", "signal cost", "signal observability", "quality uncertainty"],
+      "references": ["Spence (1973)", "Connelly, Certo, Ireland & Reutzel (2011)"]
+    },
+    {
+      "id": "upper-echelons", "name": "Upper echelons theory", "source": "added", "default": true,
+      "core": "Organizational outcomes reflect the experiences, values and cognitive bases of top executives.",
+      "mechanism": "Executives filter and interpret information through their backgrounds; managerial discretion strengthens the link to strategic choices.",
+      "constructs": ["top management team characteristics", "managerial discretion", "executive cognition"],
+      "references": ["Hambrick & Mason (1984)", "Hambrick (2007)"]
+    },
+    {
+      "id": "competitive-dynamics", "name": "Competitive dynamics", "source": "amj-topic", "default": true,
+      "core": "Performance depends on the sequence of competitive actions firms take and how rivals respond.",
+      "mechanism": "Rivals' awareness, motivation and capability (AMC) determine whether and how they respond to an action.",
+      "constructs": ["competitive action and response", "market commonality", "resource similarity", "awareness-motivation-capability"],
+      "references": ["Chen (1996)", "Chen & Miller (2012)"]
+    },
+    {
+      "id": "org-learning", "name": "Organizational learning", "source": "orsc", "default": true,
+      "core": "Organizations learn from experience by encoding inferences into routines, which changes their performance over time.",
+      "mechanism": "Accumulated experience, feedback and knowledge transfer improve performance along learning curves; absorptive capacity conditions learning from outside.",
+      "constructs": ["experience", "learning curves", "routines", "absorptive capacity", "learning from failure"],
+      "references": ["Levitt & March (1988)", "Argote (1999)"]
+    },
+    {
+      "id": "status", "name": "Status theory", "source": "orsc", "default": true,
+      "core": "An actor's position in a social hierarchy of deference shapes how others judge its quality, especially when quality is uncertain.",
+      "mechanism": "Status acts as a signal of quality, and affiliations transfer status between actors.",
+      "constructs": ["status", "deference", "affiliations", "quality uncertainty", "status leakage"],
+      "references": ["Podolny (1993)", "Podolny (2005)"]
+    },
+    {
+      "id": "reputation", "name": "Organizational reputation", "source": "orsc", "default": true,
+      "core": "Audiences' collective perceptions of an organization's quality and prominence shape their expectations and behavior toward it.",
+      "mechanism": "Perceived quality and prominence reduce audiences' uncertainty and attract support, customers and resources.",
+      "constructs": ["prominence", "perceived quality", "visibility", "reputation"],
+      "references": ["Fombrun & Shanley (1990)", "Rindova, Williamson, Petkova & Sever (2005)"]
+    },
+    { "id": "actor-network", "name": "Actor-network theory", "source": "amj", "default": false, "core": "Human and non-human actors become linked in networks through translation, and organizing is the outcome of these associations." },
+    { "id": "affect", "name": "Affect theory", "source": "amj", "default": false, "core": "Emotions and moods shape how people perceive, decide and behave at work." },
+    { "id": "behavioral-decision", "name": "Behavioral decision theory", "source": "amj", "default": false, "core": "Judgment and choice depart systematically from rational models because of heuristics and biases." },
+    { "id": "complexity", "name": "Complexity theory", "source": "amj", "default": false, "core": "Organizations are complex adaptive systems in which interdependencies produce nonlinear, emergent outcomes." },
+    { "id": "cco", "name": "Communication as constitutive of organizations (CCO)", "source": "amj", "default": false, "core": "Organizations are brought into being and sustained through communication." },
+    { "id": "configurational", "name": "Configurational theory", "source": "amj", "default": false, "core": "Performance comes from coherent configurations of multiple organizational attributes rather than from single factors." },
+    { "id": "critical", "name": "Critical theory", "source": "amj", "default": false, "core": "Organizations reproduce power and domination, and research should expose and challenge them." },
+    { "id": "equity", "name": "Equity theory", "source": "amj", "default": false, "core": "People compare their input-outcome ratios with others', and perceived inequity motivates them to restore fairness." },
+    { "id": "goal-setting", "name": "Goal-setting theory", "source": "amj", "default": false, "core": "Specific, difficult goals lead to higher performance than vague or easy goals." },
+    { "id": "human-capital", "name": "Human capital theory", "source": "amj", "default": false, "core": "Investments in people's skills and knowledge raise productivity; firm-specific human capital can be a source of advantage." },
+    { "id": "leadership", "name": "Leadership theories", "source": "amj", "default": false, "core": "Leaders influence followers' motivation, behavior and performance through their traits, behaviors and relationships." },
+    { "id": "modularity", "name": "Modularity theory", "source": "amj", "default": false, "core": "Decomposing systems into modules with standardized interfaces shapes innovation, industry structure and organizational design." },
+    { "id": "nrbv", "name": "Natural-resource-based view", "source": "amj", "default": false, "core": "Capabilities for environmental sustainability can be sources of competitive advantage." },
+    { "id": "paradox", "name": "Paradox theory and dialectics", "source": "amj", "default": false, "core": "Organizations face persistent contradictory demands that are better managed by accepting both sides than by choosing one." },
+    { "id": "philosophy-of-science", "name": "Philosophy of science and/or sociology of knowledge", "source": "amj", "default": false, "core": "How knowledge claims are produced, justified and accepted." },
+    { "id": "practice", "name": "Practice theory", "source": "amj", "default": false, "core": "Organizing consists of recurrent, situated practices that people enact." },
+    { "id": "prospect", "name": "Prospect theory", "source": "amj", "default": false, "core": "Decisions under risk depend on gains and losses relative to a reference point, with losses weighted more than gains." },
+    { "id": "process", "name": "Process theories", "source": "amj", "default": false, "core": "Outcomes are explained by the sequence of events and activities through which they unfold over time." },
+    { "id": "social-cognitive", "name": "Social cognitive theory", "source": "amj", "default": false, "core": "People learn by observing others, and self-efficacy shapes their effort and persistence." },
+    { "id": "social-exchange", "name": "Social exchange theory", "source": "amj", "default": false, "core": "Relationships are built on reciprocal exchanges that create obligations and trust." },
+    { "id": "social-identity", "name": "Social identity theory", "source": "amj", "default": false, "core": "People define themselves through group memberships, which shapes in-group favoritism and intergroup behavior." },
+    { "id": "social-movement", "name": "Social movement and collective action theories", "source": "amj", "default": false, "core": "Collective action depends on mobilizing structures, framing and political opportunities." },
+    { "id": "social-practice", "name": "Social practice theories", "source": "amj", "default": false, "core": "Social life is composed of practices that carry shared understandings, rules and materials." },
+    { "id": "structuration", "name": "Structuration theory", "source": "amj", "default": false, "core": "Social structure and human agency produce and reproduce each other." },
+    { "id": "systems", "name": "Systems theory", "source": "amj", "default": false, "core": "Organizations are open systems that exchange resources and information with their environments." },
+    { "id": "technology-acceptance", "name": "Technology acceptance theory", "source": "amj", "default": false, "core": "Perceived usefulness and ease of use drive people's intentions to adopt and use a technology." }
+  ]
+}
