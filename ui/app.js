@@ -224,7 +224,7 @@ function resultsBody(data, all) {
     runGroup('All runs', runCount(), `Every AI alternative together: ${runsOf('open').length} open, ${runsOf('field').length} field and ${runsOf('theory').length} theory runs. The run-type buttons fade dots on the map and the scatter plots. Each panel is tagged with the measures it uses; select a tag to see how it is measured.`,
       filters,
       h('div', {class: 'hero'},
-        h('div', null, h('h2', {class: 'panel-title'}, 'Where each AI alternative went', measureTags(['fit', 'comparison'])), withTableToggle(map.node, table),
+        h('div', null, h('h2', {class: 'panel-title'}, 'AI alternatives by best fit field and parts replaced', measureTags(['fit', 'comparison'])), withTableToggle(map.node, table),
           h('p', {class: 'map-caption'}, 'Each dot is an AI alternative. It sits in the sector of the field it fits best; the farther from the center, the more of the focal paper\'s parts it replaced. Select a dot to read it.'),
           fieldLegend(data)),
         answers),
@@ -233,17 +233,17 @@ function resultsBody(data, all) {
         h('div', {class: 'panel'}, withTableToggle(trio.node, table), fieldLegend(data, legendMark('star', 'Focal paper')))),
       distanceSections(data)),
     runGroup('Open runs', runCount('open'), 'Each got only the evidence and was asked to write an AI alternative in any field, with any theory.',
-      section(['Does it come back to the focal paper?', measureTags(['comparison', 'fit'])], 'Each open run compared with the focal paper. Dots are colored by the field the run fits best.',
+      section(['Do open run AI alternatives resemble the focal paper?', measureTags(['comparison', 'fit'])], 'Each open run compared with the focal paper. Dots are colored by the field the run fits best.',
         convergenceStrip({alternatives: data.alternatives, fields: data.fields, onSelect: select}))),
     runGroup('Field runs', runCount('field'), `Each was told to write for one field and its journals, ${all.alternatives.filter(a => a.kind === 'field').length / data.fields.length || 0} per field. The scorer was not told which field.`,
-      section(['Where did it land?', measureTags(['fit'])], `${onTarget} of ${fieldRuns.length} field runs fit best in the field they were aimed at. Rows are the field each run was written for; columns are the field the scorer says it fits best. The shaded cells are runs that landed where they were aimed.`,
+      section(['Field run AI alternatives: field aimed at versus best fit field', measureTags(['fit'])], `${onTarget} of ${fieldRuns.length} field runs fit best in the field they were aimed at. Rows are the field each run was written for; columns are the field the scorer says it fits best. The shaded cells are runs that landed where they were aimed.`,
         h('div', {class: 'panel'}, withTableToggle(aimLanding({fields: data.fields, alternatives: data.alternatives, onSelect: select}), () => dataTable([
           {key: 'aim', label: 'Aimed at'}, ...data.fields.map(f => ({key: f.id, label: f.label, num: true})), {key: 'total', label: 'Runs', num: true}
         ], data.fields.map(aim => {
           const row = fieldRuns.filter(a => a.targetId === aim.id);
           return {aim: aim.label, total: row.length, ...Object.fromEntries(data.fields.map(f => [f.id, String(row.filter(a => a.score.bestField === f.id).length)]))};
         }))))),
-      section(['Fit in each field', measureTags(['fit', 'comparison'])],'For each field: the focal paper\'s fit, and the fit of each run aimed at that field. The right-hand column shows how many parts the highest-fit run replaced and what evidence it needs.',
+      section(['Fit of focal paper and field run AI alternatives in each field', measureTags(['fit', 'comparison'])],'For each field: the focal paper\'s fit, and the fit of each run aimed at that field. The right-hand column shows how many parts the highest-fit run replaced and what evidence it needs.',
         h('div', {class: 'panel'}, withTableToggle(fieldReach({fields: data.fields, alternatives: data.alternatives, original: data.original, onSelect: select}), () => dataTable([
           {key: 'label', label: 'Field'}, {key: 'own', label: 'Focal paper', num: true}, {key: 'mean', label: 'Mean of runs aimed here', num: true}, {key: 'best', label: 'Highest-fit run aimed here', num: true},
           {key: 'parts', label: 'Parts replaced', num: true, render: r => String(r.parts ?? '–')}, {key: 'burden', label: 'Needs'}
@@ -276,15 +276,15 @@ function distanceSections(data) {
   const percentileRows = [...data.fields, {id: 'all', label: 'All fields'}];
   const neighbourColumns = data.fields.map(f => f.id);
   return [
-    section(['How far did each move from the focal paper?', measureTags(['distance', 'comparison'])], `Each AI alternative's distance from the focal paper, grouped by Claude's comparison with it.${familyMeans ? ` The mean is ${familyMeans}.` : ''} Dots are colored by the field each fits best.`,
+    section(['Focal paper distance to AI alternatives', measureTags(['distance', 'comparison'])], `Each AI alternative's distance from the focal paper, grouped by Claude's comparison with it.${familyMeans ? ` The mean is ${familyMeans}.` : ''} Dots are colored by the field each fits best.`,
       h('div', {class: 'panel'}, withTableToggle(distanceFromOriginal({alternatives: data.alternatives, fields: data.fields, referenceMedian: dist.referenceMedian?.all, onSelect: select}), () => dataTable([
         {key: 'title', label: 'AI alternative', className: 'title-cell'}, {key: 'family', label: "Claude's comparison"}, {key: 'parts', label: 'Parts replaced', num: true, render: r => String(r.parts ?? '–')}, {key: 'distance', label: 'Distance from focal paper', num: true}
       ], measured.map(alt => ({id: alt.id, title: alt.outline.title, family: familyText(alt.review?.family), parts: alt.partsReplaced, distance: alt.distance.fromOriginal})), {onRow: row => go('results', row.id)})), fieldLegend(data, legendMark('line', 'Mean of the group')))),
-    section(['How far is each from the published corpus?', measureTags(['distance'])], `The distance of the focal paper and of each AI alternative from the published papers in each field of the corpus, as a percentile: 50 is the typical published paper in that field, higher is further away. Each AI alternative appears once in every row.${rho === null ? '' : ` In each AI alternative's best field, this and Claude's Novelty ${rho <= -0.3 ? 'tend to disagree' : rho < 0.3 ? 'are largely unrelated' : rho < 0.6 ? 'agree only loosely' : 'mostly agree'} (rank correlation ${fmt(rho)}).`}`,
+    section(['Distance of focal paper and AI alternatives from published papers in each field', measureTags(['distance'])], `The distance of the focal paper and of each AI alternative from the published papers in each field of the corpus, as a percentile: 50 is the typical published paper in that field, higher is further away. Each AI alternative appears once in every row.${rho === null ? '' : ` In each AI alternative's best field, this and Claude's Novelty ${rho <= -0.3 ? 'tend to disagree' : rho < 0.3 ? 'are largely unrelated' : rho < 0.6 ? 'agree only loosely' : 'mostly agree'} (rank correlation ${fmt(rho)}).`}`,
       h('div', {class: 'panel'}, withTableToggle(distanceFromPublished({alternatives: data.alternatives, fields: data.fields, original: data.original, onSelect: select}), () => dataTable([
         {key: 'label', label: 'Field'}, {key: 'own', label: 'Focal paper (percentile)', num: true, render: r => pct(r.own)}, {key: 'median', label: "AI alternatives' median", num: true, render: r => pct(r.median)}
       ], percentileRows.map(f => ({label: f.label, own: dist.original?.toPublishedPercentile?.[f.id], median: median(measured.map(alt => alt.distance.toPublishedPercentile?.[f.id]))})))), fieldLegend(data, legendMark('diamond', 'Focal paper'), legendMark('line', "AI alternatives' median")))),
-    section(['Do its nearest published papers come from the field Claude picked?', measureTags(['fit', 'distance'])], `Each dot is an AI alternative. Its row is the field Claude says it fits best; its column is the field of its nearest published papers in the corpus. The two agree for ${agree} of ${measured.length} AI alternatives (shaded cells). Select a dot to read it.`,
+    section(['Claude selected field versus field of nearest published papers', measureTags(['fit', 'distance'])], `Each dot is an AI alternative. Its row is the field Claude says it fits best; its column is the field of its nearest published papers in the corpus. The two agree for ${agree} of ${measured.length} AI alternatives (shaded cells). Select a dot to read it.`,
       h('div', {class: 'panel'}, withTableToggle(neighbourAgreement({fields: data.fields, alternatives: data.alternatives, onSelect: select}), () => dataTable([
         {key: 'row', label: 'Claude: fits best'}, ...neighbourColumns.map(id => ({key: id, label: fieldLabel(data, id), num: true})), {key: 'total', label: 'AI alternatives', num: true}
       ], data.fields.map(row => {
@@ -600,10 +600,10 @@ function renderMeasures(data) {
       h('p', null, dist
         ? 'Distance plays no part in assigning the field. Embeddings help choose which published papers in the corpus Claude reads before scoring, and they give a separate, model-free check: the field of the nearest published papers (above).'
         : 'Distance plays no part in assigning the field.'),
-      h('p', null, '“Where each AI alternative went” places each dot in the sector of this field.')),
+      h('p', null, '“AI alternatives by best fit field and parts replaced” places each dot in the sector of this field.')),
 
     entry('parts', 'Parts replaced', `A count of the part ratings · 0 to ${data.parts.length}`,
-      h('p', null, `The number of the ${data.parts.length} parts rated “replaced” in the part ratings above. On “Where each AI alternative went”, the more parts replaced, the farther the dot sits from the center.`))
+      h('p', null, `The number of the ${data.parts.length} parts rated “replaced” in the part ratings above. On “AI alternatives by best fit field and parts replaced”, the more parts replaced, the farther the dot sits from the center.`))
   );
 }
 
