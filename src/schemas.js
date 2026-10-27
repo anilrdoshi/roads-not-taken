@@ -97,6 +97,15 @@ export const scoreSchema = obj({
   novelty: obj({score: num, reason: str, closest: arr(obj({id: str, relation: str}))})
 });
 
+export const evidenceFitSchema = obj({
+  centralResults: arr(obj({resultIds: arr(str), result: str, relation: en('predicted', 'consistent', 'unexplained', 'tension'), rivalPredictsEqually: bool, note: str})),
+  rivals: arr(str),
+  fittedHypotheses: arr(str),
+  unmeasured: arr(str),
+  score: num,
+  reason: str
+});
+
 // Minimal validator for the subset of JSON Schema used above.
 export function validate(value, schema, at = 'output') {
   if (schema.enum && !schema.enum.includes(value)) throw new Error(`${at} must be one of ${schema.enum.join(', ')}`);

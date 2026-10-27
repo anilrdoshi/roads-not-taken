@@ -141,10 +141,15 @@ export function originalAsPaper(extraction) {
     conversation: framing.conversation,
     theory: framing.theory,
     mechanism: framing.mechanism,
+    hypotheses: framing.hypotheses,
     interpretation: framing.interpretation,
     contribution: framing.contribution
   };
 }
+
+// The hypotheses as plain statements: the original's are strings; an alternative's carry result
+// ids and a status, which are left out so the Evidence-fit judge maps them to results itself.
+export const hypothesisStatements = paper => (paper.hypotheses || []).map(h => typeof h === 'string' ? h : h.statement);
 
 // ---------- Generation ----------
 
@@ -264,6 +269,49 @@ export function scoreContent(paper, retrieved) {
     content: [{type: 'text', text: `${head}\n\n${fieldBlocks.join('\n\n')}\n\n${tail}`}],
     publicContent: [{type: 'text', text: `${head}\n\n${publicBlocks.join('\n\n')}\n\n${tail}`}]
   };
+}
+
+// ---------- Evidence fit: how well the theory predicts the evidence ----------
+
+// Fit is the geometric mean of Field fit (scoreSystem) and Evidence fit. Field fit alone could not
+// tell theories apart: an AI alternative built on firm-level evidence for a strategy audience is a
+// strategy paper whatever its theory. Evidence fit judges prediction, not accommodation: every AI
+// alternative is written with the results in view, so hypotheses fitted to them must not count as
+// predictions. Doubts about the data or design are left out (they apply to every theory alike), and
+// a rival that predicts a result as well is recorded, not held against the theory outright.
+export const EVIDENCE_FIT_SYSTEM = `You assess how well a paper idea's theory predicts the evidence of a completed empirical study. You receive the study's evidence (unit of analysis, sample, data, measures, design and reported results) and a paper idea built on it: its question, theory, mechanism, hypotheses, interpretation and contribution.
+
+The paper idea may have been written after its authors saw the results, so its hypotheses may have been fitted to them. Judge what the theory itself implies for this setting and design, not what the hypotheses say. Ask: would someone who held this theory, knowing the setting and the design but not the results, have expected these results? Judge the theory in its established form; where the paper idea adapts it, or adds assumptions to reach a result, those parts are additions, not predictions of the theory.
+
+Take the evidence as given. Doubts about the data or design (measurement artifacts, selection, regression to the mean, confounding, weak identification) apply to every theory equally and are not part of this judgement. Judge against the evidence as reported: where the paper idea restates a result differently from the evidence, go by the evidence. A misstatement does not lower the score by itself; but if the theory depends on the misstated version, treat the actual result as one the theory does not explain or is in tension with.
+
+First identify the central results, at most eight: the main estimates on the study's predictors, moderators and mediators in its principal specifications (not on control variables), and any further results the paper idea's argument turns on. Group estimates that make one point. Name the main substantive rivals: other theories or mechanisms that would explain these results, such as a simple cost, incentive or capability explanation. Classify each central result:
+- predicted: the theory's own logic implies this result in this setting (its direction, and its pattern where that matters) without added assumptions;
+- consistent: the theory can accommodate the result, but only through hypotheses or assumptions added for this setting, or it would equally have allowed a different result;
+- unexplained: the theory says nothing about it;
+- tension: the theory, as stated, leads one to expect something different.
+For each, say whether a substantive rival predicts it as well. List the hypotheses that look fitted to the results rather than derived from the theory, and what the argument rests on that the study did not measure.
+
+Evidence fit (0 to 1): how well does the theory predict the reported evidence?
+0.90-1.00 the theory's own logic predicts the central results, and predicts some of them better than the substantive rivals do; the study is a natural test of it.
+0.70-0.89 the theory predicts most central results without added assumptions, though rivals predict many of them as well.
+0.40-0.69 the theory predicts some central results; others need hypotheses fitted to the results or added assumptions.
+0.10-0.39 the theory is mostly a label on results it does not predict.
+0.00-0.09 the theory predicts the opposite of the central results, or explains none of them.
+
+Judge only how well the theory predicts the evidence: not the writing, the field, the novelty, how well known the theory is, or the quality of the data and design. Use the whole scale and two decimals.`;
+
+// The judge sees the evidence (the same headed-sections format reviewers get) and the paper as a
+// scorer does, plus its hypotheses as plain statements. It is not told which is the focal paper.
+export function evidenceFitContent(extraction, paper) {
+  return [
+    {type: 'text', text: `EVIDENCE FROM THE STUDY\n\n${evidencePacket(extraction)}`, cache_control: {type: 'ephemeral'}},
+    {type: 'text', text: [
+      `PAPER IDEA\n${paperCard(paper)}`,
+      `HYPOTHESES:\n${hypothesisStatements(paper).map(h => `- ${h}`).join('\n') || '(none stated)'}`,
+      'Identify the central results and the substantive rivals, classify each result and say whether a rival predicts it as well, list the hypotheses that look fitted to the results and what the argument rests on that the study did not measure, and score Evidence fit.'
+    ].join('\n\n')}
+  ];
 }
 
 export function scoringQuery(paper) {

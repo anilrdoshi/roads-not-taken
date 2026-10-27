@@ -1,12 +1,13 @@
 // The quality-test pipeline for one paper: extract it, generate alternatives with its evidence
-// locked, review them against the original, and score every paper for field fit and novelty.
+// locked, review them against the original, and score every paper for field fit and novelty and
+// for evidence fit (how well its theory predicts the evidence).
 // Each stage appends one JSON line per item, so an interrupted run resumes where it stopped.
 import {appendFile, readFile, writeFile, mkdir} from 'node:fs/promises';
 import {existsSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {DEFAULT_THEORIES, FIELD_IDS} from './config.js';
-import {alternativeSchema, evidenceSchema, framingSchema, reviewSchema, scoreSchema} from './schemas.js';
+import {alternativeSchema, evidenceSchema, evidenceFitSchema, framingSchema, reviewSchema, scoreSchema} from './schemas.js';
 import {findLeaks, numbersPreserved} from './leaks.js';
 import * as P from './prompts.js';
 import {BudgetExceeded, runAll} from './llm.js';
@@ -275,5 +276,19 @@ export async function runTest({caseDir, testDir, llm, corpus, embedder, tasks, s
       modelServed, costUsd, at: new Date().toISOString()
     };
   }});
-  return {stoppedAt: result.budgetHit ? 'score' : null};
+  if (result.budgetHit) return {stoppedAt: 'score'};
+
+  // 4. Evidence fit: how well each paper's theory predicts the evidence, in separate calls that see
+  // the evidence, scoreReplicates times like Field fit. Fit is the geometric mean of the two
+  // (src/scores.js). A run scored before this step existed gets only this step when rerun.
+  const evidenceItems = [];
+  for (let replicate = 1; replicate <= scoreReplicates; replicate++) for (const item of papers) evidenceItems.push({...item, replicate});
+  result = await stage({name: 'evidence-fit', file: files('evidence-fit.jsonl'), failuresFile, log, items: evidenceItems, keyOf: scoreKey, worker: async item => {
+    const {value, costUsd, modelServed} = await llm.call({
+      role: 'evidence-fit', itemId: `${item.id}#${item.replicate}`, system: P.EVIDENCE_FIT_SYSTEM,
+      content: P.evidenceFitContent(paper, item.paper), schema: evidenceFitSchema, effort: 'high'
+    });
+    return {id: item.id, replicate: item.replicate, kind: item.kind, ...value, score: clamp01(value.score), modelServed, costUsd, at: new Date().toISOString()};
+  }});
+  return {stoppedAt: result.budgetHit ? 'evidence-fit' : null};
 }
