@@ -21,7 +21,7 @@ export async function buildExplorerData({caseId, caseDir, testDir, corpus, pilot
   const summary = await buildReport({caseDir, testDir});
   const alternatives = await readJsonl(path.join(testDir, 'alternatives.jsonl'));
   const reviews = new Map((await readJsonl(path.join(testDir, 'reviews.jsonl'))).map(row => [row.id, row.review]));
-  // Claude's Fit and Novelty, averaged over each paper's scorings.
+  // Claude's Fit (Field fit and Evidence fit) and Novelty, averaged over each paper's scorings.
   const scores = await loadScores(testDir);
   const rowById = new Map(summary.rows.map(row => [row.id, row]));
   const distance = await loadDistance(testDir);
@@ -44,8 +44,12 @@ export async function buildExplorerData({caseId, caseDir, testDir, corpus, pilot
   }
 
   const slimScore = score => score && {
-    // The mean, each scoring, and the variance across scorings, for Fit in each field and for Novelty.
-    fit: Object.fromEntries(Object.entries(score.fit).map(([field, entry]) => [field, entry && {score: entry.score, scores: entry.scores, variance: entry.variance, reason: entry.reason, closest: entry.closest}])),
+    // The mean, each scoring, and the variance across scorings, for Fit, Field fit and Evidence fit
+    // in each field and for Novelty. Fit is null until Evidence fit is scored.
+    fit: Object.fromEntries(Object.entries(score.fit).map(([field, entry]) => [field, entry && {score: entry.score, scores: entry.scores, variance: entry.variance}])),
+    fieldFit: Object.fromEntries(Object.entries(score.fieldFit).map(([field, entry]) => [field, entry && {score: entry.score, scores: entry.scores, variance: entry.variance, reason: entry.reason, closest: entry.closest}])),
+    evidenceFit: score.evidenceFit && {score: score.evidenceFit.score, scores: score.evidenceFit.scores, variance: score.evidenceFit.variance, reason: score.evidenceFit.reason,
+      centralResults: score.evidenceFit.centralResults, rivals: score.evidenceFit.rivals, fittedHypotheses: score.evidenceFit.fittedHypotheses, unmeasured: score.evidenceFit.unmeasured},
     bestField: score.bestField,
     bestFieldVotes: score.bestFieldVotes,
     novelty: {score: score.novelty.score, scores: score.novelty.scores, variance: score.novelty.variance, reason: score.novelty.reason, closest: score.novelty.closest},
@@ -120,6 +124,8 @@ export async function buildExplorerData({caseId, caseDir, testDir, corpus, pilot
       convergence: summary.convergence,
       fieldReach: summary.fieldReach,
       distinctPapers: summary.distinctPapers,
+      fitNoise: summary.fitNoise,
+      evidenceFitScorings: summary.evidenceFitScorings,
       evidence: summary.evidence,
       stability: summary.stability,
       distance: summary.distance,

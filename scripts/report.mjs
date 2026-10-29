@@ -6,7 +6,7 @@ import path from 'node:path';
 import {caseDirFor} from '../src/config.js';
 import {buildReport} from '../src/report.js';
 
-const {values} = parseArgs({options: {case: {type: 'string'}, dir: {type: 'string', default: 'test'}, 'min-fit': {type: 'string', default: '0.7'}}});
+const {values} = parseArgs({options: {case: {type: 'string'}, dir: {type: 'string', default: 'test'}}});
 if (!values.case) {
   console.error('Usage: npm run report -- --case <name> [--dir test]');
   process.exit(1);
@@ -17,5 +17,5 @@ if (!existsSync(path.join(caseDir, 'paper', 'extraction.json')) || !existsSync(p
   console.error(`No saved results in ${path.relative(process.cwd(), testDir)}. Run npm run extract and npm run test-run first.`);
   process.exit(1);
 }
-const summary = await buildReport({caseDir, testDir, minFit: Number(values['min-fit'])});
+const summary = await buildReport({caseDir, testDir});
 console.log(`${summary.counts.alternatives} AI alternatives summarized. Report: ${path.relative(process.cwd(), path.join(testDir, 'summary.md'))}`);
