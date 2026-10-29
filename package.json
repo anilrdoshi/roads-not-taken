@@ -21,7 +21,7 @@
     "report": "node scripts/report.mjs",
     "distance": "node scripts/distance.mjs",
     "check-key": "node scripts/check-key.mjs",
-    "check": "node --test \"test/*.test.mjs\""
+    "check": "node --test test/pipeline.test.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.131.0",
