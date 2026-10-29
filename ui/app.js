@@ -837,7 +837,7 @@ function renderWelcome() {
     h('ol', null,
       step('Put your API key in .env and check it.', 'npm run check-key'),
       step('Build the published corpus (and, for Distance, its embeddings).', 'npm run build-corpus\nnpm run build-embeddings'),
-      step('Put the PDF in papers/ and extract it. Then read the extraction it prints.', 'npm run extract -- --case my-paper --pdf papers/paper.pdf'),
+      step('Put the PDF in papers/, extract it and save its own abstract. Then check runs/my-paper/paper/extraction.md.', 'npm run extract -- --case my-paper --pdf papers/paper.pdf\nnpm run original-abstract -- --case my-paper --pdf papers/paper.pdf'),
       step('Run a pilot, then the full test.', 'npm run test-run -- --case my-paper --pilot\nnpm run test-run -- --case my-paper'),
       step('Reload this page.'))));
 }

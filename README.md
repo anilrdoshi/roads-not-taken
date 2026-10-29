@@ -2,14 +2,14 @@
 
 Every empirical paper is one realization of many papers its evidence could have supported. This tool takes a completed paper, the **focal paper**, holds its evidence fixed (setting, data, measures, design and reported results), and asks Claude to write **AI alternatives** built on the same evidence: freely, under a different theory (fine perturbation) or for a different field (coarse perturbation). It then checks each AI alternative against the evidence, compares it with the focal paper, and scores the focal paper and every AI alternative for Fit to five business-school fields (whether it belongs in the field, combined with whether its theory predicts the evidence) and for Novelty within the best-fit field, against the **published corpus** of journal papers. Separately, it measures Distance from text embeddings: how far each AI alternative's text is from the focal paper's, and how far the focal paper and each AI alternative are from the published papers in the corpus.
 
-The tool works on one focal paper at a time. You bring the focal paper (a PDF) and an Anthropic API key; the tool builds the published corpus, runs the test and shows the results in an explorer on your machine.
+The tool works on one focal paper at a time. You bring the focal paper (a PDF) and an Anthropic API key; the tool builds the published corpus, runs the test and shows the results in an explorer on your machine. Each focal paper you run is a **case**: a folder in `runs/`, under a short name you choose, that holds its extraction, pilot, full test, reports and spending.
 
 ## Quick start
 
 | To | Do this | You need |
 |---|---|---|
-| Run the tool without installing anything | [Open it in GitHub Codespaces](https://codespaces.new/anilrdoshi/roads-not-taken). Dependencies install and the explorer opens on port 4373. | A GitHub account |
-| Run it on your machine | `npm ci`, then `npm run app` and open http://127.0.0.1:4373/ | Node.js 20.12 or later |
+| Try the tool without installing anything | [Open it in GitHub Codespaces](https://codespaces.new/anilrdoshi/roads-not-taken). Dependencies install and the explorer opens on port 4373, empty until you run a focal paper. | A GitHub account |
+| Install it on your machine | Clone the repository ([step 1](#set-up-once)), `npm ci`, then `npm run app` and open http://127.0.0.1:4373/ | Node.js 20.12 or later |
 | Check that it works | `npm run check` (offline tests with a mock model) | Nothing more |
 | Run it on your own focal paper | Follow [Step by step](#step-by-step-your-own-focal-paper). Extraction costs about $2, a pilot about $7 and the full test about $45–55. | An Anthropic API key with access to Claude Opus 5.5 |
 
@@ -24,58 +24,83 @@ The tool works on one focal paper at a time. You bring the focal paper (a PDF) a
 
 ## Step by step: your own focal paper
 
-Each step says how long it takes and what it costs. Only steps 5, 7 and 8 call Claude, and every case has a spending cap (`--budget`, $80 by default, covering extraction, pilot and full test).
+Steps 1–3 set the tool up and are done once. Steps 4–9 are repeated for each focal paper. Each step says how long it takes and what it costs. Only steps 5, 7 and 8 cost money, billed to your key, and each case has a spending cap that covers its extraction, pilot and full test together (`--budget`, $80 by default).
 
-1. **Get the code.** Either [open it in GitHub Codespaces](https://codespaces.new/anilrdoshi/roads-not-taken) (nothing to install; a few minutes to start), or on your own machine, with Node.js 20.12 or later:
+### Set up (once)
+
+1. **Get the code.** Either:
+   - **In GitHub Codespaces** (nothing to install): [open it](https://codespaces.new/anilrdoshi/roads-not-taken). It takes a few minutes to start, installs everything and opens the explorer. Type the commands below in the codespace's terminal.
+   - **On your own machine**, with Node.js 20.12 or later:
+     ```bash
+     git clone https://github.com/anilrdoshi/roads-not-taken.git
+     cd roads-not-taken
+     npm ci
+     ```
+     Type the commands below in this `roads-not-taken` folder.
+2. **Add your API key and check it** (free). Copy the example settings file:
    ```bash
-   git clone https://github.com/anilrdoshi/roads-not-taken.git
-   cd roads-not-taken
-   npm ci
+   cp .env.example .env
    ```
-2. **Add your API key and check it.** In Codespaces, add it as a Codespaces secret named `ANTHROPIC_API_KEY` for this repository (GitHub settings, then Codespaces), and reload the codespace. On your machine, `cp .env.example .env` and put your key after `ANTHROPIC_API_KEY=`. Then (free):
+   Open `.env` (in Codespaces, from the file explorer) and put your key after `ANTHROPIC_API_KEY=`. The file is git-ignored, so the key is never committed. In Codespaces you can instead add the key as a Codespaces secret named `ANTHROPIC_API_KEY` (GitHub settings, then Codespaces) and reload the codespace. Then:
    ```bash
    npm run check-key
    ```
-   It should say the key works and Claude Opus 5.5 is available.
-3. **Build the published corpus** (no key needed; it downloads titles and abstracts from OpenAlex and Crossref):
+   It should say the key works and Claude Opus 5.5 is available. If not, see [If something goes wrong](#if-something-goes-wrong).
+3. **Build the published corpus** (free, no key needed; about 30–45 minutes, mostly unattended). The first command downloads the published papers' titles and abstracts from OpenAlex and Crossref. The second embeds them with a local model, which it downloads the first time (about 420 MB):
    ```bash
    npm run build-corpus        # about five minutes
-   npm run build-embeddings    # about 25–40 minutes on a laptop CPU, longer on a small codespace; resumes if stopped
+   npm run build-embeddings    # about 25–40 minutes on a laptop CPU, longer on a small codespace
    ```
-   The embeddings are optional. Without them, scoring retrieves published papers by BM25 alone and the Distance measures are skipped; the report says so.
-4. **Add the PDF.** Put the focal paper's PDF in `papers/` (in Codespaces, drag it into the file explorer). If the appendix is a separate file, add it too. This counts the PDF's tokens, for free, and estimates what extraction will cost:
+   If the embedding build stops, run it again; it resumes where it stopped. While it runs you can go on with steps 4–6 in a second terminal, but let it finish before step 7. The embeddings are optional: a run started without them retrieves published papers by BM25 alone and skips the Distance measures, and its report says so.
+
+### For each focal paper
+
+4. **Add the PDF** (free). Create a `papers/` folder:
+   ```bash
+   mkdir -p papers
+   ```
+   Put the focal paper's PDF in it (in Codespaces, drag the PDF onto the folder in the file explorer). If the appendix is a separate PDF, put it there too. Then count the PDF's tokens, for free, to estimate what extraction will cost:
    ```bash
    npm run check-key -- --pdf papers/paper.pdf
    ```
-5. **Extract** (about $2 and a few minutes). Pick a short name for the case; its outputs go to `runs/my-paper/`.
+   Here and in the steps below, replace `papers/paper.pdf` with your file's name, in quotes if it contains spaces. For a separate appendix, add `--pdf papers/appendix.pdf`.
+5. **Extract** (about $2 and a few minutes). Choose a name for the case, using letters, digits and hyphens (for example `my-paper`). Its outputs go to `runs/my-paper/`, and every step below uses the same name.
    ```bash
-   npm run extract -- --case my-paper --pdf papers/paper.pdf     # add --pdf papers/appendix.pdf if the appendix is separate
+   npm run extract -- --case my-paper --pdf papers/paper.pdf
    ```
-   Then read `runs/my-paper/paper/extraction.md`. The **Evidence** section is everything the generator will see: check that it has the data, measures and results, described by how they were measured, and none of the paper's own constructs or theory. The **Framing** section is withheld from the generator; check that it states the paper's question, theory and contribution correctly. The automatic leak check's result is at the end.
-6. **Save the focal paper's own abstract** (free). Distance and retrieval use it; it stays in the git-ignored `runs/my-paper/paper/private/`. On macOS, and in Codespaces, this reads it from the PDF; check the printed text. Elsewhere, or if it is not found, paste the abstract into `runs/my-paper/paper/private/abstract.txt`.
+   Then read `runs/my-paper/paper/extraction.md`. The **Evidence** section is everything the generator will see: check that it has the data, measures and results, described by how they were measured, and none of the paper's own constructs or theory. The **Framing** section is withheld from the generator; check that it states the paper's question, theory and contribution correctly. The automatic leak check's result is at the end. If the extraction is wrong, run the command again (about $2 more); the new extraction replaces it. Do this before step 7, because every AI alternative is built from the extraction.
+6. **Save the focal paper's own abstract** (free). Distance and the focal paper's retrieval query use it. Claude is never shown it, and it stays in the git-ignored `runs/my-paper/paper/private/`. This reads it from the PDF on macOS, in Codespaces, or wherever `pdftotext` is installed (see [Requirements](#requirements)):
    ```bash
    npm run original-abstract -- --case my-paper --pdf papers/paper.pdf
    ```
-7. **Run a pilot** (9 AI alternatives, about $7 and 15 minutes). It shows in the explorer, marked as a pilot.
+   Check the printed text against the PDF. If the command cannot find the abstract, paste it by hand into `runs/my-paper/paper/private/abstract.txt` (the command has already created the folder).
+7. **Run a pilot** (9 AI alternatives; about $7 and 15 minutes). It runs every stage of the test on a small scale, so problems show before you pay for the full test.
    ```bash
    npm run test-run -- --case my-paper --pilot
    ```
-8. **Run the full test** (71 AI alternatives, each reviewed, and the focal paper and every AI alternative scored three times for Field fit and Novelty and three times for Evidence fit; about $45–55 and roughly an hour and a half). It replaces the pilot in the explorer. A run that stops (network error, spending cap) resumes where it left off when rerun, and rerunning a test scored before Evidence fit existed adds only the Evidence-fit calls (about $15–20).
+   Check that its last lines say `Complete.`, that its report (`runs/my-paper/pilot/summary.md`) says `Failures: 0`, and that the AI alternatives read sensibly in the explorer, where the pilot is marked as one.
+8. **Run the full test** (71 AI alternatives; about $45–55 and roughly an hour and a half). Each AI alternative is reviewed, and the focal paper and every AI alternative are scored three times for Field fit and Novelty and three times for Evidence fit. The pilot's AI alternatives are not reused, and the full test replaces the pilot in the explorer.
    ```bash
    npm run test-run -- --case my-paper
    ```
-9. **Explore the results.** The report is in `runs/my-paper/test/summary.md`. For the explorer:
+   Keep your machine awake, or the codespace open, while it runs. If it is interrupted, or its report lists failures, run the same command again: it keeps what is done and runs only what is missing. If it stopped at the spending cap, add a higher cap, for example `--budget 120`.
+9. **Explore the results.** The report is `runs/my-paper/test/summary.md`. In Codespaces the explorer is already running: reload its tab, or open port 4373 from the Ports panel. On your machine, start it and open http://127.0.0.1:4373/:
    ```bash
-   npm run app        # http://127.0.0.1:4373/ (Codespaces opens it for you)
+   npm run app
    ```
 
-**What happens to your focal paper.** The PDF goes only to Anthropic's API, under your own key. Everything the tool writes stays on your machine (or in your codespace), in `runs/` and `ui/data/`, which are git-ignored, so nothing about your focal paper is committed or published unless you share it yourself.
+### What happens to your focal paper
 
-**If something goes wrong.**
+The PDF goes only to Anthropic's API, under your own key. Everything the tool writes stays on your machine (or in your codespace), in `runs/` and `ui/data/`, which are git-ignored, so nothing about your focal paper is committed or published unless you share it yourself.
+
+### If something goes wrong
+
 - *The key is rejected, or cannot use Claude Opus 5.5:* `npm run check-key` says which. The key needs access to `claude-opus-5-5`.
 - *Rate-limit errors (429):* new API accounts start with low limits. Calls are retried automatically; if a run still stops, rerun it with `--concurrency 2` (default 4). It resumes where it stopped.
-- *Spending cap reached:* the run stops and says so. Rerun with a higher cap, for example `--budget 120`.
-- *No abstract found:* paste it into `runs/my-paper/paper/private/abstract.txt`, then run `npm run distance -- --case my-paper` (free).
+- *Spending cap reached:* the run stops and says so. The cap is for the whole case, so rerun with a higher one, for example `--budget 120`.
+- *The report lists failures:* rerun the same command. Only what failed runs again.
+- *The test ran before the abstract was saved, or before the embeddings were built:* do step 6 or step 3, then run `npm run distance -- --case my-paper` (free) to recompute the Distance measures. Scoring keeps the retrieval it ran with.
+- *`npm run app` says the address is already in use:* the explorer is already running (Codespaces starts it for you). Reload its tab instead.
 - *The explorer is empty or out of date:* `npm run build-explorer`, then reload the page.
 
 ## Explore and share the results
@@ -145,8 +170,8 @@ All calls use Claude Opus 5.5 with adaptive thinking at high effort and JSON-sch
 .github/        workflow: offline tests
 config/         fields, journals, theories, keyword codes
 corpus/         manifest.json, ids.txt and embeddings.json (records.jsonl and embeddings.bin are rebuilt locally)
-papers/         your PDFs (git-ignored)
-runs/           your focal papers, one folder each (git-ignored)
+papers/         your PDFs (git-ignored; you create it in step 4)
+runs/           your cases, one folder per focal paper (git-ignored; created by the first extraction)
 scripts/        command-line entry points
 src/            pipeline, prompts, schemas, API wrapper, retrieval, embeddings, scores, distance, report
 test/           offline tests
