@@ -791,7 +791,7 @@ function distanceBlock(alt, data, cited) {
   const d = alt.distance, own = data.original?.distance, dist = data.summary.distance;
   if (!d || !dist) return null;
   const familyMean = dist.fromOriginal?.byFamily?.[alt.review?.family]?.mean;
-  const [topField, topShare] = Object.entries(d.neighbourFields || {}).sort((a, b) => b[1] - a[1])[0] || [];
+  const top = d.topNeighbourField;
   return [
     h('h3', null, `Distance from the focal paper: ${fmt(d.fromOriginal)}`),
     familyMean !== undefined && familyMean !== null ? h('p', {class: 'small muted'}, `AI alternatives Claude calls a ${familyText(alt.review.family).toLowerCase()} are ${fmt(familyMean)} from the focal paper on average.`) : null,
@@ -801,7 +801,7 @@ function distanceBlock(alt, data, cited) {
         h('th', {scope: 'row'}, field.label),
         h('td', {class: 'num'}, field.id === alt.score?.bestField ? h('strong', null, pct(d.toPublishedPercentile[field.id])) : pct(d.toPublishedPercentile[field.id])),
         h('td', {class: 'num'}, pct(own?.toPublishedPercentile?.[field.id])))))),
-    h('p', {class: 'small muted'}, `Bold is the field Claude says it fits best.${topField ? ` ${Math.round(topShare * 100)}% of its ${dist.settings.fieldNeighbours} nearest published papers in the corpus are in ${fieldLabel(data, topField).toLowerCase()}.` : ''}`),
+    h('p', {class: 'small muted'}, `Bold is the field Claude says it fits best.${top ? ` ${Math.round((d.neighbourFields?.[top] ?? 0) * 100)}% of its ${dist.settings.fieldNeighbours} nearest published papers in the corpus are in ${fieldLabel(data, top).toLowerCase()}, the field most over-represented relative to its share of the corpus.` : ''}`),
     d.nearest?.length ? [h('h3', null, 'Nearest published papers in the corpus'), cited(d.nearest)] : null
   ];
 }
