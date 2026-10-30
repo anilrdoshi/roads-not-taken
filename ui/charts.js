@@ -1,5 +1,6 @@
 // Charts for the results view, drawn as SVG. Every mark is focusable, shows a tooltip on hover and
-// focus, and opens the alternative on click; every chart has a table twin (see app.js).
+// focus, and selects the alternative on click (app.js then highlights it in every chart); every
+// chart has a table twin (see app.js).
 import {h, s, fieldColor, fmt, hash01, bindMark, prefersReducedMotion} from './dom.js';
 
 const KIND_LABEL = {open: 'Open run', theory: 'Theory run', field: 'Field run'};
@@ -94,7 +95,7 @@ export function possibilityMap({alternatives, fields, homeField, passes, onSelec
   const markNodes = [];
   for (const {alt, x, y} of placed) {
     const length = Math.hypot(x - cx, y - cy);
-    const road = s('line', {class: 'road', x1: cx, y1: cy, x2: x, y2: y});
+    const road = s('line', {class: 'road', 'data-alt': alt.id, x1: cx, y1: cy, x2: x, y2: y});
     if (animate) { road.style.strokeDasharray = `${length}`; road.style.strokeDashoffset = `${length}`; }
     roads.append(road);
     const mark = s('g', {class: 'mark'},
@@ -102,6 +103,7 @@ export function possibilityMap({alternatives, fields, homeField, passes, onSelec
       s('circle', {class: 'dot', r: 6, fill: fieldColor(alt.score.bestField)}));
     mark.style.transform = animate ? `translate(${cx}px, ${cy}px)` : `translate(${x}px, ${y}px)`;
     bindMark(mark, {
+      id: alt.id,
       tooltip: () => altTooltip(alt, fields),
       onSelect: () => onSelect(alt),
       label: `${alt.outline.title}. ${kindText(alt)}.`
@@ -176,7 +178,7 @@ export function convergenceStrip({alternatives, fields, onSelect}) {
       h('span', {class: 'count'}, String(members.length)),
       h('div', {class: 'strip-dots'}, members.map(alt => {
         const button = h('button', {type: 'button', style: {background: fieldColor(alt.score?.bestField)}});
-        bindMark(button, {tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: alt.outline.title});
+        bindMark(button, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: alt.outline.title});
         button.removeAttribute('role');
         return button;
       })),
@@ -213,7 +215,7 @@ export function fieldReach({fields, alternatives, original, onSelect}) {
         s('circle', {class: 'hit', r: 12}),
         s('circle', {class: `dot${isBest ? '' : ' hollow'}`, r: isBest ? 7 : 5, fill: fieldColor(field.id), stroke: isBest ? null : fieldColor(field.id)}));
       if (!isBest) mark.querySelector('.dot').style.stroke = fieldColor(field.id);
-      bindMark(mark, {tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}, fit ${fmt(value)}`});
+      bindMark(mark, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}, fit ${fmt(value)}`});
       root.append(mark);
     }
     if (own !== undefined) {
@@ -248,7 +250,7 @@ export function aimLanding({fields, alternatives, onSelect}) {
         members.length ? h('span', {class: 'aim-count'}, String(members.length)) : null,
         h('div', {class: 'strip-dots'}, members.map(alt => {
           const button = h('button', {type: 'button', style: {background: fieldColor(land.id)}});
-          bindMark(button, {tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}. Aimed at ${aim.label}, fits ${land.label} best.`});
+          bindMark(button, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}. Aimed at ${aim.label}, fits ${land.label} best.`});
           button.removeAttribute('role');
           return button;
         }))));
@@ -286,7 +288,7 @@ export function theoryChart({alternatives, fields, homeField, original, onSelect
     if (bestField !== homeField) row.append(s('line', {class: 'connector', x1: x(home), x2: x(best), y1: y, y2: y}));
     row.append(s('circle', {class: 'dot', cx: x(home), cy: y, r: 6, fill: fieldColor(homeField)}));
     if (bestField !== homeField) row.append(s('circle', {class: 'dot', cx: x(best), cy: y, r: 6, fill: fieldColor(bestField)}));
-    bindMark(row, {tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.target}: fit ${fmt(home)} in ${fields.find(f => f.id === homeField).label}`});
+    bindMark(row, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.target}: fit ${fmt(home)} in ${fields.find(f => f.id === homeField).label}`});
     root.append(row);
   });
   return root;
@@ -360,7 +362,7 @@ export function distanceFromOriginal({alternatives, fields, referenceMedian, onS
       const mark = s('g', {class: 'mark', transform: `translate(${x(alt.distance.fromOriginal)} ${y + dy})`},
         s('circle', {class: 'hit', r: 9}),
         s('circle', {class: 'dot', r: 5, fill: fieldColor(alt.score?.bestField)}));
-      bindMark(mark, {tooltip: () => distanceTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}, distance ${fmt(alt.distance.fromOriginal)} from the focal paper`});
+      bindMark(mark, {id: alt.id, tooltip: () => distanceTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}, distance ${fmt(alt.distance.fromOriginal)} from the focal paper`});
       root.append(mark);
     }
     if (members.length) {
@@ -399,7 +401,7 @@ export function distanceFromPublished({alternatives, fields, original, onSelect}
       const mark = s('g', {class: 'mark', transform: `translate(${x(alt.distance.toPublishedPercentile[field.id])} ${y + dy})`},
         s('circle', {class: 'hit', r: 7}),
         s('circle', {class: 'dot', r: 4, fill: fieldColor(alt.score?.bestField)}));
-      bindMark(mark, {tooltip: () => distanceTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}, percentile ${pct(alt.distance.toPublishedPercentile[field.id])} in ${field.label}`});
+      bindMark(mark, {id: alt.id, tooltip: () => distanceTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}, percentile ${pct(alt.distance.toPublishedPercentile[field.id])} in ${field.label}`});
       root.append(mark);
     }
     const median = values.length ? values[Math.floor((values.length - 1) / 2)] / 2 + values[Math.ceil((values.length - 1) / 2)] / 2 : null;
@@ -431,7 +433,7 @@ export function neighbourAgreement({fields, alternatives, onSelect}) {
         members.length ? h('span', {class: 'aim-count'}, String(members.length)) : null,
         h('div', {class: 'strip-dots'}, members.map(alt => {
           const button = h('button', {type: 'button', style: {background: fieldColor(row.id)}});
-          bindMark(button, {tooltip: () => neighbourTooltip(alt, fields), onSelect: () => onSelect(alt), label: `AI alternative: ${alt.outline.title}. Fits ${row.label} best; its nearest published papers are mostly ${column.label}.`});
+          bindMark(button, {id: alt.id, tooltip: () => neighbourTooltip(alt, fields), onSelect: () => onSelect(alt), label: `AI alternative: ${alt.outline.title}. Fits ${row.label} best; its nearest published papers are mostly ${column.label}.`});
           button.removeAttribute('role');
           return button;
         }))));
@@ -527,7 +529,7 @@ export function measureTrio({alternatives, fields, original, passes, onSelect, p
       const mark = s('g', {class: 'mark', transform: `translate(${x(X.get(alt)) + dx} ${y(Y.get(alt)) + dy})`},
         s('circle', {class: 'hit', r: 9}),
         s('circle', {class: 'dot', r: 5, fill: fieldColor(alt.score.bestField)}));
-      bindMark(mark, {tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}: ${X.label} ${X.format(X.get(alt))}, ${Y.label} ${Y.format(Y.get(alt))}`});
+      bindMark(mark, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}: ${X.label} ${X.format(X.get(alt))}, ${Y.label} ${Y.format(Y.get(alt))}`});
       for (const type of ['pointerenter', 'focus']) mark.addEventListener(type, () => link(alt.id));
       for (const type of ['pointerleave', 'blur']) mark.addEventListener(type, () => link(null));
       if (!byId.has(alt.id)) byId.set(alt.id, []);

@@ -56,11 +56,13 @@ export function hideTooltip() {
   tooltip().hidden = true;
 }
 
-// Binds hover, focus and click behaviour to a chart mark.
-export function bindMark(node, {tooltip: content, onSelect, label}) {
+// Binds hover, focus and click behaviour to a chart mark. `id` names the AI alternative it stands
+// for, so every mark of the same one can be highlighted together.
+export function bindMark(node, {tooltip: content, onSelect, label, id}) {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'button');
   if (label) node.setAttribute('aria-label', label);
+  if (id) node.setAttribute('data-alt', id);
   node.addEventListener('pointerenter', event => showTooltip(node, content(), event));
   node.addEventListener('pointermove', event => showTooltip(node, content(), event));
   node.addEventListener('pointerleave', hideTooltip);
@@ -101,7 +103,7 @@ export function dataTable(columns, rows, {onRow} = {}) {
       return (x > y ? 1 : -1) * direction;
     });
     tbody.replaceChildren(...sorted.map(row => {
-      const tr = h('tr', {tabindex: onRow ? '0' : null}, columns.map(column => h('td', {class: cellClass(column)}, column.render ? column.render(row) : (column.num ? fmt(row[column.key]) : row[column.key] ?? '–'))));
+      const tr = h('tr', {tabindex: onRow ? '0' : null, 'data-alt': onRow && row.id}, columns.map(column => h('td', {class: cellClass(column)}, column.render ? column.render(row) : (column.num ? fmt(row[column.key]) : row[column.key] ?? '–'))));
       if (onRow) {
         tr.addEventListener('click', () => onRow(row));
         tr.addEventListener('keydown', event => { if (event.key === 'Enter') onRow(row); });

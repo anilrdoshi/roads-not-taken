@@ -2,13 +2,15 @@
 // embedded in an exported page), and renders the paper, the results, the alternatives and the
 // method. Routes: #/<case>/<view>[/<alternative>].
 import {h, s, fieldColor, fmt, dataTable, withTableToggle, hideTooltip} from './dom.js';
-import {possibilityMap, convergenceStrip, fieldReach, aimLanding, theoryChart, measureTrio, MEASURES, rankCorrelation, distanceFromOriginal, distanceFromPublished, neighbourAgreement, bestFit, kindText, familyText, pct} from './charts.js';
+import {possibilityMap, convergenceStrip, fieldReach, aimLanding, theoryChart, measureTrio, MEASURES, rankCorrelation, distanceFromOriginal, distanceFromPublished, neighbourAgreement, bestFit, kindText, familyText, pct, altTooltip} from './charts.js';
 
 const VIEWS = ['paper', 'results', 'alternatives', 'measures', 'method'];
-const state = {cases: [], bundles: new Map(), caseId: null, view: 'results', kinds: new Set(['open', 'theory', 'field']), minFit: 0, dropMisstated: false};
+// `pinned` is the AI alternative highlighted across the Results panels (see showPin).
+const state = {cases: [], bundles: new Map(), caseId: null, view: 'results', kinds: new Set(['open', 'theory', 'field']), minFit: 0, dropMisstated: false, pinned: null};
 const main = document.getElementById('main');
 const drawer = document.getElementById('drawer');
 const drawerBody = document.getElementById('drawer-body');
+const pin = document.getElementById('pin');
 let lastFocus = null;
 
 const CHANGE_STEPS = {unchanged: 0, refined: 1, reframed: 2, replaced: 3};
@@ -72,6 +74,7 @@ async function route() {
   const {caseId, view, altId} = parseHash();
   const data = await bundle(caseId);
   const changed = caseId !== state.caseId || view !== state.view || !main.hasChildNodes();
+  if (caseId !== state.caseId) state.pinned = null;
   state.caseId = caseId;
   state.view = view;
   if (changed) {
@@ -82,9 +85,13 @@ async function route() {
   // On the Measures tab the last part of the route names a measure to scroll to, not an alternative.
   if (view === 'measures') {
     if (altId) document.getElementById(`measure-${altId}`)?.scrollIntoView();
+    showPin();
     return closeDrawer(false);
   }
   const alt = altId && data.alternatives.find(a => a.id === altId);
+  // An AI alternative opened on the Results tab stays highlighted there once it is closed.
+  if (alt && view === 'results') state.pinned = alt.id;
+  showPin();
   if (alt) openDrawer(alt, data); else closeDrawer(false);
 }
 
@@ -115,7 +122,11 @@ const passes = alt => state.kinds.has(alt.kind);
 // The report's rule: a different paper, consistent with the evidence, whose Fit in its best field is
 // at least the focal paper's less scoring noise (summary.distinctPapers.bar).
 const isDistinct = (alt, rule) => rule?.available && alt.review?.family === 'different-paper' && alt.review?.verdict === 'consistent' && (bestFit(alt) ?? -1) >= rule.bar - 1e-9;
-const select = alt => go(state.view, alt.id);
+// Selecting an AI alternative in a Results panel highlights it in every panel and names it in a
+// small pane; selecting the pane, or the same AI alternative again, opens it in full.
+const pick = id => { if (state.pinned === id) go(state.view, id); else { state.pinned = id; showPin(); } };
+const select = alt => pick(alt.id);
+const selectRow = row => pick(row.id);
 
 function section(title, lede, ...body) {
   return h('section', {class: 'section'}, h('header', null, h('div', null, h('h2', null, title), lede ? h('p', {class: 'lede'}, lede) : null)), ...body);
@@ -231,7 +242,7 @@ function resultsBody(data, all) {
     {key: 'novelty', label: 'Novelty', num: true},
     data.summary.distance ? {key: 'distance', label: 'Distance (percentile)', num: true, render: r => pct(r.distance)} : null,
     {key: 'parts', label: 'Parts replaced', num: true, render: r => String(r.parts ?? '–')}
-  ].filter(Boolean), data.alternatives.filter(passes).map(alt => ({id: alt.id, title: alt.outline.title, field: fieldLabel(data, alt.score?.bestField), fit: bestFit(alt), novelty: alt.score?.novelty.score, fitScores: alt.score?.fit[alt.score.bestField]?.scores, noveltyScores: alt.score?.novelty.scores, distance: MEASURES.distance.get(alt), parts: alt.partsReplaced})), {onRow: row => go('results', row.id)});
+  ].filter(Boolean), data.alternatives.filter(passes).map(alt => ({id: alt.id, title: alt.outline.title, field: fieldLabel(data, alt.score?.bestField), fit: bestFit(alt), novelty: alt.score?.novelty.score, fitScores: alt.score?.fit[alt.score.bestField]?.scores, noveltyScores: alt.score?.novelty.scores, distance: MEASURES.distance.get(alt), parts: alt.partsReplaced})), {onRow: selectRow});
 
   const runsOf = kind => data.alternatives.filter(a => a.kind === kind);
   const runCount = kind => { const total = kind ? all.alternatives.filter(a => a.kind === kind).length : all.alternatives.length, n = kind ? runsOf(kind).length : data.alternatives.length; return n === total ? `${n} runs` : `${n} of ${total} runs`; };
@@ -246,7 +257,7 @@ function resultsBody(data, all) {
       filters,
       h('div', {class: 'hero'},
         h('div', null, h('h2', {class: 'panel-title'}, 'AI alternatives by best fit field and parts replaced', measureTags(['fit', 'comparison'])), withTableToggle(map.node, table),
-          h('p', {class: 'map-caption'}, 'Each dot is an AI alternative. It sits in the sector of the field it fits best; the farther from the center, the more of the focal paper\'s parts it replaced. Select a dot to read it.'),
+          h('p', {class: 'map-caption'}, 'Each dot is an AI alternative. It sits in the sector of the field it fits best; the farther from the center, the more of the focal paper\'s parts it replaced. Select a dot to highlight it in every panel; select it again, or the box that appears, to read it.'),
           fieldLegend(data)),
         answers),
       section([pairs.length > 1 ? 'Fit, Novelty and Distance' : 'Fit and Novelty', measureTags(pairs.length > 1 ? ['fit', 'novelty', 'distance'] : ['fit', 'novelty'])],
@@ -278,7 +289,7 @@ function resultsBody(data, all) {
         h('div', {class: 'panel'}, withTableToggle(theoryChart({alternatives: data.alternatives, fields: data.fields, homeField: data.homeField, original: data.original, onSelect: select}), () => dataTable([
           {key: 'theory', label: 'Theory'}, {key: 'home', label: `Fit in ${homeLabel}`, num: true}, {key: 'homeField', label: `Field fit in ${homeLabel}`, num: true}, {key: 'evidence', label: 'Evidence fit', num: true},
           {key: 'bestField', label: 'Fits best'}, {key: 'best', label: 'Best fit', num: true}, {key: 'novelty', label: 'Novelty', num: true}
-        ], runsOf('theory').map(alt => ({id: alt.id, theory: alt.target, home: alt.score?.fit[data.homeField]?.score, homeField: alt.score?.fieldFit?.[data.homeField]?.score, evidence: alt.score?.evidenceFit?.score, bestField: fieldLabel(data, alt.score?.bestField), best: bestFit(alt), novelty: alt.score?.novelty.score})), {onRow: row => go('results', row.id)})),
+        ], runsOf('theory').map(alt => ({id: alt.id, theory: alt.target, home: alt.score?.fit[data.homeField]?.score, homeField: alt.score?.fieldFit?.[data.homeField]?.score, evidence: alt.score?.evidenceFit?.score, bestField: fieldLabel(data, alt.score?.bestField), best: bestFit(alt), novelty: alt.score?.novelty.score})), {onRow: selectRow})),
           theoryLegend(data, theoryElsewhere))))
   );
 }
@@ -301,12 +312,12 @@ function distanceSections(data) {
     section(['Focal paper distance to AI alternatives', measureTags(['distance', 'comparison'])], `Each AI alternative's distance from the focal paper, grouped by Claude's comparison with it.${familyMeans ? ` The mean is ${familyMeans}.` : ''} Dots are colored by the field each fits best.`,
       h('div', {class: 'panel'}, withTableToggle(distanceFromOriginal({alternatives: data.alternatives, fields: data.fields, referenceMedian: dist.referenceMedian?.all, onSelect: select}), () => dataTable([
         {key: 'title', label: 'AI alternative', className: 'title-cell'}, {key: 'family', label: "Claude's comparison"}, {key: 'parts', label: 'Parts replaced', num: true, render: r => String(r.parts ?? '–')}, {key: 'distance', label: 'Distance from focal paper', num: true}
-      ], measured.map(alt => ({id: alt.id, title: alt.outline.title, family: familyText(alt.review?.family), parts: alt.partsReplaced, distance: alt.distance.fromOriginal})), {onRow: row => go('results', row.id)})), fieldLegend(data, legendMark('line', 'Mean of the group')))),
+      ], measured.map(alt => ({id: alt.id, title: alt.outline.title, family: familyText(alt.review?.family), parts: alt.partsReplaced, distance: alt.distance.fromOriginal})), {onRow: selectRow})), fieldLegend(data, legendMark('line', 'Mean of the group')))),
     section(['Distance of focal paper and AI alternatives from published papers in each field', measureTags(['distance'])], `The distance of the focal paper and of each AI alternative from the published papers in each field of the corpus, as a percentile: 50 is the typical published paper in that field, higher is further away. Each AI alternative appears once in every row.${rho === null ? '' : ` In each AI alternative's best field, this and Claude's Novelty ${rho <= -0.3 ? 'tend to disagree' : rho < 0.3 ? 'are largely unrelated' : rho < 0.6 ? 'agree only loosely' : 'mostly agree'} (rank correlation ${fmt(rho)}).`}`,
       h('div', {class: 'panel'}, withTableToggle(distanceFromPublished({alternatives: data.alternatives, fields: data.fields, original: data.original, onSelect: select}), () => dataTable([
         {key: 'label', label: 'Field'}, {key: 'own', label: 'Focal paper (percentile)', num: true, render: r => pct(r.own)}, {key: 'median', label: "AI alternatives' median", num: true, render: r => pct(r.median)}
       ], percentileRows.map(f => ({label: f.label, own: dist.original?.toPublishedPercentile?.[f.id], median: median(measured.map(alt => alt.distance.toPublishedPercentile?.[f.id]))})))), fieldLegend(data, legendMark('diamond', 'Focal paper'), legendMark('line', "AI alternatives' median")))),
-    section(['Claude selected field versus field of nearest published papers', measureTags(['fit', 'distance'])], `Each dot is an AI alternative. Its row is the field Claude says it fits best; its column is the field of its nearest published papers in the corpus. The two agree for ${agree} of ${measured.length} AI alternatives (shaded cells). Select a dot to read it.`,
+    section(['Claude selected field versus field of nearest published papers', measureTags(['fit', 'distance'])], `Each dot is an AI alternative. Its row is the field Claude says it fits best; its column is the field of its nearest published papers in the corpus. The two agree for ${agree} of ${measured.length} AI alternatives (shaded cells). Select a dot to highlight it in every panel.`,
       h('div', {class: 'panel'}, withTableToggle(neighbourAgreement({fields: data.fields, alternatives: data.alternatives, onSelect: select}), () => dataTable([
         {key: 'row', label: 'Claude: fits best'}, ...neighbourColumns.map(id => ({key: id, label: fieldLabel(data, id), num: true})), {key: 'total', label: 'AI alternatives', num: true}
       ], data.fields.map(row => {
@@ -670,6 +681,57 @@ function renderMethod(data) {
     h('p', null, `This case took ${calls} calls to ${data.model || 'Claude'} and cost $${cost.toFixed(2)}. Every request and response is saved in the run folder; the report and this explorer rebuild from them without an API key.`));
 }
 
+// ---------- Highlighted AI alternative ----------
+
+// The small pane naming the AI alternative highlighted on the Results tab, with the same summary
+// as its tooltip. Selecting the pane opens the AI alternative in full.
+function showPin() {
+  const data = state.bundles.get(state.caseId);
+  const alt = state.view === 'results' && state.pinned ? data?.alternatives.find(a => a.id === state.pinned) : null;
+  if (!alt) {
+    if (pin.contains(document.activeElement)) main.focus({preventScroll: true});
+    pin.hidden = true;
+    pin.replaceChildren();
+    delete pin.dataset.alt;
+  } else if (pin.dataset.alt !== alt.id) {
+    const open = h('button', {type: 'button', class: 'pin-open', 'aria-label': `Open in full: ${alt.outline.title}`},
+      h('span', {class: 'pin-kicker'}, 'Highlighted in every panel'),
+      altTooltip(alt, data.fields),
+      h('span', {class: 'pin-note', hidden: true}, 'The filters above hide it from every panel.'),
+      h('span', {class: 'pin-cta'}, 'Open in full', h('span', {'aria-hidden': 'true'}, ' →')));
+    open.addEventListener('click', () => go(state.view, alt.id));
+    const clear = h('button', {type: 'button', class: 'pin-clear', 'aria-label': 'Clear the highlight', title: 'Clear the highlight (Esc)'}, '×');
+    clear.addEventListener('click', clearPin);
+    pin.replaceChildren(open, clear);
+    pin.dataset.alt = alt.id;
+    pin.hidden = false;
+  }
+  markPinned();
+}
+
+function clearPin() {
+  state.pinned = null;
+  showPin();
+}
+
+// Gives every mark, road and table row of the highlighted AI alternative .pinned, and lets the
+// rest of the Results tab step back (.has-pin). Panels redraw on every filter, sort and table
+// toggle, so this runs again whenever main changes.
+function markPinned() {
+  const id = state.view === 'results' ? state.pinned : null;
+  main.classList.toggle('has-pin', Boolean(id));
+  const marked = [...main.querySelectorAll('[data-alt]')].filter(node => node.classList.toggle('pinned', node.getAttribute('data-alt') === id));
+  // Draw it above the dots near it, unless only its own marks follow it. The one just selected
+  // keeps its place: moving it would drop its focus and its hover.
+  for (const node of marked) {
+    let next = node.nextElementSibling;
+    while (next?.classList.contains('pinned')) next = next.nextElementSibling;
+    if (node instanceof SVGElement && next && node !== document.activeElement) node.parentNode.append(node);
+  }
+  pin.querySelector('.pin-note')?.toggleAttribute('hidden', marked.length > 0);
+}
+new MutationObserver(markPinned).observe(main, {childList: true, subtree: true});
+
 // ---------- Alternative detail ----------
 
 // Variances of 0-1 scores are small, so they get four decimals.
@@ -820,7 +882,11 @@ function closeDrawer(updateHash = true) {
 }
 
 drawer.addEventListener('click', event => { if (event.target.closest('[data-close]')) closeDrawer(); });
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeDrawer(); });
+// Escape closes the drawer, or with the drawer closed clears the highlight.
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  if (drawer.getAttribute('aria-hidden') === 'false') closeDrawer(); else if (state.pinned) clearPin();
+});
 document.getElementById('case-select').addEventListener('change', event => { location.hash = `#/${event.target.value}/${state.view}`; });
 window.addEventListener('hashchange', () => route().catch(showError));
 
