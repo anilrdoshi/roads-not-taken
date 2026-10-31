@@ -1,10 +1,11 @@
-// Claude's Fit and Novelty for each paper, averaged over its scorings. Every paper is scored
+// Claude's overall fit and novelty for each paper, averaged over its scorings. Every paper is scored
 // several times in separate calls (three by default); a score row records which scoring it is
 // (`replicate`). Rows from runs made before replicates count as scoring 1, and those runs'
 // stability comes from their separate repeat sample (scores-repeat.jsonl) instead.
-// Fit has two parts, each judged in its own calls: Field fit to each field (scores.jsonl, scored with
-// Novelty) and Evidence fit, how well the paper's theory predicts the evidence (evidence-fit.jsonl).
-// Fit in a field is their geometric mean, so a paper needs both; it is null until Evidence fit is scored.
+// Overall fit has two parts, each judged in its own calls: field fit to each field (scores.jsonl,
+// scored with novelty) and evidence fit, how well the paper's theory predicts the evidence
+// (evidence-fit.jsonl). Overall fit in a field is their geometric mean, so a paper needs both; it is
+// null until evidence fit is scored.
 import path from 'node:path';
 import {FIELD_IDS} from './config.js';
 import {readJsonl, replicateOf} from './pipeline.js';
@@ -15,11 +16,11 @@ const round3 = value => Math.round(value * 1000) / 1000;
 export const variance = values => values.length < 2 ? null : Math.round(values.reduce((a, v) => a + (v - mean(values)) ** 2, 0) / (values.length - 1) * 1e6) / 1e6;
 export const compositeFit = (fieldFit, evidenceFit) => Math.sqrt(fieldFit * evidenceFit);
 
-// One paper's scorings -> mean Field fit per field, mean Evidence fit, Fit per field and mean
-// Novelty. The best field is the one with the highest mean Field fit (ties go to the field the
+// One paper's scorings -> mean field fit per field, mean evidence fit, overall fit per field and mean
+// novelty. The best field is the one with the highest mean field fit (ties go to the field the
 // scorings named most often); a paper scored once keeps the field Claude named. Evidence fit is the
-// same in every field, so the best field is also the one with the highest Fit. Each scoring judges
-// Novelty within the best field it named, so the report also says how often the scorings agreed on
+// same in every field, so the best field is also the one with the highest overall fit. Each scoring
+// judges novelty within the best field it named, so the report also says how often the scorings agreed on
 // that field. Reasons and cited articles shown with the mean come from the first scoring; `rows` and
 // `evidenceRows` keep every scoring.
 export function averageScores(rows, evidenceRows = []) {
@@ -44,8 +45,8 @@ export function averageScores(rows, evidenceRows = []) {
     reason: evidence[0].reason, centralResults: evidence[0].centralResults, rivals: evidence[0].rivals,
     fittedHypotheses: evidence[0].fittedHypotheses, unmeasured: evidence[0].unmeasured
   } : null;
-  // Fit from the means; `scores` pairs the nth Field-fit scoring with the nth Evidence-fit scoring,
-  // which is how scoring noise in Fit is measured.
+  // Overall fit from the means; `scores` pairs the nth field-fit scoring with the nth evidence-fit
+  // scoring, which is how scoring noise in overall fit is measured.
   const fit = Object.fromEntries(FIELD_IDS.map(field => {
     if (!fieldFit[field] || !evidenceFit) return [field, null];
     const paired = fieldFit[field].scores.slice(0, evidenceScores.length).map((score, i) => round3(compositeFit(score, evidenceScores[i])));
@@ -67,10 +68,10 @@ export async function loadScores(testDir) {
   return new Map([...byId].map(([id, rows]) => [id, averageScores(rows, evidenceById.get(id) || [])]));
 }
 
-// Scoring noise in Fit: two standard errors of the difference between two papers' mean Fit, from
-// how much Fit varies between scorings of the same paper (in its best field), pooled over every
-// paper with at least two. The Distinct AI alternatives count allows an AI alternative's Fit to be
-// this far below the focal paper's. Null when no paper has two scorings of both parts.
+// Scoring noise in overall fit: two standard errors of the difference between two papers' mean
+// overall fit, from how much overall fit varies between scorings of the same paper (in its best
+// field), pooled over every paper with at least two. The distinct AI alternatives count allows an AI
+// alternative's overall fit to be this far below the focal paper's. Null when no paper has two scorings of both parts.
 export function fitNoise(scores) {
   const scored = [...scores.values()].map(paper => paper.fit[paper.bestField]).filter(fit => fit?.scores.length > 1);
   if (!scored.length) return null;
@@ -80,9 +81,9 @@ export function fitNoise(scores) {
 }
 
 // How much separate scorings of the same paper differ: mean absolute difference over every pair of
-// scorings, in Field fit (all fields), Evidence fit, Fit (best field) and Novelty, and how often a
-// pair named the same best field. From the replicates when papers have more than one; otherwise from
-// a legacy repeat sample (Field fit and Novelty only).
+// scorings, in field fit (all fields), evidence fit, overall fit (best field) and novelty, and how
+// often a pair named the same best field. From the replicates when papers have more than one;
+// otherwise from a legacy repeat sample (field fit and novelty only).
 export function scoreStability(scores, legacyRepeats = []) {
   const pairs = [];
   const pairsOf = values => values.flatMap((a, i) => values.slice(i + 1).map(b => Math.abs(a - b)));

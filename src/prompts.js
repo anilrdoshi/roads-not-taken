@@ -148,7 +148,7 @@ export function originalAsPaper(extraction) {
 }
 
 // The hypotheses as plain statements: the original's are strings; an alternative's carry result
-// ids and a status, which are left out so the Evidence-fit judge maps them to results itself.
+// ids and a status, which are left out so the evidence-fit judge maps them to results itself.
 export const hypothesisStatements = paper => (paper.hypotheses || []).map(h => typeof h === 'string' ? h : h.statement);
 
 // ---------- Generation ----------
@@ -273,10 +273,10 @@ export function scoreContent(paper, retrieved) {
 
 // ---------- Evidence fit: how well the theory predicts the evidence ----------
 
-// Fit is the geometric mean of Field fit (scoreSystem) and Evidence fit. Field fit alone could not
-// tell theories apart: an AI alternative built on firm-level evidence for a strategy audience is a
-// strategy paper whatever its theory. Evidence fit judges prediction, not accommodation: every AI
-// alternative is written with the results in view, so hypotheses fitted to them must not count as
+// Overall fit is the geometric mean of field fit (scoreSystem, whose prompt calls it "Fit") and
+// evidence fit. Field fit alone could not tell theories apart: an AI alternative built on
+// firm-level evidence for a strategy audience is a strategy paper whatever its theory. Evidence
+// fit judges prediction, not accommodation: every AI alternative is written with the results in view, so hypotheses fitted to them must not count as
 // predictions. Doubts about the data or design are left out (they apply to every theory alike), and
 // a rival that predicts a result as well is recorded, not held against the theory outright.
 export const EVIDENCE_FIT_SYSTEM = `You assess how well a paper idea's theory predicts the evidence of a completed empirical study. You receive the study's evidence (unit of analysis, sample, data, measures, design and reported results) and a paper idea built on it: its question, theory, mechanism, hypotheses, interpretation and contribution.

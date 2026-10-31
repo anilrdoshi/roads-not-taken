@@ -98,7 +98,7 @@ function makeMock({refuse = new Set(), corruptRepair = false} = {}) {
       };
     } else if (role.startsWith('score')) {
       const ids = [...text.matchAll(/\[(doi:[^\]]+)\]/g)].map(m => m[1]);
-      // Scorings of the same paper differ: Fit rises by 0.03 a scoring; Novelty is 1.4 (clamped to 1), 0.4, 0.7.
+      // Scorings of the same paper differ: field fit rises by 0.03 a scoring; novelty is 1.4 (clamped to 1), 0.4, 0.7.
       const replicate = Number(String(itemId).split('#')[1] || 1);
       value = {fit: FIELD_IDS.map((field, i) => ({field, score: 0.2 + i * 0.15 + (replicate - 1) * 0.03, reason: 'r', closest: ids.slice(0, 1)})), bestField: 'operations', novelty: {score: [1.4, 0.4, 0.7][(replicate - 1) % 3], reason: 'n', closest: ids.slice(0, 1).map(id => ({id, relation: 'similar'}))}};
     } else if (role === 'evidence-fit') {
@@ -173,7 +173,7 @@ test('full pilot run produces alternatives, reviews, scores and a report', async
   const scores = await readJsonl(path.join(testDir, 'scores.jsonl'));
   assert.equal(scores.length, 3 * (tasks.length + 1), 'every alternative plus the original is scored three times');
   const evidenceFits = await readJsonl(path.join(testDir, 'evidence-fit.jsonl'));
-  assert.equal(evidenceFits.length, 3 * (tasks.length + 1), 'and judged three times for Evidence fit');
+  assert.equal(evidenceFits.length, 3 * (tasks.length + 1), 'and judged three times for evidence fit');
   assert.ok(evidenceFits.every(row => row.score >= 0 && row.score <= 1 && row.centralResults.length), 'with the judge\'s classification kept');
   assert.ok(['original', ...tasks.map(task => task.id)].every(id => [1, 2, 3].every(r => scores.some(s => s.id === id && s.replicate === r))));
   assert.ok(scores.every(s => s.novelty.score <= 1 && FIELD_IDS.every(f => s.fit[f].score >= 0 && s.fit[f].score <= 1)), 'scores are clamped to 0-1');
@@ -188,11 +188,11 @@ test('full pilot run produces alternatives, reviews, scores and a report', async
   assert.equal(summary.original.novelty, 0.7, 'Novelty is the mean of the three scorings (1, 0.4, 0.7)');
   assert.equal(summary.original.fieldFit.strategy, 0.23, 'Field fit is the mean of the three scorings (0.20, 0.23, 0.26)');
   assert.equal(summary.original.evidenceFit, 0.6, 'Evidence fit is the mean of the three scorings (0.58, 0.60, 0.62)');
-  assert.equal(summary.original.fit.strategy, Math.round(Math.sqrt(0.23 * 0.6) * 1000) / 1000, 'Fit is the geometric mean of the two');
+  assert.equal(summary.original.fit.strategy, Math.round(Math.sqrt(0.23 * 0.6) * 1000) / 1000, 'Overall fit is the geometric mean of the two');
   assert.equal(summary.stability.method, 'replicates');
   assert.equal(summary.stability.items, tasks.length + 1);
   assert.equal(summary.stability.pairs, 3 * (tasks.length + 1));
-  assert.ok(Math.abs(summary.stability.meanAbsNoveltyDifference - 0.4) < 1e-9, 'pairs differ by 0.6, 0.3 and 0.3 in Novelty');
+  assert.ok(Math.abs(summary.stability.meanAbsNoveltyDifference - 0.4) < 1e-9, 'pairs differ by 0.6, 0.3 and 0.3 in novelty');
   const markdown = await readFile(path.join(testDir, 'summary.md'), 'utf8');
   assert.ok(markdown.includes('Does it come back to the focal paper?'));
   assert.ok(markdown.includes('each the mean of 3 scorings'));
@@ -395,7 +395,7 @@ test('with corpus embeddings, scoring uses hybrid retrieval and the report gains
   assert.ok(summary.rows.every(row => row.distanceFromOriginal > 0));
   assert.equal(summary.distance.relation.bestFieldAndTopNeighbourField.n, summary.counts.alternatives + 1);
   const markdown = await readFile(path.join(testDir, 'summary.md'), 'utf8');
-  for (const heading of ['## Distance (embeddings; no model judgement)', '### Distance from the focal paper', '### Distance from the published corpus', '### Fields of the 5 nearest published papers', '### How Distance relates to Claude\'s Novelty and Fit']) {
+  for (const heading of ['## Distance (embeddings; no model judgement)', '### Distance from the focal paper', '### Distance from the published corpus', '### Fields of the 5 nearest published papers', '### How distance relates to Claude\'s novelty and field fit']) {
     assert.ok(markdown.includes(heading), heading);
   }
   const distanceSection = markdown.slice(markdown.indexOf('## Distance'), markdown.indexOf('## Ten AI alternatives'));
@@ -468,7 +468,7 @@ test('a run from before replicates reports exactly as before: one scoring each, 
   assert.ok((await readFile(path.join(testDir, 'summary.md'), 'utf8')).includes('from one scoring of the focal paper and of each AI alternative'));
 });
 
-test('averaged scores take the best field from mean Fit, breaking ties by how often it was named', () => {
+test('averaged scores take the best field from mean field fit, breaking ties by how often it was named', () => {
   const row = (replicate, fits, bestField, novelty) => ({id: 'p', kind: 'alternative', replicate, bestField, novelty: {score: novelty, reason: 'n', closest: []},
     fit: Object.fromEntries(FIELD_IDS.map((field, i) => [field, {score: fits[i], reason: `r${replicate}`, closest: []}]))});
   const tie = averageScores([
@@ -477,16 +477,16 @@ test('averaged scores take the best field from mean Fit, breaking ties by how of
     row(3, [0.6, 0.1, 0.1, 0.6, 0.1], 'marketing', 0.7)
   ]);
   assert.equal(tie.fieldFit.strategy.score, tie.fieldFit.marketing.score);
-  assert.equal(tie.bestField, 'marketing', 'a tie in mean Field fit goes to the field named most often');
+  assert.equal(tie.bestField, 'marketing', 'a tie in mean field fit goes to the field named most often');
   assert.equal(tie.novelty.score, 0.6);
   assert.deepEqual(tie.bestFieldVotes, {strategy: 1, marketing: 2});
   assert.equal(tie.fieldFit.strategy.reason, 'r1', 'reasons shown with the mean come from the first scoring');
-  assert.equal(tie.fit.strategy, null, 'without Evidence fit there is no Fit');
+  assert.equal(tie.fit.strategy, null, 'without evidence fit there is no overall fit');
   const single = averageScores([row(1, [0.5, 0.9, 0.1, 0.1, 0.1], 'strategy', 0.4)]);
   assert.equal(single.bestField, 'strategy', 'a paper scored once keeps the field Claude named');
 });
 
-test('the Evidence-fit judge sees the evidence and the hypotheses, not result links, statuses or which paper is the focal one', () => {
+test('the evidence-fit judge sees the evidence and the hypotheses, not result links, statuses or which paper is the focal one', () => {
   const extraction = fakeExtraction('External Resources Revisited', '2026');
   const original = evidenceFitContent(extraction, originalAsPaper(extraction)).map(b => b.text).join('\n');
   assert.ok(original.includes('total followers -> log Nielsen rating: estimate 0.107 (SE 0.05), p<0.05'), 'the reported results');
@@ -499,7 +499,7 @@ test('the Evidence-fit judge sees the evidence and the hypotheses, not result li
   for (const word of [/focal/i, /original/i, /reference version/i]) assert.ok(!word.test(text), `nothing says which paper is the focal one (${word})`);
 });
 
-test('Fit is the geometric mean of Field fit and Evidence fit', () => {
+test('Overall fit is the geometric mean of field fit and evidence fit', () => {
   const row = (replicate, fit) => ({id: 'p', kind: 'alternative', replicate, bestField: 'strategy', novelty: {score: 0.5, reason: 'n', closest: []},
     fit: Object.fromEntries(FIELD_IDS.map((field, i) => [field, {score: i ? 0.2 : fit, reason: 'r', closest: []}]))});
   const evidence = (replicate, score) => ({id: 'p', replicate, score, reason: 'e', centralResults: [], rivals: [], fittedHypotheses: [], unmeasured: []});
@@ -507,11 +507,11 @@ test('Fit is the geometric mean of Field fit and Evidence fit', () => {
   assert.equal(paper.fieldFit.strategy.score, 0.9);
   assert.equal(paper.evidenceFit.score, 0.4);
   assert.equal(paper.fit.strategy.score, 0.6, '√(0.9 × 0.4)');
-  assert.deepEqual(paper.fit.strategy.scores, [0.52, 0.6, 0.671], 'each scoring of Fit pairs the nth scoring of each part');
-  assert.equal(paper.bestField, 'strategy', 'the best field comes from Field fit, which is also where Fit is highest');
+  assert.deepEqual(paper.fit.strategy.scores, [0.52, 0.6, 0.671], 'each scoring of overall fit pairs the nth scoring of each part');
+  assert.equal(paper.bestField, 'strategy', 'the best field comes from field fit, which is also where overall fit is highest');
 });
 
-test('scoring noise in Fit is two standard errors of the difference between two papers\' means', () => {
+test('scoring noise in overall fit is two standard errors of the difference between two papers\' means', () => {
   const paper = (id, scores) => ({id, bestField: 'strategy', fit: {strategy: {scores, variance: scores.reduce((a, v) => a + (v - scores.reduce((s, x) => s + x, 0) / scores.length) ** 2, 0) / (scores.length - 1)}}});
   const noise = fitNoise(new Map([['a', paper('a', [0.5, 0.52, 0.54])], ['b', paper('b', [0.6, 0.6, 0.6])]]));
   // Pooled variance (0.0004 + 0) / 2 = 0.0002, so SD 0.01414; margin 2 × √2 × 0.01414 / √3.
@@ -520,7 +520,7 @@ test('scoring noise in Fit is two standard errors of the difference between two 
   assert.equal(fitNoise(new Map([['a', paper('a', [0.5])]])), null, 'no noise estimate from single scorings');
 });
 
-test('Distinct AI alternatives: a different paper with Fit at least the focal paper\'s less scoring noise', async t => {
+test('Distinct AI alternatives: a different paper with overall fit at least the focal paper\'s less scoring noise', async t => {
   const {caseDir, testDir, pdf} = await setup(t);
   const {mock} = makeMock();
   await extractPaper({caseDir, pdf, mock});
@@ -533,11 +533,11 @@ test('Distinct AI alternatives: a different paper with Fit at least the focal pa
   assert.ok(Math.abs(d.bar - (d.originalFit - d.margin)) < 1e-9);
   const expected = summary.rows.filter(row => row.familyVsOriginal === 'different-paper' && row.verdict === 'consistent' && row.bestFit >= d.bar - 1e-9).map(row => row.id);
   assert.deepEqual(d.ids, expected);
-  assert.ok(d.count > 0 && d.count < summary.rows.length, 'the mock\'s Evidence fits put some AI alternatives below the bar and some above');
+  assert.ok(d.count > 0 && d.count < summary.rows.length, 'the mock\'s evidence fits put some AI alternatives below the bar and some above');
   assert.ok((await readFile(path.join(testDir, 'summary.md'), 'utf8')).includes('less scoring noise'));
 });
 
-test('a run scored before Evidence fit existed reports without Fit, and a rerun adds only the Evidence-fit calls', async t => {
+test('a run scored before evidence fit existed reports without overall fit, and a rerun adds only the evidence-fit calls', async t => {
   const {caseDir, testDir, pdf} = await setup(t);
   const {mock, calls} = makeMock();
   await extractPaper({caseDir, pdf, mock});
@@ -546,7 +546,7 @@ test('a run scored before Evidence fit existed reports without Fit, and a rerun 
   await runTest({caseDir, testDir, llm: await make(), corpus: fakeCorpus(), tasks, log: () => {}});
   await rm(path.join(testDir, 'evidence-fit.jsonl'));
   const before = await buildReport({caseDir, testDir});
-  assert.equal(before.original.fit.strategy, null, 'no Fit without Evidence fit');
+  assert.equal(before.original.fit.strategy, null, 'no overall fit without evidence fit');
   assert.equal(before.original.fieldFit.strategy, 0.23, 'Field fit is still reported');
   assert.equal(before.distinctPapers.available, false);
   assert.ok((await readFile(path.join(testDir, 'summary.md'), 'utf8')).includes('Evidence fit has not been scored for this run'));

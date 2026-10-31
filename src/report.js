@@ -28,12 +28,12 @@ export async function buildReport({caseDir, testDir}) {
   const record = await loadExtraction(caseDir);
   const alternatives = await readJsonl(file('alternatives.jsonl'));
   const reviews = new Map((await readJsonl(file('reviews.jsonl'))).map(row => [row.id, row.review]));
-  // Claude's Fit (Field fit and Evidence fit) and Novelty, averaged over each paper's scorings.
+  // Claude's overall fit (field fit and evidence fit) and novelty, averaged over each paper's scorings.
   const scores = await loadScores(testDir);
   const repeats = await readJsonl(file('scores-repeat.jsonl'));
   // Failures that later succeeded on a rerun are not counted.
   const doneByStage = {generate: new Set(alternatives.map(a => a.id)), review: new Set((await readJsonl(file('reviews.jsonl'))).map(r => r.id)), score: new Set((await readJsonl(file('scores.jsonl'))).map(scoreKey)), 'evidence-fit': new Set((await readJsonl(file('evidence-fit.jsonl'))).map(scoreKey)), 'score-repeat': new Set((await readJsonl(file('scores-repeat.jsonl'))).map(r => r.id))};
-  // Score and Evidence-fit failures are keyed by paper and scoring (older runs: by paper, which is scoring 1).
+  // Score and evidence-fit failures are keyed by paper and scoring (older runs: by paper, which is scoring 1).
   const failures = (await readJsonl(file('failures.jsonl'))).filter(f => !doneByStage[f.stage]?.has(['score', 'evidence-fit'].includes(f.stage) ? f.key || `${f.id}#1` : f.id));
   const unresolvedFailures = [...new Map(failures.map(f => [`${f.stage}:${f.id}`, f])).values()];
   const budget = existsSync(path.join(caseDir, 'budget.json')) ? JSON.parse(await readFile(path.join(caseDir, 'budget.json'), 'utf8')) : null;
@@ -67,7 +67,7 @@ export async function buildReport({caseDir, testDir}) {
       componentsChanged: vsOriginal ? Object.values(vsOriginal.components).filter(c => CHANGED.has(c)).length : null,
       componentsReplaced: vsOriginal ? Object.values(vsOriginal.components).filter(c => c === 'replaced').length : null,
       differenceSummary: vsOriginal?.summary || '',
-      // Fit (the geometric mean of Field fit and Evidence fit) and its two parts.
+      // Overall fit (the geometric mean of field fit and evidence fit) and its two parts.
       fit: score ? Object.fromEntries(FIELD_IDS.map(id => [id, score.fit[id]?.score ?? null])) : null,
       fieldFit: score ? Object.fromEntries(FIELD_IDS.map(id => [id, score.fieldFit[id]?.score ?? null])) : null,
       evidenceFit: score?.evidenceFit?.score ?? null,
@@ -103,7 +103,8 @@ export async function buildReport({caseDir, testDir}) {
     }))
     : null;
 
-  // Field reach: for each field, the original's Fit and the best Fit reached by runs aimed there.
+  // Field reach: for each field, the original's overall fit and the best overall fit reached by runs
+  // aimed there.
   const fieldReach = FIELD_IDS.map(fieldId => {
     const aimed = rows.filter(row => row.kind === 'field' && row.target.fieldId === fieldId && row.fit?.[fieldId] != null);
     const best = aimed.sort((a, b) => b.fit[fieldId] - a.fit[fieldId])[0];
@@ -119,8 +120,8 @@ export async function buildReport({caseDir, testDir}) {
     };
   });
 
-  // Distinct AI alternatives: a different paper from the original whose Fit in its best field is at
-  // least the original's Fit (in its best field) less scoring noise. The headline count also asks for
+  // Distinct AI alternatives: a different paper from the original whose overall fit in its best field
+  // is at least the original's overall fit (in its best field) less scoring noise. The headline count also asks for
   // consistency with the evidence; the count with contradicting ones included is kept beside it.
   const originalFit = original?.fit[original.bestField]?.score ?? null;
   const noise = fitNoise(scores);
@@ -177,7 +178,7 @@ export async function buildReport({caseDir, testDir}) {
   return summary;
 }
 
-// Distance (embeddings), and how it lines up with Claude's review and with Claude's Novelty and Fit.
+// Distance (embeddings), and how it lines up with Claude's review and with Claude's novelty and field fit.
 function distanceSummary({distance, rows, scores}) {
   const dist = id => distance.papers[id];
   const measured = rows.filter(row => dist(row.id));
@@ -198,9 +199,9 @@ function distanceSummary({distance, rows, scores}) {
       byKind: Object.fromEntries(['open', 'theory', 'field'].map(k => [k, stats(measured.filter(row => row.kind === k).map(row => row.distanceFromOriginal))]))
     },
     relation: {
-      // Claude's Novelty and the distance-from-published-work percentile, both in Claude's best-fit field.
+      // Claude's novelty and the distance-from-published-work percentile, both in Claude's best-fit field.
       noveltyAndDistance: pairs(scored.map(p => [p.score.novelty.score, dist(p.id).toPublishedPercentile[p.score.bestField]])),
-      // Claude's Field fit to each field and the share of the nearest published articles from that field.
+      // Claude's field fit to each field and the share of the nearest published articles from that field.
       fitAndNeighbourShare: pairs(scored.flatMap(p => FIELD_IDS.filter(f => p.score.fieldFit[f]).map(f => [p.score.fieldFit[f].score, dist(p.id).neighbourFields[f]]))),
       bestFieldAndTopNeighbourField: {n: scored.length, matches: scored.filter(p => dist(p.id).topNeighbourField === p.score.bestField).length}
     }
@@ -217,7 +218,7 @@ function distanceMarkdown(d) {
   const groups = Object.keys(d.baseShares);
   const {neighbours, fieldNeighbours, referenceSample} = d.settings;
   return `${heading}
-Distance is the cosine distance between text embeddings (${d.model}) of the title and abstract of the focal paper and of each AI alternative, compared with the ${d.corpusArticles.toLocaleString()} published papers in the corpus up to ${d.corpusMaxYear}. It is a separate measure from Claude's Novelty and Fit: Claude plays no part in it, and it measures how far apart texts are, not whether an idea is new or belongs in a field.${d.unmeasured ? ` ${d.unmeasured} AI alternatives were added after it was computed; run \`npm run distance\` again to include them.` : ''}
+Distance is the cosine distance between text embeddings (${d.model}) of the title and abstract of the focal paper and of each AI alternative, compared with the ${d.corpusArticles.toLocaleString()} published papers in the corpus up to ${d.corpusMaxYear}. It is a separate measure from Claude's novelty and fit scores: Claude plays no part in it, and it measures how far apart texts are, not whether an idea is new or belongs in a field.${d.unmeasured ? ` ${d.unmeasured} AI alternatives were added after it was computed; run \`npm run distance\` again to include them.` : ''}
 
 ${d.originalAbstract === 'own'
   ? 'The focal paper is represented by its own abstract (kept locally in the case\'s private folder, not in the repository), so it compares directly with the abstracts of published papers.'
@@ -251,14 +252,14 @@ For each field, the mean distance of the focal paper, or of an AI alternative, t
 
 The focal paper's top neighbour field (the field most over-represented among these published papers, relative to its share of the corpus): ${fieldLabel[d.original?.topNeighbourField] || '–'}.
 
-### How Distance relates to Claude's Novelty and Fit
-- **Novelty and distance from the published corpus:** Spearman ρ = ${rho(d.relation.noveltyAndDistance)} between Claude's Novelty and the distance percentile in Claude's best-fit field (the focal paper and ${d.relation.noveltyAndDistance.n - 1} AI alternatives).
-- **Field fit and neighbour fields:** ρ = ${rho(d.relation.fitAndNeighbourShare)} between Claude's Field fit to a field and the share of nearest published papers from that field (${d.relation.fitAndNeighbourShare.n} pairs of a field with the focal paper or an AI alternative).
+### How distance relates to Claude's novelty and field fit
+- **Novelty and distance from the published corpus:** Spearman ρ = ${rho(d.relation.noveltyAndDistance)} between Claude's novelty and the distance percentile in Claude's best-fit field (the focal paper and ${d.relation.noveltyAndDistance.n - 1} AI alternatives).
+- **Field fit and neighbour fields:** ρ = ${rho(d.relation.fitAndNeighbourShare)} between Claude's field fit to a field and the share of nearest published papers from that field (${d.relation.fitAndNeighbourShare.n} pairs of a field with the focal paper or an AI alternative).
 - **Best field:** the top neighbour field matches Claude's best-fit field for ${d.relation.bestFieldAndTopNeighbourField.matches} of ${d.relation.bestFieldAndTopNeighbourField.n} (the focal paper and the AI alternatives).
 `;
 }
 
-// How many papers have Evidence fit, and from how many scorings.
+// How many papers have evidence fit, and from how many scorings.
 function evidenceFitCoverage(scores) {
   const papers = [...scores.values()];
   const scored = papers.filter(paper => paper.evidenceFit);
@@ -268,24 +269,24 @@ function evidenceFitCoverage(scores) {
 function scoringsNote(scorings, evidence) {
   if (!scorings) return 'Not scored yet.';
   const base = scorings.perPaper > 1
-    ? `Field fit and Novelty are Claude's scores, each the mean of ${scorings.perPaper} scorings in separate calls, for the focal paper and for each AI alternative.`
-    : 'Field fit and Novelty are Claude\'s scores, from one scoring of the focal paper and of each AI alternative (this run predates scoring each three times).';
+    ? `Field fit and novelty are Claude's scores, each the mean of ${scorings.perPaper} scorings in separate calls, for the focal paper and for each AI alternative.`
+    : 'Field fit and novelty are Claude\'s scores, from one scoring of the focal paper and of each AI alternative (this run predates scoring each three times).';
   const withFewer = scorings.fewer.length ? `${base} ${scorings.fewer.length} have fewer scorings so far: ${scorings.fewer.join(', ')}.` : base;
   const evidenceNote = !evidence?.papers
-    ? 'Evidence fit has not been scored for this run, so Fit is not available; rerun `npm run test-run` for this case to add it (only the Evidence-fit calls are made).'
-    : `Evidence fit is Claude's judgement of how well a paper's theory predicts the evidence, the mean of ${evidence.perPaper} scoring${evidence.perPaper > 1 ? 's' : ''} in separate calls that see the evidence${evidence.papers < evidence.of ? `, so far for ${evidence.papers} of ${evidence.of}` : ''}. Fit in a field is the geometric mean of Field fit and Evidence fit, so a paper needs both. Read Fit against the focal paper's, not as an absolute level.`;
+    ? 'Evidence fit has not been scored for this run, so overall fit is not available; rerun `npm run test-run` for this case to add it (only the evidence-fit calls are made).'
+    : `Evidence fit is Claude's judgement of how well a paper's theory predicts the evidence, the mean of ${evidence.perPaper} scoring${evidence.perPaper > 1 ? 's' : ''} in separate calls that see the evidence${evidence.papers < evidence.of ? `, so far for ${evidence.papers} of ${evidence.of}` : ''}. Overall fit in a field is the geometric mean of field fit and evidence fit, so a paper needs both. The 0-1 scales in the prompts guide Claude; the scores are not assumed to come back on them, so read field fit, evidence fit, overall fit and novelty against the focal paper's and the other AI alternatives', not as absolute levels.`;
   return `${withFewer} ${evidenceNote}`;
 }
 
 function distinctText(d) {
-  if (!d.available) return '**Distinct AI alternatives:** not available until the focal paper has Evidence fit (and so Fit).';
-  return `**Distinct AI alternatives:** ${d.count} AI alternatives are a different paper from the focal paper, consistent with the evidence, and have a Fit in their best field of at least ${fmt(d.bar)}: the focal paper's Fit (${fmt(d.originalFit)}) less scoring noise (${d.margin.toFixed(3)}, two standard errors of the difference between two papers' mean Fit). With AI alternatives that contradict a reported result included: ${d.countWithContradicting}.${d.unscored ? ` ${d.unscored} different-paper AI alternatives have no Fit yet.` : ''}`;
+  if (!d.available) return '**Distinct AI alternatives:** not available until the focal paper has evidence fit (and so overall fit).';
+  return `**Distinct AI alternatives:** ${d.count} AI alternatives are a different paper from the focal paper, consistent with the evidence, and have an overall fit in their best field of at least ${fmt(d.bar)}: the focal paper's overall fit (${fmt(d.originalFit)}) less scoring noise (${d.margin.toFixed(3)}, two standard errors of the difference between two papers' mean overall fit). With AI alternatives that contradict a reported result included: ${d.countWithContradicting}.${d.unscored ? ` ${d.unscored} different-paper AI alternatives have no overall fit yet.` : ''}`;
 }
 
 function stabilityText(st) {
   if (!st) return 'Not yet measured.';
-  const evidence = st.meanAbsEvidenceFitDifference == null ? '' : ` ${fmt(st.meanAbsEvidenceFitDifference)} in Evidence fit, ${fmt(st.meanAbsFitDifference)} in Fit (best field),`;
-  const differences = `Mean absolute difference between two scorings of the same one: ${fmt(st.meanAbsFieldFitDifference)} in Field fit (each field),${evidence} ${fmt(st.meanAbsNoveltyDifference)} in Novelty. Best field matched in ${Math.round(st.bestFieldAgreement * 100)}% of pairs.`;
+  const evidence = st.meanAbsEvidenceFitDifference == null ? '' : ` ${fmt(st.meanAbsEvidenceFitDifference)} in evidence fit, ${fmt(st.meanAbsFitDifference)} in overall fit (best field),`;
+  const differences = `Mean absolute difference between two scorings of the same one: ${fmt(st.meanAbsFieldFitDifference)} in field fit (each field),${evidence} ${fmt(st.meanAbsNoveltyDifference)} in novelty. Best field matched in ${Math.round(st.bestFieldAgreement * 100)}% of pairs.`;
   return st.method === 'replicates'
     ? `The focal paper and every AI alternative were scored ${st.replicates} times in separate calls (the focal paper and ${st.items - 1} AI alternatives, ${st.pairs} pairs of scorings). ${differences} For ${st.bestFieldSplit}, the scorings did not all name the same best field.`
     : `A sample of ${st.items} was scored a second time in separate calls (in runs before the focal paper and every AI alternative were scored three times). ${differences}`;
@@ -324,11 +325,11 @@ ${scoringsNote(s.scorings, s.evidenceFitScorings)}
 | | ${FIELDS.map(f => f.label).join(' | ')} | Evidence fit | Novelty |
 |---|${FIELDS.map(() => '---').join('|')}|---|---|
 | Field fit | ${fitCells(s.original?.fieldFit)} | ${fmt(s.original?.evidenceFit)} | ${fmt(s.original?.novelty)} |
-| Fit | ${fitCells(s.original?.fit)} | | |
+| Overall fit | ${fitCells(s.original?.fit)} | | |
 
 The focal paper and every AI alternative are compared with published papers in the corpus from ${fieldsConfig.corpusWindow.fromYear}–${Math.min(s.original?.corpusMaxYear || fieldsConfig.corpusWindow.toYear, fieldsConfig.corpusWindow.toYear)}, never later than the focal paper's year.
 ### Reaching each field
-| Field | Focal paper's Fit | Runs aimed here | Mean Fit | Best Fit | Its Field fit / Evidence fit | Parts replaced (of 7) | Evidence it needs |
+| Field | Focal paper's overall fit | Runs aimed here | Mean overall fit | Best overall fit | Its field fit / evidence fit | Parts replaced (of 7) | Evidence it needs |
 |---|---|---|---|---|---|---|---|
 ${s.fieldReach.map(f => `| ${f.label} | ${fmt(f.originalFit)} | ${f.aimedRuns} | ${fmt(f.meanAimedFit)} | ${fmt(f.bestAimed?.fit)} | ${f.bestAimed ? `${fmt(f.bestAimed.fieldFit)} / ${fmt(f.bestAimed.evidenceFit)}` : '–'} | ${f.bestAimed?.componentsReplaced ?? '–'} | ${f.bestAimed?.burden || '–'} |`).join('\n')}
 
@@ -337,11 +338,11 @@ Parts are the question, conversation, theory, mechanism, interpretation, contrib
 ${distinctText(s.distinctPapers)}
 
 ## Theory-targeted runs (home field: ${fieldLabel[HOME_FIELD]})
-| Theory | Field fit (home) | Evidence fit | Fit (home) | Best field | Best Fit | Novelty | vs focal paper | Parts replaced | Distance from focal paper | Evidence it needs | Check |
+| Theory | Field fit (home) | Evidence fit | Overall fit (home) | Best field | Best overall fit | Novelty | vs focal paper | Parts replaced | Distance from focal paper | Evidence it needs | Check |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 ${theoryRows.map(r => `| ${r.theoryName} | ${fmt(r.homeFieldFit)} | ${fmt(r.evidenceFit)} | ${fmt(r.homeFit)} | ${fieldLabel[r.bestField] || '–'} | ${fmt(r.bestFit)} | ${fmt(r.novelty)} | ${r.familyVsOriginal || '–'} | ${r.componentsReplaced ?? '–'} | ${fmt(r.distanceFromOriginal)} | ${r.burden} | ${r.verdict || '–'} |`).join('\n')}
 
-For comparison, the focal paper: Field fit (home) ${fmt(s.original?.fieldFit?.[HOME_FIELD])}, Evidence fit ${fmt(s.original?.evidenceFit)}, Fit (home) ${fmt(s.original?.fit?.[HOME_FIELD])}.
+For comparison, the focal paper: field fit (home) ${fmt(s.original?.fieldFit?.[HOME_FIELD])}, evidence fit ${fmt(s.original?.evidenceFit)}, overall fit (home) ${fmt(s.original?.fit?.[HOME_FIELD])}.
 
 ## Evidence check
 Verdicts: ${Object.entries(s.evidence.verdicts).map(([k, v]) => `${v} ${k}`).join(', ')}. Flags (not failures): ${Object.entries(s.evidence.flags).map(([k, v]) => `${k} ${v}`).join(', ')}.
@@ -352,8 +353,8 @@ Evidence each AI alternative's hypotheses need: ${Object.entries(s.evidence.burd
 ${stabilityText(s.stability)}
 
 ${distanceMarkdown(s.distance)}
-## Ten AI alternatives with the highest best-field Fit × Novelty
-${top.map((r, i) => `${i + 1}. **${r.title}** (${r.id}). ${fieldLabel[r.bestField]}, Fit ${fmt(r.bestFit)}, Novelty ${fmt(r.novelty)}${r.distanceFromOriginal == null ? '' : `, distance from focal paper ${fmt(r.distanceFromOriginal)}`}; ${r.theory}; ${r.familyVsOriginal || 'not compared'}, ${r.componentsReplaced ?? '–'} of 7 parts replaced; needs ${r.burden}.\n   ${r.differenceSummary}`).join('\n')}
+## Ten AI alternatives with the highest best-field overall fit × novelty
+${top.map((r, i) => `${i + 1}. **${r.title}** (${r.id}). ${fieldLabel[r.bestField]}, overall fit ${fmt(r.bestFit)}, novelty ${fmt(r.novelty)}${r.distanceFromOriginal == null ? '' : `, distance from focal paper ${fmt(r.distanceFromOriginal)}`}; ${r.theory}; ${r.familyVsOriginal || 'not compared'}, ${r.componentsReplaced ?? '–'} of 7 parts replaced; needs ${r.burden}.\n   ${r.differenceSummary}`).join('\n')}
 
 ## Cost of this run
 | Stage | Calls | Input tokens | Cache reads | Output tokens | Cost | Avg seconds |

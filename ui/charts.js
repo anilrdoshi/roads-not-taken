@@ -187,12 +187,12 @@ export function convergenceStrip({alternatives, fields, onSelect}) {
 }
 
 // ---------- Where could it go? ----------
-// For each field: the paper's own fit, every run aimed at that field, and the best of them.
+// For each field: the paper's own overall fit, every run aimed at that field, and the best of them.
 export function fieldReach({fields, alternatives, original, onSelect}) {
   const rowH = 58, left = 200, plotW = 430, right = 250, top = 22;
   const width = left + plotW + right, height = top + fields.length * rowH + 30;
   const x = value => left + value * plotW;
-  const root = s('svg', {viewBox: `0 0 ${width} ${height}`, width, height, role: 'group', 'aria-label': 'Fit to each field: the focal paper and the AI alternatives aimed at that field'});
+  const root = s('svg', {viewBox: `0 0 ${width} ${height}`, width, height, role: 'group', 'aria-label': 'Overall fit in each field: the focal paper and the AI alternatives aimed at that field'});
   const grid = s('g', {class: 'grid'});
   for (const t of [0, 0.25, 0.5, 0.75, 1]) {
     grid.append(s('line', {x1: x(t), x2: x(t), y1: top - 10, y2: height - 26}));
@@ -215,7 +215,7 @@ export function fieldReach({fields, alternatives, original, onSelect}) {
         s('circle', {class: 'hit', r: 12}),
         s('circle', {class: `dot${isBest ? '' : ' hollow'}`, r: isBest ? 7 : 5, fill: fieldColor(field.id), stroke: isBest ? null : fieldColor(field.id)}));
       if (!isBest) mark.querySelector('.dot').style.stroke = fieldColor(field.id);
-      bindMark(mark, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}, fit ${fmt(value)}`});
+      bindMark(mark, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}, overall fit ${fmt(value)}`});
       root.append(mark);
     }
     if (own !== undefined) {
@@ -266,7 +266,7 @@ export function theoryChart({alternatives, fields, homeField, original, onSelect
   const rowH = 28, left = 230, plotW = 470, top = 34;
   const width = left + plotW + 40, height = top + rows.length * rowH + 28;
   const x = value => left + value * plotW;
-  const root = s('svg', {viewBox: `0 0 ${width} ${height}`, width, height, role: 'group', 'aria-label': 'Fit of each theory run'});
+  const root = s('svg', {viewBox: `0 0 ${width} ${height}`, width, height, role: 'group', 'aria-label': 'Overall fit of each theory run'});
   const grid = s('g', {class: 'grid'});
   for (const t of [0, 0.25, 0.5, 0.75, 1]) {
     grid.append(s('line', {x1: x(t), x2: x(t), y1: top - 8, y2: height - 22}));
@@ -288,7 +288,7 @@ export function theoryChart({alternatives, fields, homeField, original, onSelect
     if (bestField !== homeField) row.append(s('line', {class: 'connector', x1: x(home), x2: x(best), y1: y, y2: y}));
     row.append(s('circle', {class: 'dot', cx: x(home), cy: y, r: 6, fill: fieldColor(homeField)}));
     if (bestField !== homeField) row.append(s('circle', {class: 'dot', cx: x(best), cy: y, r: 6, fill: fieldColor(bestField)}));
-    bindMark(row, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.target}: fit ${fmt(home)} in ${fields.find(f => f.id === homeField).label}`});
+    bindMark(row, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.target}: overall fit ${fmt(home)} in ${fields.find(f => f.id === homeField).label}`});
     root.append(row);
   });
   return root;
@@ -296,7 +296,7 @@ export function theoryChart({alternatives, fields, homeField, original, onSelect
 
 // ---------- Distance (embeddings) ----------
 // Distance comes from text embeddings with no model judgement. These charts keep it apart from
-// Claude's Fit and Novelty and set it beside Claude's own comparisons.
+// Claude's overall fit and novelty and set it beside Claude's own comparisons.
 export const pct = value => value === null || value === undefined ? '–' : String(Math.round(value));
 
 function distanceTooltip(alt, fields) {
@@ -318,7 +318,7 @@ function neighbourTooltip(alt, fields) {
   return h('div', null,
     h('div', {class: 'tt-row'}, h('span', {class: 'muted'}, 'AI alternative')),
     h('div', {class: 'tt-title'}, alt.outline.title),
-    h('div', {class: 'tt-row'}, h('span', {class: 'tt-key', style: {background: fieldColor(alt.score?.bestField)}}), 'Fits best (Fit):', h('b', null, label(alt.score?.bestField))),
+    h('div', {class: 'tt-row'}, h('span', {class: 'tt-key', style: {background: fieldColor(alt.score?.bestField)}}), 'Fits best (overall fit):', h('b', null, label(alt.score?.bestField))),
     h('div', {class: 'tt-row'}, 'Its nearest published papers:', h('b', null, shares.map(([id, share]) => `${label(id)} ${Math.round(share * 100)}%`).join(', ')))
   );
 }
@@ -422,7 +422,7 @@ export function neighbourAgreement({fields, alternatives, onSelect}) {
   const measured = alternatives.filter(alt => alt.distance && alt.score);
   const columns = fields;
   const grid = h('div', {class: 'aim-grid', role: 'group', 'aria-label': "AI alternatives by Claude's best field and by the field of their nearest published papers", style: {gridTemplateColumns: `minmax(130px, 1.2fr) repeat(${columns.length}, minmax(84px, 1fr))`}},
-    h('div', {class: 'aim-corner'}, h('span', null, 'Fits best (Fit) ↓'), h('span', null, 'Its nearest published papers (Distance) →')),
+    h('div', {class: 'aim-corner'}, h('span', null, 'Fits best (overall fit) ↓'), h('span', null, 'Its nearest published papers (distance) →')),
     columns.map(field => h('div', {class: 'aim-col'}, h('i', {class: 'swatch', style: {background: fieldColor(field.id)}}), field.label)));
   for (const row of fields) {
     const inRow = measured.filter(alt => alt.score.bestField === row.id);
@@ -443,11 +443,11 @@ export function neighbourAgreement({fields, alternatives, onSelect}) {
 }
 
 // ---------- Two measures against each other ----------
-// Fit and Novelty are Claude's scores in the field where a paper fits best. Distance is the
+// Overall fit and novelty are Claude's scores in the field where a paper fits best. Distance is the
 // embedding measure for that same field: distance from its published papers in the corpus, as a percentile.
 // Each getter takes an AI alternative, or the focal paper as {score, distance}.
 export const MEASURES = {
-  fit: {label: 'Fit', axis: 'Fit in the field where it fits best', short: 'Fit (best field)', get: p => p.score?.fit[p.score.bestField]?.score ?? null, scale: 1, format: fmt},
+  fit: {label: 'Overall fit', axis: 'Overall fit in the field where it fits best', short: 'Overall fit (best field)', get: p => p.score?.fit[p.score.bestField]?.score ?? null, scale: 1, format: fmt},
   novelty: {label: 'Novelty', axis: 'Novelty within that field', short: 'Novelty (best field)', get: p => p.score?.novelty.score ?? null, scale: 1, format: fmt},
   distance: {label: 'Distance', axis: 'Distance from the published corpus in that field (percentile)', short: 'Distance from published corpus (pct.)', get: p => p.distance?.toPublishedPercentile?.[p.score?.bestField] ?? null, scale: 100, format: pct}
 };
@@ -498,7 +498,7 @@ export function measureTrio({alternatives, fields, original, passes, onSelect, p
     const x = v => m.l + (v - x0) / (x1 - x0) * (width - m.l - m.r);
     const y = v => height - m.b - (v - y0) / (y1 - y0) * (height - m.t - m.b);
     const tick = (v, scale) => scale === 1 ? v.toFixed(1) : String(Math.round(v));
-    const root = s('svg', {viewBox: `0 0 ${width} ${height}`, width, height, role: 'group', 'aria-label': `${X.label} against ${Y.label}`});
+    const root = s('svg', {viewBox: `0 0 ${width} ${height}`, width, height, role: 'group', 'aria-label': `${X.label} against ${Y.label.toLowerCase()}`});
     const grid = s('g', {class: 'grid'});
     for (let t = x0; t <= x1 + xStep / 100; t += xStep) {
       grid.append(s('line', {x1: x(t), x2: x(t), y1: m.t, y2: height - m.b}));
@@ -529,7 +529,7 @@ export function measureTrio({alternatives, fields, original, passes, onSelect, p
       const mark = s('g', {class: 'mark', transform: `translate(${x(X.get(alt)) + dx} ${y(Y.get(alt)) + dy})`},
         s('circle', {class: 'hit', r: 9}),
         s('circle', {class: 'dot', r: 5, fill: fieldColor(alt.score.bestField)}));
-      bindMark(mark, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}: ${X.label} ${X.format(X.get(alt))}, ${Y.label} ${Y.format(Y.get(alt))}`});
+      bindMark(mark, {id: alt.id, tooltip: () => altTooltip(alt, fields), onSelect: () => onSelect(alt), label: `${alt.outline.title}: ${X.label.toLowerCase()} ${X.format(X.get(alt))}, ${Y.label.toLowerCase()} ${Y.format(Y.get(alt))}`});
       for (const type of ['pointerenter', 'focus']) mark.addEventListener(type, () => link(alt.id));
       for (const type of ['pointerleave', 'blur']) mark.addEventListener(type, () => link(null));
       if (!byId.has(alt.id)) byId.set(alt.id, []);
@@ -546,7 +546,7 @@ export function measureTrio({alternatives, fields, original, passes, onSelect, p
       root.append(s('path', {class: 'paper-mark', d: star}));
     }
     const rho = h('p', {class: 'trio-rho'});
-    const figure = h('figure', {class: 'trio-plot'}, h('figcaption', null, `${X.label} vs ${Y.label}`), root, rho);
+    const figure = h('figure', {class: 'trio-plot'}, h('figcaption', null, `${X.label} vs ${Y.label.toLowerCase()}`), root, rho);
     const update = () => {
       const shown = marks.filter(({alt, mark}) => { mark.classList.toggle('faded', !passes(alt)); return passes(alt); }).map(({alt}) => alt);
       const r = rankCorrelation(shown.map(X.get), shown.map(Y.get));

@@ -13,7 +13,7 @@ export const VECTORS_FILE = path.join(ROOT, 'corpus/embeddings.bin');
 export const VECTORS_META = path.join(ROOT, 'corpus/embeddings.json');
 
 // The corpus build leaves out records with shorter abstracts (most have none), so every published
-// paper takes part in embedding retrieval and Distance, which compare abstract with abstract.
+// paper takes part in embedding retrieval and distance, which compare abstract with abstract.
 export const MIN_ABSTRACT_CHARS = 100;
 export const hasAbstract = record => String(record.abstract || '').length >= MIN_ABSTRACT_CHARS;
 

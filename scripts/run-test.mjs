@@ -38,9 +38,9 @@ const llm = await new Llm({budgetFile: path.join(caseDir, 'budget.json'), budget
 const startSpend = llm.spentUsd;
 console.log(`${tasks.length} AI alternatives planned for ${values.case}. Spent so far on this case: $${startSpend.toFixed(2)} of $${llm.budgetUsd}.`);
 const corpus = Corpus.load();
-// With the corpus embeddings built, scoring uses hybrid retrieval and the run gets the Distance measures.
+// With the corpus embeddings built, scoring uses hybrid retrieval and the run gets the distance measures.
 const embedder = corpus.vectors ? await new Embedder().init() : null;
-if (!embedder) console.log('No corpus embeddings: scoring retrieves by BM25 only. Run `npm run build-embeddings` to add embedding retrieval and Distance.');
+if (!embedder) console.log('No corpus embeddings: scoring retrieves by BM25 only. Run `npm run build-embeddings` to add embedding retrieval and distance.');
 const result = await runTest({caseDir, testDir, llm, corpus, embedder, tasks, scoreReplicates: Number(values.replicates)});
 if (embedder && !result.stoppedAt) await computeDistance({caseDir, testDir, corpus, embedder});
 await buildReport({caseDir, testDir});

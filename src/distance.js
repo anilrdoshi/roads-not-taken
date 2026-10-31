@@ -1,5 +1,5 @@
 // Distance: measures from text embeddings (cosine distance), with no model judgement. They are
-// kept apart from Claude's Novelty and Fit and named so they cannot be mistaken for them:
+// kept apart from Claude's novelty and fit scores and named so they cannot be mistaken for them:
 // 1. distance from the original: how far each alternative's text moved from the original's;
 // 2. distance from published work: a paper's mean distance to its nearest published articles in
 //    each field, and that distance as a percentile of published articles' own distances to their

@@ -46,8 +46,8 @@ async function bundle(caseId) {
   return state.bundles.get(caseId);
 }
 
-// Bundles built before Fit had two parts carry Field fit as `fit`: read it as Field fit, with no
-// Evidence fit and so no Fit, until npm run build-explorer rebuilds them.
+// Bundles built before overall fit had two parts carry field fit as `fit`: read it as field fit, with
+// no evidence fit and so no overall fit, until npm run build-explorer rebuilds them.
 function withFitParts(data) {
   const upgrade = score => {
     if (!score || score.fieldFit) return;
@@ -119,8 +119,8 @@ const yearOf = year => String(year ?? '').match(/\b(19|20)\d{2}\b/)?.[0] || year
 // the run-type chips only fade dots on the map and the scatter plots.
 const shownOnResults = alt => (bestFit(alt) ?? 0) >= state.minFit && !(state.dropMisstated && alt.review?.verdict === 'contradicts');
 const passes = alt => state.kinds.has(alt.kind);
-// The report's rule: a different paper, consistent with the evidence, whose Fit in its best field is
-// at least the focal paper's less scoring noise (summary.distinctPapers.bar).
+// The report's rule: a different paper, consistent with the evidence, whose overall fit in its best
+// field is at least the focal paper's less scoring noise (summary.distinctPapers.bar).
 const isDistinct = (alt, rule) => rule?.available && alt.review?.family === 'different-paper' && alt.review?.verdict === 'consistent' && (bestFit(alt) ?? -1) >= rule.bar - 1e-9;
 // Selecting an AI alternative in a Results panel highlights it in every panel and names it in a
 // small pane; selecting the pane, or the same AI alternative again, opens it in full.
@@ -133,10 +133,10 @@ function section(title, lede, ...body) {
 }
 
 // Tags after a panel title naming the measures its chart plots. Each links to that measure's
-// entry on the Measures tab. Fit and Novelty are Claude's scores, Distance is the embedding
+// entry on the Measures tab. Overall fit and novelty are Claude's scores, distance is the embedding
 // measure, and Claude's comparison comes from the review call.
 const MEASURE_TAGS = {
-  fit: ['Fit', "Claude's Fit in a field: the geometric mean of Field fit (does it belong in the field?) and Evidence fit (does its theory predict the evidence?)"],
+  fit: ['Overall fit', "Claude's overall fit in a field: the geometric mean of field fit (does it belong in the field?) and evidence fit (does its theory predict the evidence?)"],
   novelty: ['Novelty', "Claude's score for how new the focal paper or an AI alternative is within its best field"],
   distance: ['Distance', 'Text-embedding measure, no model judgement'],
   comparison: ["Claude's comparison", "Claude's review of each AI alternative against the focal paper: same paper, close variant or different paper"]
@@ -163,14 +163,14 @@ const legendMark = (shape, label) => h('span', null, s('svg', {width: 14, height
 
 function renderResults(data) {
   const output = h('output', null, fmt(state.minFit));
-  const range = h('input', {type: 'range', min: '0', max: '0.95', step: '0.05', value: String(state.minFit), 'aria-label': 'Minimum fit'});
+  const range = h('input', {type: 'range', min: '0', max: '0.95', step: '0.05', value: String(state.minFit), 'aria-label': 'Minimum overall fit'});
   const body = h('div');
   let pending = false;
   const draw = () => {
     pending = false;
     const shown = {...data, alternatives: data.alternatives.filter(shownOnResults)};
     body.replaceChildren(shown.alternatives.length ? resultsBody(shown, data)
-      : h('p', {class: 'lede'}, `No AI alternative has a fit of ${fmt(state.minFit)} or higher in its best field${state.dropMisstated ? ' without misstating a reported result' : ''}.`));
+      : h('p', {class: 'lede'}, `No AI alternative has an overall fit of ${fmt(state.minFit)} or higher in its best field${state.dropMisstated ? ' without misstating a reported result' : ''}.`));
   };
   const redraw = () => { if (!pending) { pending = true; requestAnimationFrame(draw); } };
   range.addEventListener('input', () => {
@@ -184,13 +184,13 @@ function renderResults(data) {
   draw();
   return h('div', null,
     h('div', {class: 'results-intro'}, h('p', null,
-      `These results rely on three measures to understand how the focal paper compares to ${data.alternatives.length} AI alternatives: ${data.summary.distance ? 'fit, novelty and distance' : 'fit and novelty'}. Each is described in more detail on the `,
+      `These results rely on three measures to understand how the focal paper compares to ${data.alternatives.length} AI alternatives: ${data.summary.distance ? 'overall fit, novelty and distance' : 'overall fit and novelty'}. Each is described in more detail on the `,
       h('a', {href: `#/${state.caseId}/measures`}, 'Measures'), ' tab. Note that these are not meant to show ', h('em', null, 'better'),
       ' AI alternatives: more novel does not mean better. They show one indication of the space of possibilities and where the focal paper is placed within that space.')),
     h('div', {class: 'filters min-fit', role: 'group', 'aria-label': 'Filters for every panel below'},
       h('div', {class: 'filter-line'},
-        h('label', {class: 'group slider'}, h('span', {class: 'group-label'}, 'Minimum fit'), range, output),
-        h('span', {class: 'small muted'}, `Shows only AI alternatives whose Fit in their best field is at least this value.${data.original?.fit?.[data.original.bestField]?.score != null ? ` The focal paper's is ${fmt(data.original.fit[data.original.bestField].score)}.` : ''}`)),
+        h('label', {class: 'group slider'}, h('span', {class: 'group-label'}, 'Minimum overall fit'), range, output),
+        h('span', {class: 'small muted'}, `Shows only AI alternatives whose overall fit in their best field is at least this value.${data.original?.fit?.[data.original.bestField]?.score != null ? ` The focal paper's is ${fmt(data.original.fit[data.original.bestField].score)}.` : ''}`)),
       h('div', {class: 'filter-line'},
         h('label', {class: 'group check'}, drop, h('span', {class: 'group-label'}, `Exclude AI alternatives that misstate a reported result (${misstated} of ${data.alternatives.length})`)),
         h('span', {class: 'small muted'}, 'Both filters apply to every panel and count below.'))),
@@ -215,11 +215,11 @@ function resultsBody(data, all) {
   filters.append(kinds);
 
   const map = possibilityMap({alternatives: data.alternatives, fields: data.fields, homeField: data.homeField, passes, onSelect: select});
-  // Bundles built before Distance was measured offer only Fit and Novelty.
+  // Bundles built before distance was measured offer only overall fit and novelty.
   const pairs = [['fit', 'novelty'], ['fit', 'distance'], ['novelty', 'distance']].filter(pair => !pair.includes('distance') || data.summary.distance);
   const trio = measureTrio({alternatives: data.alternatives, fields: data.fields, original: data.original, passes, onSelect: select, pairs});
   const distinctAnswer = h('div', {class: 'answer'});
-  const answers = h('div', {class: 'answers'}, h('h2', null, data.alternatives.length === all.alternatives.length ? `${all.alternatives.length} AI alternatives built on the focal paper's evidence` : `${data.alternatives.length} of ${all.alternatives.length} AI alternatives shown: ${[state.minFit > 0 ? `fit ${fmt(state.minFit)} or higher` : null, state.dropMisstated ? 'none misstating a reported result' : null].filter(Boolean).join(', ')}`), ...headlineAnswers(data), distinctAnswer);
+  const answers = h('div', {class: 'answers'}, h('h2', null, data.alternatives.length === all.alternatives.length ? `${all.alternatives.length} AI alternatives built on the focal paper's evidence` : `${data.alternatives.length} of ${all.alternatives.length} AI alternatives shown: ${[state.minFit > 0 ? `overall fit ${fmt(state.minFit)} or higher` : null, state.dropMisstated ? 'none misstating a reported result' : null].filter(Boolean).join(', ')}`), ...headlineAnswers(data), distinctAnswer);
 
   function refresh() {
     map.update();
@@ -230,15 +230,15 @@ function resultsBody(data, all) {
       h('span', {class: 'figure'}, rule?.available ? String(count) : '–'),
       h('strong', null, 'distinct AI alternatives'),
       h('p', null, rule?.available
-        ? `AI alternatives that Claude's comparison places as a different paper from the focal paper, that are consistent with its reported results, and whose Fit in their best field is at least the focal paper's Fit (${fmt(rule.originalFit)}) less scoring noise (${rule.margin.toFixed(3)}). The count follows the minimum-fit slider and the run types shown.`
-        : 'Not available until Evidence fit has been scored, since the count compares each AI alternative\'s Fit with the focal paper\'s.'));
+        ? `AI alternatives that Claude's comparison places as a different paper from the focal paper, that are consistent with its reported results, and whose overall fit in their best field is at least the focal paper's overall fit (${fmt(rule.originalFit)}) less scoring noise (${rule.margin.toFixed(3)}). The count follows the minimum-fit slider and the run types shown.`
+        : 'Not available until evidence fit has been scored, since the count compares each AI alternative\'s overall fit with the focal paper\'s.'));
   }
   refresh();
 
   const table = () => dataTable([
     {key: 'title', label: 'AI alternative', className: 'title-cell'},
     {key: 'field', label: 'Fits best'},
-    {key: 'fit', label: 'Fit', num: true},
+    {key: 'fit', label: 'Overall fit', num: true},
     {key: 'novelty', label: 'Novelty', num: true},
     data.summary.distance ? {key: 'distance', label: 'Distance (percentile)', num: true, render: r => pct(r.distance)} : null,
     {key: 'parts', label: 'Parts replaced', num: true, render: r => String(r.parts ?? '–')}
@@ -260,7 +260,7 @@ function resultsBody(data, all) {
           h('p', {class: 'map-caption'}, 'Each dot is an AI alternative. It sits in the sector of the field it fits best; the farther from the center, the more of the focal paper\'s parts it replaced. Select a dot to highlight it in every panel; select it again, or the box that appears, to read it.'),
           fieldLegend(data)),
         answers),
-      section([pairs.length > 1 ? 'Fit, Novelty and Distance' : 'Fit and Novelty', measureTags(pairs.length > 1 ? ['fit', 'novelty', 'distance'] : ['fit', 'novelty'])],
+      section([pairs.length > 1 ? 'Overall fit, novelty and distance' : 'Overall fit and novelty', measureTags(pairs.length > 1 ? ['fit', 'novelty', 'distance'] : ['fit', 'novelty'])],
         `Every AI alternative, and the focal paper, each in the field where it fits best, with each pair of measures plotted against each other.${pairs.length > 1 ? " Distance here is distance from that field's published papers in the corpus." : ''} Point at a dot to find the same AI alternative in every plot. The rank correlation counts the run types shown and leaves out the focal paper.`,
         h('div', {class: 'panel'}, withTableToggle(trio.node, table), fieldLegend(data, legendMark('star', 'Focal paper')))),
       distanceSections(data)),
@@ -275,7 +275,7 @@ function resultsBody(data, all) {
           const row = fieldRuns.filter(a => a.targetId === aim.id);
           return {aim: aim.label, total: row.length, ...Object.fromEntries(data.fields.map(f => [f.id, String(row.filter(a => a.score.bestField === f.id).length)]))};
         }))))),
-      section(['Fit of focal paper and field run AI alternatives in each field', measureTags(['fit', 'comparison'])],'For each field: the focal paper\'s fit, and the fit of each run aimed at that field. The right-hand column shows how many parts the highest-fit run replaced and what evidence it needs.',
+      section(['Overall fit of focal paper and field run AI alternatives in each field', measureTags(['fit', 'comparison'])],'For each field: the focal paper\'s overall fit, and the overall fit of each run aimed at that field. The right-hand column shows how many parts the highest-fit run replaced and what evidence it needs.',
         h('div', {class: 'panel'}, withTableToggle(fieldReach({fields: data.fields, alternatives: data.alternatives, original: data.original, onSelect: select}), () => dataTable([
           {key: 'label', label: 'Field'}, {key: 'own', label: 'Focal paper', num: true}, {key: 'mean', label: 'Mean of runs aimed here', num: true}, {key: 'best', label: 'Highest-fit run aimed here', num: true},
           {key: 'parts', label: 'Parts replaced', num: true, render: r => String(r.parts ?? '–')}, {key: 'burden', label: 'Needs'}
@@ -285,16 +285,16 @@ function resultsBody(data, all) {
           h('span', null, h('i', {class: 'swatch', style: {background: 'var(--ink-2)'}}), 'Highest-fit run aimed at the field'),
           h('span', null, h('i', {class: 'swatch', style: {background: 'var(--surface)', boxShadow: 'inset 0 0 0 2px var(--ink-2)'}}), 'Other runs aimed at it'))))),
     runGroup('Theory runs', runCount('theory'), `One run per theory, each told to build an AI alternative on that theory and write for ${homeLabel.toLowerCase()}.`,
-      section(['Fit of each theory run', measureTags(['fit'])],`Each row is one AI alternative. The first dot is its fit in ${homeLabel.toLowerCase()}, the field it was written for. ${theoryElsewhere.length} of ${theoryRuns.length} have a higher fit in another field; for those, a second dot in that field's color shows the fit there, joined to the first by a line.`,
+      section(['Overall fit of each theory run', measureTags(['fit'])],`Each row is one AI alternative. The first dot is its overall fit in ${homeLabel.toLowerCase()}, the field it was written for. ${theoryElsewhere.length} of ${theoryRuns.length} have a higher overall fit in another field; for those, a second dot in that field's color shows the overall fit there, joined to the first by a line.`,
         h('div', {class: 'panel'}, withTableToggle(theoryChart({alternatives: data.alternatives, fields: data.fields, homeField: data.homeField, original: data.original, onSelect: select}), () => dataTable([
-          {key: 'theory', label: 'Theory'}, {key: 'home', label: `Fit in ${homeLabel}`, num: true}, {key: 'homeField', label: `Field fit in ${homeLabel}`, num: true}, {key: 'evidence', label: 'Evidence fit', num: true},
-          {key: 'bestField', label: 'Fits best'}, {key: 'best', label: 'Best fit', num: true}, {key: 'novelty', label: 'Novelty', num: true}
+          {key: 'theory', label: 'Theory'}, {key: 'home', label: `Overall fit in ${homeLabel}`, num: true}, {key: 'homeField', label: `Field fit in ${homeLabel}`, num: true}, {key: 'evidence', label: 'Evidence fit', num: true},
+          {key: 'bestField', label: 'Fits best'}, {key: 'best', label: 'Best overall fit', num: true}, {key: 'novelty', label: 'Novelty', num: true}
         ], runsOf('theory').map(alt => ({id: alt.id, theory: alt.target, home: alt.score?.fit[data.homeField]?.score, homeField: alt.score?.fieldFit?.[data.homeField]?.score, evidence: alt.score?.evidenceFit?.score, bestField: fieldLabel(data, alt.score?.bestField), best: bestFit(alt), novelty: alt.score?.novelty.score})), {onRow: selectRow})),
           theoryLegend(data, theoryElsewhere))))
   );
 }
 
-// The Distance panels for All runs. Distance is a model-free measure, so each panel says so and
+// The distance panels for All runs. Distance is a model-free measure, so each panel says so and
 // sets it beside Claude's judgements rather than merging it into them.
 function distanceSections(data) {
   const dist = data.summary.distance;
@@ -313,7 +313,7 @@ function distanceSections(data) {
       h('div', {class: 'panel'}, withTableToggle(distanceFromOriginal({alternatives: data.alternatives, fields: data.fields, referenceMedian: dist.referenceMedian?.all, onSelect: select}), () => dataTable([
         {key: 'title', label: 'AI alternative', className: 'title-cell'}, {key: 'family', label: "Claude's comparison"}, {key: 'parts', label: 'Parts replaced', num: true, render: r => String(r.parts ?? '–')}, {key: 'distance', label: 'Distance from focal paper', num: true}
       ], measured.map(alt => ({id: alt.id, title: alt.outline.title, family: familyText(alt.review?.family), parts: alt.partsReplaced, distance: alt.distance.fromOriginal})), {onRow: selectRow})), fieldLegend(data, legendMark('line', 'Mean of the group')))),
-    section(['Distance of focal paper and AI alternatives from published papers in each field', measureTags(['distance'])], `The distance of the focal paper and of each AI alternative from the published papers in each field of the corpus, as a percentile: 50 is the typical published paper in that field, higher is further away. Each AI alternative appears once in every row.${rho === null ? '' : ` In each AI alternative's best field, this and Claude's Novelty ${rho <= -0.3 ? 'tend to disagree' : rho < 0.3 ? 'are largely unrelated' : rho < 0.6 ? 'agree only loosely' : 'mostly agree'} (rank correlation ${fmt(rho)}).`}`,
+    section(['Distance of focal paper and AI alternatives from published papers in each field', measureTags(['distance'])], `The distance of the focal paper and of each AI alternative from the published papers in each field of the corpus, as a percentile: 50 is the typical published paper in that field, higher is further away. Each AI alternative appears once in every row.${rho === null ? '' : ` In each AI alternative's best field, this and Claude's novelty ${rho <= -0.3 ? 'tend to disagree' : rho < 0.3 ? 'are largely unrelated' : rho < 0.6 ? 'agree only loosely' : 'mostly agree'} (rank correlation ${fmt(rho)}).`}`,
       h('div', {class: 'panel'}, withTableToggle(distanceFromPublished({alternatives: data.alternatives, fields: data.fields, original: data.original, onSelect: select}), () => dataTable([
         {key: 'label', label: 'Field'}, {key: 'own', label: 'Focal paper (percentile)', num: true, render: r => pct(r.own)}, {key: 'median', label: "AI alternatives' median", num: true, render: r => pct(r.median)}
       ], percentileRows.map(f => ({label: f.label, own: dist.original?.toPublishedPercentile?.[f.id], median: median(measured.map(alt => alt.distance.toPublishedPercentile?.[f.id]))})))), fieldLegend(data, legendMark('diamond', 'Focal paper'), legendMark('line', "AI alternatives' median")))),
@@ -342,14 +342,14 @@ function theoryLegend(data, elsewhere) {
     s('circle', {cx: 7, cy: 7, r: 5, fill: fieldColor(data.homeField)}),
     s('circle', {cx: 33, cy: 7, r: 5, fill: 'var(--muted)'}));
   return h('div', {class: 'legend', style: {marginTop: '12px'}},
-    h('span', null, h('i', {class: 'swatch', style: {background: fieldColor(data.homeField)}}), `Fit in ${homeLabel}`),
-    h('span', null, pair, 'Higher fit in another field: fit there'),
+    h('span', null, h('i', {class: 'swatch', style: {background: fieldColor(data.homeField)}}), `Overall fit in ${homeLabel}`),
+    h('span', null, pair, 'Higher overall fit in another field: overall fit there'),
     others.map(f => h('span', null, h('i', {class: 'swatch', style: {background: fieldColor(f.id)}}), f.label)),
-    h('span', null, s('svg', {width: 10, height: 14, viewBox: '0 0 10 14', style: 'margin-right:6px'}, s('line', {x1: 5, x2: 5, y1: 0, y2: 14, stroke: 'var(--ink)', 'stroke-width': 1.5})), `The focal paper's fit in ${homeLabel}`));
+    h('span', null, s('svg', {width: 10, height: 14, viewBox: '0 0 10 14', style: 'margin-right:6px'}, s('line', {x1: 5, x2: 5, y1: 0, y2: 14, stroke: 'var(--ink)', 'stroke-width': 1.5})), `The focal paper's overall fit in ${homeLabel}`));
 }
 
-// For each field: the paper's fit, and the mean and highest fit there among the shown runs aimed at
-// it. The same rule as the report's field reach, applied to the alternatives the slider leaves.
+// For each field: the paper's overall fit, and the mean and highest overall fit there among the shown
+// runs aimed at it. The same rule as the report's field reach, applied to the alternatives the slider leaves.
 function fieldReachRows(data) {
   return data.fields.map(field => {
     const fitIn = alt => alt.score?.fit[field.id]?.score ?? null;
@@ -375,13 +375,13 @@ function headlineAnswers(data) {
   const homeAnswer = home && home.originalFit !== null && homeFieldAnswer(data, home, homeLabel);
   if (homeAnswer) list.push(answer(...homeAnswer));
   if (other) {
-    list.push(answer(`Highest fit among runs aimed at another field`, `${other.label}: ${fmt(other.bestAimed.fit)} (the focal paper: ${fmt(other.originalFit)}). That run replaced ${other.bestAimed.componentsReplaced} of the focal paper's ${data.parts.length} parts and needs ${other.bestAimed.burden}.`));
+    list.push(answer(`Highest overall fit among runs aimed at another field`, `${other.label}: ${fmt(other.bestAimed.fit)} (the focal paper: ${fmt(other.originalFit)}). That run replaced ${other.bestAimed.componentsReplaced} of the focal paper's ${data.parts.length} parts and needs ${other.bestAimed.burden}.`));
   }
   return list;
 }
 
-// The paper's fit in its home field beside the highest fit there among alternatives consistent with the
-// evidence, and among runs aimed at that field. Reports the numbers only.
+// The paper's overall fit in its home field beside the highest overall fit there among alternatives
+// consistent with the evidence, and among runs aimed at that field. Reports the numbers only.
 function homeFieldAnswer(data, home, label) {
   const fitOf = alt => alt.score?.fit[data.homeField]?.score ?? null;
   const valid = data.alternatives.filter(alt => alt.review?.verdict === 'consistent' && fitOf(alt) !== null);
@@ -390,7 +390,7 @@ function homeFieldAnswer(data, home, label) {
   const names = valid.filter(alt => fitOf(alt) === top).map(alt => alt.kind === 'theory' ? alt.target : alt.kind === 'open' ? 'an open run'
     : `a run aimed at ${alt.target}`).join(' and ');
   const aimed = home.bestAimed ? ` Highest among runs aimed at the field: ${fmt(home.bestAimed.fit)}.` : '';
-  return [`Fit in ${label}`, `The focal paper: ${fmt(home.originalFit)}. Highest among AI alternatives: ${fmt(top)} (${names}).${aimed}`];
+  return [`Overall fit in ${label}`, `The focal paper: ${fmt(home.originalFit)}. Highest among AI alternatives: ${fmt(top)} (${names}).${aimed}`];
 }
 
 // ---------- The paper ----------
@@ -433,7 +433,7 @@ function renderPaper(data) {
 }
 
 // The measures the focal paper gets: everything from the scoring call and the text embeddings.
-// The review call's measures and Distance from the focal paper compare an AI alternative with it.
+// The review call's measures and distance from the focal paper compare an AI alternative with it.
 function focalMeasures(data) {
   const sc = data.original, d = sc?.distance, dist = data.summary.distance;
   if (!sc) return null;
@@ -509,16 +509,16 @@ function renderAlternatives(data) {
       (filters.family === 'all' || alt.review?.family === filters.family) &&
       (!filters.text || `${alt.outline.title} ${alt.outline.theory.primary} ${alt.target || ''}`.toLowerCase().includes(filters.text)));
     holder.replaceChildren(
-      h('p', {class: 'muted small'}, `${rows.length} of ${data.alternatives.length} AI alternatives. Select a row to read it.${scorings > 1 ? ` Fit, Evidence fit and Novelty show the mean of ${scorings} scorings, with each scoring beneath it.` : ''} Fit is the geometric mean of Field fit (best field) and Evidence fit${data.original?.fit?.[data.original.bestField]?.score != null ? `; the focal paper's is ${fmt(data.original.fit[data.original.bestField].score)}` : ''}. The Measures tab explains each column.`),
+      h('p', {class: 'muted small'}, `${rows.length} of ${data.alternatives.length} AI alternatives. Select a row to read it.${scorings > 1 ? ` Overall fit, evidence fit and novelty show the mean of ${scorings} scorings, with each scoring beneath it.` : ''} Overall fit is the geometric mean of field fit (best field) and evidence fit${data.original?.fit?.[data.original.bestField]?.score != null ? `; the focal paper's is ${fmt(data.original.fit[data.original.bestField].score)}` : ''}. The Measures tab explains each column.`),
       dataTable([
         {key: 'title', label: 'AI alternative', className: 'title-cell'},
         {key: 'run', label: 'Run', className: 'hide-sm'},
         {key: 'field', label: 'Fits best', render: r => h('span', null, h('i', {class: 'swatch', style: {background: fieldColor(r.fieldId)}}), r.field)},
-        {key: 'fit', label: 'Fit', num: true, render: r => scoreCell(r.fit, r.fitScores)},
+        {key: 'fit', label: 'Overall fit', num: true, render: r => scoreCell(r.fit, r.fitScores)},
         {key: 'fieldFit', label: 'Field fit', num: true, className: 'hide-sm'},
         {key: 'evidenceFit', label: 'Evidence fit', num: true, render: r => scoreCell(r.evidenceFit, r.evidenceScores)},
         {key: 'novelty', label: 'Novelty', num: true, render: r => scoreCell(r.novelty, r.noveltyScores)},
-        {key: 'fitVar', label: 'Fit variance', num: true, className: 'hide-md', render: r => fmtVariance(r.fitVar)},
+        {key: 'fitVar', label: 'Overall fit variance', num: true, className: 'hide-md', render: r => fmtVariance(r.fitVar)},
         {key: 'noveltyVar', label: 'Novelty variance', num: true, className: 'hide-md', render: r => fmtVariance(r.noveltyVar)},
         {key: 'family', label: 'Compared with the focal paper', className: 'hide-sm'},
         {key: 'parts', label: 'Parts replaced', num: true, render: r => String(r.parts ?? '–')},
@@ -563,10 +563,10 @@ function renderMeasures(data) {
     h('div', {class: 'mm-sources'},
       source('Claude', 'Scoring call', `The focal paper and each AI alternative, ${scorings > 1 ? `${scorings} times each` : 'once each'}. Claude reads the most similar published papers in the corpus from each field, found by word overlap${dist ? ' and text embeddings' : ''}, and is not told which is the focal paper.`,
         [item('field-fit', 'Field fit', '0 to 1, in each field'), item('novelty', 'Novelty', '0 to 1, in the field that scoring names best')],
-        ['field', 'Field it fits best', 'The field with the highest mean Field fit']),
+        ['field', 'Field it fits best', 'The field with the highest mean field fit']),
       source('Claude', 'Evidence-fit call', `The focal paper and each AI alternative, ${evidenceScorings > 1 ? `${evidenceScorings} times each` : 'once each'}, beside the study's reported evidence. Claude is not told which is the focal paper.`,
         [item('evidence-fit', 'Evidence fit', '0 to 1, the same in every field')],
-        ['fit', 'Fit', '√(Field fit × Evidence fit), in each field']),
+        ['fit', 'Overall fit', '√(field fit × evidence fit), in each field']),
       source('Claude', 'Review call', 'Each AI alternative once, beside the focal paper and its reported results. The focal paper is not reviewed, since it would be compared with itself.',
         [item('comparison', "Claude's comparison", 'Same paper, close variant or different paper'), item('part-ratings', 'Part ratings', `Unchanged to replaced, for each of ${data.parts.length} parts`), item('evidence', 'Evidence check', 'Consistent or misstates a result')],
         ['parts', 'Parts replaced', 'Count of parts rated “replaced”']),
@@ -575,37 +575,39 @@ function renderMeasures(data) {
     dist ? h('figcaption', null, h('strong', null, 'Model-free checks. '),
       h('a', {href: link('distance')}, 'Distance from the focal paper'), ' checks ', h('a', {href: link('comparison')}, "Claude's comparison"), '; ',
       h('a', {href: link('neighbours')}, 'field of the nearest published papers'), ' checks ', h('a', {href: link('field')}, 'field it fits best'), '; ',
-      h('a', {href: link('published')}, 'distance from the published corpus'), ' is shown beside ', h('a', {href: link('novelty')}, 'Novelty'), '. None feeds into the measure it checks.') : null);
+      h('a', {href: link('published')}, 'distance from the published corpus'), ' is shown beside ', h('a', {href: link('novelty')}, 'novelty'), '. None feeds into the measure it checks.') : null);
   const group = title => h('h2', {class: 'measure-group'}, title);
 
   return h('div', {class: 'prose measures'},
-    h('p', {class: 'lede'}, `Every measure comes from one of ${dist ? 'four' : 'three'} sources. Claude's scoring call scores the focal paper and every AI alternative, and its Evidence-fit call judges how well their theories predict the evidence, in both cases without being told which is the focal paper. Claude's review call compares each AI alternative with the focal paper, so its measures apply only to AI alternatives.${dist ? ' Text embeddings compare texts with no model judgement.' : ''} Three measures are derived from the others by a rule. The measured ones come first below, then the derived ones.`),
+    h('p', {class: 'lede'}, `Every measure comes from one of ${dist ? 'four' : 'three'} sources. Claude's scoring call scores the focal paper and every AI alternative, and its evidence-fit call judges how well their theories predict the evidence, in both cases without being told which is the focal paper. Claude's review call compares each AI alternative with the focal paper, so its measures apply only to AI alternatives.${dist ? ' Text embeddings compare texts with no model judgement.' : ''} Three measures are derived from the others by a rule. The measured ones come first below, then the derived ones.`),
     map,
 
     group('Measured in the scoring call'),
     entry('field-fit', 'Field fit', `Claude · 0 to 1 · scored for each of the ${data.fields.length} fields`,
       h('p', null, `Would editors and reviewers in a field see the focal paper, or an AI alternative, as belonging in their field, given its question, unit of analysis, theory, outcomes and evidence? The fields are ${fieldList}. For each field Claude gets a short description of it and the six most similar published papers in the corpus from that field's leading journals, published ${years}, found by word overlap and by similarity of meaning.`),
       scale(['0.90–1.00', 'A natural fit for the field'], ['0.70–0.89', 'Clearly positionable with some adjustment'], ['0.40–0.69', 'Could be positioned, but reviewers would ask why it belongs'], ['0.10–0.39', 'A poor fit'], ['0.00–0.09', 'Does not belong']),
+      h('p', null, 'The scale and its bands are in the prompt to guide Claude; the scores are not assumed to come back on that scale. The bands are there to draw out variation, so read field fit as relative: compare an AI alternative with the focal paper and with the other AI alternatives, not as an absolute position.'),
       h('p', null, scorings > 1
-        ? `The focal paper and every AI alternative are each scored ${scorings} times in separate calls, and the Field fit shown is the mean. Two scorings of the same one differ by ${fmt(stab.meanAbsFieldFitDifference)} on average; each scoring is shown under the mean on the AI alternatives tab.`
+        ? `The focal paper and every AI alternative are each scored ${scorings} times in separate calls, and the field fit shown is the mean. Two scorings of the same one differ by ${fmt(stab.meanAbsFieldFitDifference)} on average; each scoring is shown under the mean on the AI alternatives tab.`
         : 'The focal paper and each AI alternative were scored once in this run.'),
-      h('p', null, 'Field fit is one of the two parts of ', h('a', {href: link('fit')}, 'Fit'), '. On its own it cannot tell theories apart: an AI alternative built on the same evidence for the same field\'s audience belongs in that field whatever its theory.')),
+      h('p', null, 'Field fit is one of the two parts of ', h('a', {href: link('fit')}, 'overall fit'), '. On its own it cannot tell theories apart: an AI alternative built on the same evidence for the same field\'s audience belongs in that field whatever its theory.')),
 
     entry('novelty', 'Novelty', 'Claude · 0 to 1 · in the field it fits best',
-      h('p', null, 'How new the question or explanation of the focal paper, or of an AI alternative, is within the field it fits best, judged against the most similar published papers in the corpus from that field and Claude\'s knowledge of it. It is scored in the same call as Field fit, in the field that call names best.'),
+      h('p', null, 'How new the question or explanation of the focal paper, or of an AI alternative, is within the field it fits best, judged against the most similar published papers in the corpus from that field and Claude\'s knowledge of it. It is scored in the same call as field fit, in the field that call names best.'),
       scale(['0.90–1.00', 'A clearly new question or explanation'], ['0.70–0.89', 'A meaningful extension'], ['0.40–0.69', 'Incremental'], ['0.10–0.39', 'Largely done before'], ['0.00–0.09', 'Duplicates existing work']),
+      h('p', null, 'As with field fit, the bands guide Claude rather than fix where the scores fall, so read novelty relative to the focal paper and the other AI alternatives, not as an absolute position.'),
       h('p', null, scorings > 1
-        ? `The Novelty shown is the mean of the ${scorings} scorings, each in the field that scoring named best. Two scorings differ by ${fmt(stab.meanAbsNoveltyDifference)} on average.`
+        ? `The novelty shown is the mean of the ${scorings} scorings, each in the field that scoring named best. Two scorings differ by ${fmt(stab.meanAbsNoveltyDifference)} on average.`
         : 'The focal paper and each AI alternative were scored once in this run.')),
 
-    group('Measured in the Evidence-fit call'),
+    group('Measured in the evidence-fit call'),
     entry('evidence-fit', 'Evidence fit', 'Claude · 0 to 1 · one per paper, the same in every field',
       h('p', null, 'How well does the theory of the focal paper, or of an AI alternative, predict the study\'s reported results? In a call of its own, Claude reads the evidence the AI alternatives were built on and the paper\'s question, theory, mechanism, hypotheses, interpretation and contribution. It is not told which is the focal paper.'),
       h('p', null, 'It judges prediction, not accommodation. Every AI alternative is written with the results in view, so a hypothesis written to fit a result does not count: the question is whether someone who held the theory, knowing the setting and the design but not the results, would have expected them. Doubts about the data or the design are left out, since they apply to every theory alike, and misstating a result does not lower it by itself (the ', h('a', {href: link('evidence')}, 'evidence check'), ' records that). Claude places up to eight central results in one of four groups, and notes whether a rival explanation predicts each as well:'),
       scale(['Predicted', 'The theory\'s own logic implies it, without added assumptions'], ['Accommodated', 'The theory can take it in, but only with assumptions added for this setting'], ['Unexplained', 'The theory says nothing about it'], ['In tension', 'The theory leads one to expect something different']),
       scale(['0.90–1.00', 'Predicts the central results, some better than rival explanations'], ['0.70–0.89', 'Predicts most central results without added assumptions'], ['0.40–0.69', 'Predicts some; others need fitted hypotheses or added assumptions'], ['0.10–0.39', 'Mostly a label on results it does not predict'], ['0.00–0.09', 'Predicts the opposite, or explains none of them']),
       h('p', null, evidenceScorings
-        ? `The bar is strict, so read Evidence fit against the focal paper's${focalEvidence != null ? ` (${fmt(focalEvidence)})` : ''} rather than as an absolute level.${evidenceScorings > 1 ? ` The focal paper and every AI alternative are each judged ${evidenceScorings} times in separate calls, and the Evidence fit shown is the mean. Two judgements of the same one differ by ${fmt(stab?.meanAbsEvidenceFitDifference)} on average.` : ''}`
+        ? `The bands guide Claude rather than fix where the scores fall, and the bar is strict, so read evidence fit against the focal paper's${focalEvidence != null ? ` (${fmt(focalEvidence)})` : ''} and the other AI alternatives', not as an absolute level.${evidenceScorings > 1 ? ` The focal paper and every AI alternative are each judged ${evidenceScorings} times in separate calls, and the evidence fit shown is the mean. Two judgements of the same one differ by ${fmt(stab?.meanAbsEvidenceFitDifference)} on average.` : ''}`
         : 'Not scored for this case yet.')),
 
     group('Measured in the review call'),
@@ -632,20 +634,20 @@ function renderMeasures(data) {
     dist ? entry('published', 'Distance from the published corpus', 'Text embeddings · percentile · for each field',
       h('p', null, `For each field: the mean distance of the focal paper, or of an AI alternative, to its ${dist.settings.neighbours} nearest published papers in that field (of ${dist.corpusArticles.toLocaleString('en')} published papers in the corpus up to ${dist.corpusMaxYear}), as a percentile of the same distance for the published papers in that field (up to ${dist.settings.referenceSample.toLocaleString('en')} sampled per field).`),
       scale(['50', 'As far from its nearest published papers as the typical published paper in the field'], ['Above 50', 'Further from the field\'s published papers than most of them are from each other'], ['Below 50', 'Closer to the field\'s published papers than most of them are to each other']),
-      h('p', null, 'It is not Novelty: the focal paper or an AI alternative can sit among many published papers and still ask a new question. The panels show it beside Novelty so the two can be compared.')) : null,
+      h('p', null, 'It is not novelty: the focal paper or an AI alternative can sit among many published papers and still ask a new question. The panels show it beside novelty so the two can be compared.')) : null,
 
     dist ? entry('neighbours', 'Field of the nearest published papers', 'Text embeddings · one field',
       h('p', null, `Of the ${dist.settings.fieldNeighbours} published papers in the whole corpus nearest to the focal paper or an AI alternative, the field most over-represented relative to its share of the corpus. Taking shares into account keeps larger fields from winning only because they have more published papers.`),
       h('p', null, 'It is a model-free check on the field Claude says the focal paper or an AI alternative fits best; it is not used to assign the field.')) : null,
 
     group('Derived from other measures'),
-    entry('fit', 'Fit', 'A rule on Field fit and Evidence fit · 0 to 1 · in each field',
-      h('p', null, 'Fit in a field is the geometric mean of the paper\'s ', h('a', {href: link('field-fit')}, 'Field fit'), ' in that field and its ', h('a', {href: link('evidence-fit')}, 'Evidence fit'), ': √(Field fit × Evidence fit). A paper needs both to fit well. One that belongs squarely in a field cannot make up for a theory that does not predict the evidence, or the reverse. Evidence fit is the same in every field, so the field with the highest Fit is the field with the highest Field fit.'),
-      h('p', null, `Evidence fit is strict, so Fit sits below Field fit and does not read on Field fit's scale. Compare a paper's Fit with the focal paper's${focalFit != null ? ` (${fmt(focalFit)})` : ''}: a stricter Evidence fit lowers every paper's Fit by the same factor and leaves that comparison unchanged.${stab?.meanAbsFitDifference != null ? ` Two scorings of the same one differ by ${fmt(stab.meanAbsFitDifference)} in Fit on average.` : ''}`),
-      h('p', null, `Distinct AI alternatives are those Claude's comparison places as a different paper from the focal paper, consistent with its reported results, whose Fit in their best field is at least the focal paper's less scoring noise: two standard errors of the difference between two papers' mean Fit, from how much Fit varies between scorings of the same paper${summary.fitNoise ? ` (here ${summary.fitNoise.margin.toFixed(3)})` : ''}.`)),
+    entry('fit', 'Overall fit', 'A rule on field fit and evidence fit · 0 to 1 · in each field',
+      h('p', null, 'Overall fit in a field is the geometric mean of the paper\'s ', h('a', {href: link('field-fit')}, 'field fit'), ' in that field and its ', h('a', {href: link('evidence-fit')}, 'evidence fit'), ': √(field fit × evidence fit). A paper needs both to fit well. One that belongs squarely in a field cannot make up for a theory that does not predict the evidence, or the reverse. Evidence fit is the same in every field, so the field with the highest overall fit is the field with the highest field fit.'),
+      h('p', null, `Like its parts, overall fit is read as relative, not as an absolute position on a 0-to-1 scale. Evidence fit is strict, so overall fit sits below field fit and does not read on field fit's scale. Compare a paper's overall fit with the focal paper's${focalFit != null ? ` (${fmt(focalFit)})` : ''} and with the other AI alternatives': a stricter evidence fit lowers every paper's overall fit by the same factor and leaves those comparisons unchanged.${stab?.meanAbsFitDifference != null ? ` Two scorings of the same one differ by ${fmt(stab.meanAbsFitDifference)} in overall fit on average.` : ''}`),
+      h('p', null, `Distinct AI alternatives are those Claude's comparison places as a different paper from the focal paper, consistent with its reported results, whose overall fit in their best field is at least the focal paper's less scoring noise: two standard errors of the difference between two papers' mean overall fit, from how much overall fit varies between scorings of the same paper${summary.fitNoise ? ` (here ${summary.fitNoise.margin.toFixed(3)})` : ''}.`)),
 
-    entry('field', 'Field it fits best', 'A rule on Field fit, not a separate judgement',
-      h('p', null, `The field of the focal paper, or of an AI alternative, is the one with the highest mean Field fit, which is also where its Fit is highest. If two fields tie, it is the one the scorings named most often.${scorings > 1 && stab.bestFieldAgreement !== undefined ? ` Two scorings of the same one named the same best field ${Math.round(stab.bestFieldAgreement * 100)}% of the time.` : ''}`),
+    entry('field', 'Field it fits best', 'A rule on field fit, not a separate judgement',
+      h('p', null, `The field of the focal paper, or of an AI alternative, is the one with the highest mean field fit, which is also where its overall fit is highest. If two fields tie, it is the one the scorings named most often.${scorings > 1 && stab.bestFieldAgreement !== undefined ? ` Two scorings of the same one named the same best field ${Math.round(stab.bestFieldAgreement * 100)}% of the time.` : ''}`),
       h('p', null, dist
         ? 'Distance plays no part in assigning the field. Embeddings help choose which published papers in the corpus Claude reads before scoring, and they give a separate, model-free check: the field of the nearest published papers (above).'
         : 'Distance plays no part in assigning the field.'),
@@ -668,15 +670,15 @@ function renderMethod(data) {
       h('li', null, h('strong', null, 'Deconstruct. '), 'Claude reads the PDF twice. One pass records the framing in the authors\' terms and lists the constructs they name. The other records only data and results, in measurement terms, with those constructs banned. An automatic check rejects any leak.'),
       h('li', null, h('strong', null, 'Generate. '), 'Each AI alternative is a separate call that sees only the evidence. Open runs choose freely; theory runs get one theory; field runs are aimed at one field\'s journals.'),
       h('li', null, h('strong', null, 'Review. '), 'A separate review call checks each AI alternative against the focal paper\'s reported results. It fails only if it misstates a result; untested mechanisms, causal language and needs for new data are recorded as flags. The review call also compares the AI alternative with the focal paper as a whole and part by part.'),
-      h('li', null, h('strong', null, 'Score. '), 'A scoring call scores the focal paper and every AI alternative for Field fit to each field and for Novelty. It is not told which is the focal paper.'),
-      h('li', null, h('strong', null, 'Judge Evidence fit. '), 'A separate call, which sees the evidence, judges how well the theory of the focal paper and of every AI alternative predicts the reported results. Fit in each field is the geometric mean of Field fit and Evidence fit.'),
+      h('li', null, h('strong', null, 'Score. '), 'A scoring call scores the focal paper and every AI alternative for field fit to each field and for novelty. It is not told which is the focal paper.'),
+      h('li', null, h('strong', null, 'Judge evidence fit. '), 'A separate call, which sees the evidence, judges how well the theory of the focal paper and of every AI alternative predicts the reported results. Overall fit in each field is the geometric mean of field fit and evidence fit.'),
       summary.distance ? h('li', null, h('strong', null, 'Measure distance. '), 'Separately, and with no model judgement, the title and abstract of each AI alternative are compared with the focal paper\'s, and both with the published corpus, using text embeddings.') : null),
     h('p', null, 'The ', h('a', {href: `#/${state.caseId}/measures`}, 'Measures'), ' tab explains each measure and its scale.'),
     h('h2', null, 'How far to trust it'),
     h('ul', null,
       h('li', null, `The evidence check found ${summary.evidence.verdicts.contradicts || 0} of ${data.alternatives.length} AI alternatives misstating a reported result.`),
       h('li', null, 'One model writes, checks and scores. Consistency is not accuracy: expert ratings of a blind sample are the real check.'),
-      h('li', null, 'Fit and Novelty are model judgements, not publication probabilities.')),
+      h('li', null, 'Overall fit and novelty are model judgements, not publication probabilities.')),
     h('h2', null, 'Cost and reproducibility'),
     h('p', null, `This case took ${calls} calls to ${data.model || 'Claude'} and cost $${cost.toFixed(2)}. Every request and response is saved in the run folder; the report and this explorer rebuild from them without an API key.`));
 }
@@ -737,8 +739,8 @@ new MutationObserver(markPinned).observe(main, {childList: true, subtree: true})
 // Variances of 0-1 scores are small, so they get four decimals.
 const fmtVariance = value => value === null || value === undefined ? '–' : Number(value).toFixed(4);
 
-// Each of Claude's scorings of a paper, their mean and their variance, for Fit in every field and
-// for Novelty. The Fit and Novelty shown elsewhere are these means.
+// Each of Claude's scorings of a paper, their mean and their variance, for overall fit in every field
+// and for novelty. The overall fit and novelty shown elsewhere are these means.
 function scoringsTable(sc, data) {
   if (!sc) return null;
   const n = sc.scorings || 1;
@@ -752,31 +754,31 @@ function scoringsTable(sc, data) {
   const votes = Object.entries(sc.bestFieldVotes || {}).sort((a, b) => b[1] - a[1]).map(([field, count]) => `${fieldLabel(data, field)} ${count}`).join(', ');
   return [
     h('h3', null, 'Scorings'),
-    h('p', {class: 'small muted'}, n > 1 ? 'Field fit, Evidence fit and Novelty above are the means of these scorings. Each scoring of Fit pairs the Field fit and Evidence fit scorings of the same number; the Fit above comes from the means.' : 'Claude scored this once, so there is no variance.'),
+    h('p', {class: 'small muted'}, n > 1 ? 'Field fit, evidence fit and novelty above are the means of these scorings. Each scoring of overall fit pairs the field fit and evidence fit scorings of the same number; the overall fit above comes from the means.' : 'Claude scored this once, so there is no variance.'),
     h('table', {class: 'data-table scorings'},
       h('thead', null, h('tr', null, h('th', {scope: 'col'}, ''), ...columns.map(label => h('th', {class: 'num', scope: 'col'}, label)), h('th', {class: 'num', scope: 'col'}, 'Mean'), h('th', {class: 'num', scope: 'col'}, 'Variance'))),
       h('tbody', null,
         data.fields.map(field => row(`Field fit: ${field.label}`, sc.fieldFit?.[field.id])),
         sc.evidenceFit ? row('Evidence fit', sc.evidenceFit) : null,
-        sc.fit?.[sc.bestField] ? row(`Fit: ${fieldLabel(data, sc.bestField)}`, sc.fit[sc.bestField]) : null,
+        sc.fit?.[sc.bestField] ? row(`Overall fit: ${fieldLabel(data, sc.bestField)}`, sc.fit[sc.bestField]) : null,
         row('Novelty', sc.novelty))),
-    n > 1 ? h('p', {class: 'small muted'}, `Each scoring judges Novelty within the best field it named: ${votes}.`) : null
+    n > 1 ? h('p', {class: 'small muted'}, `Each scoring judges novelty within the best field it named: ${votes}.`) : null
   ];
 }
 
-// Fit and its two parts, for the focal paper or (with `original`) an AI alternative: Fit in the best
-// field, Field fit in every field (an AI alternative's with the focal paper's as a tick) and
-// Evidence fit with the judge's reading of the central results, from its first scoring.
+// Overall fit and its two parts, for the focal paper or (with `original`) an AI alternative: overall
+// fit in the best field, field fit in every field (an AI alternative's with the focal paper's as a
+// tick) and evidence fit with the judge's reading of the central results, from its first scoring.
 const RELATION_LABEL = {predicted: 'Predicted', consistent: 'Accommodated', unexplained: 'Unexplained', tension: 'In tension'};
 function fitBlock(data, sc, {original = null, link = null} = {}) {
   if (!sc) return null;
   const best = sc.bestField, fit = sc.fit?.[best]?.score, e = sc.evidenceFit;
   const label = (id, text) => link ? link(id, text) : text;
   return [
-    h('h3', null, label('fit', 'Fit'), ` in ${fieldLabel(data, best).toLowerCase()}: ${fmt(fit)}`),
+    h('h3', null, label('fit', 'Overall fit'), ` in ${fieldLabel(data, best).toLowerCase()}: ${fmt(fit)}`),
     h('p', {class: 'small muted'}, e && fit != null
-      ? `√(Field fit ${fmt(sc.fieldFit[best]?.score)} × Evidence fit ${fmt(e.score)}).${original ? ` The focal paper's Fit: ${fmt(original.fit?.[original.bestField]?.score)}.` : ' Read it against the AI alternatives\' Fit, not as an absolute level.'}`
-      : 'Evidence fit has not been scored yet, so there is no Fit.'),
+      ? `√(field fit ${fmt(sc.fieldFit[best]?.score)} × evidence fit ${fmt(e.score)}).${original ? ` The focal paper's overall fit: ${fmt(original.fit?.[original.bestField]?.score)}.` : ' Read it against the AI alternatives\' overall fit, not as an absolute level.'}`
+      : 'Evidence fit has not been scored yet, so there is no overall fit.'),
     h('h3', null, label('field-fit', 'Field fit by field')),
     h('div', {class: original ? 'fitbars' : 'fitbars with-scorings'}, data.fields.map(field => {
       const entry = sc.fieldFit?.[field.id], value = entry?.score ?? 0, own = original?.fieldFit?.[field.id]?.score;
@@ -784,10 +786,10 @@ function fitBlock(data, sc, {original = null, link = null} = {}) {
         h('div', {class: 'track', title: entry?.reason || ''}, h('div', {class: 'bar', style: {width: `${value * 100}%`, background: fieldColor(field.id)}}), own !== undefined ? h('div', {class: 'tick', style: {left: `calc(${own * 100}% - 1px)`}, title: `Focal paper: ${fmt(own)}`}) : null),
         h('span', {class: 'val'}, original ? fmt(value) : scoreCell(value, entry?.scores))];
     })),
-    h('p', {class: 'small muted'}, 'Bold is the ', label('field', 'field it fits best'), `: the highest mean Field fit.${original ? ' The dark tick marks the focal paper\'s Field fit.' : (sc.scorings || 1) > 1 ? ' Each scoring is shown under the mean.' : ''}`),
+    h('p', {class: 'small muted'}, 'Bold is the ', label('field', 'field it fits best'), `: the highest mean field fit.${original ? ' The dark tick marks the focal paper\'s field fit.' : (sc.scorings || 1) > 1 ? ' Each scoring is shown under the mean.' : ''}`),
     e ? [
       h('h3', null, label('evidence-fit', 'Evidence fit'), `: ${fmt(e.score)}`),
-      h('p', {class: 'small muted'}, [e.scores?.length > 1 ? `Scorings: ${e.scores.map(fmt).join(' · ')}.` : null, original ? `The focal paper's Evidence fit: ${fmt(original.evidenceFit?.score)}.` : null].filter(Boolean).join(' ')),
+      h('p', {class: 'small muted'}, [e.scores?.length > 1 ? `Scorings: ${e.scores.map(fmt).join(' · ')}.` : null, original ? `The focal paper's evidence fit: ${fmt(original.evidenceFit?.score)}.` : null].filter(Boolean).join(' ')),
       h('p', {class: 'notes'}, e.reason),
       e.centralResults?.length ? [
         h('ul', {class: 'notes'}, e.centralResults.map(c => h('li', null,
@@ -848,7 +850,7 @@ function openDrawer(alt, data) {
   drawer.querySelector('.drawer-close').focus();
 }
 
-// The alternative's Distance measures beside the paper's, and the published articles nearest to it.
+// The alternative's distance measures beside the paper's, and the published articles nearest to it.
 function distanceBlock(alt, data, cited) {
   const d = alt.distance, own = data.original?.distance, dist = data.summary.distance;
   if (!d || !dist) return null;
@@ -902,7 +904,7 @@ function renderWelcome() {
     h('p', null, 'Follow the README. In short, from the tool\'s folder:'),
     h('ol', null,
       step('Put your API key in .env and check it.', 'npm run check-key'),
-      step('Build the published corpus (and, for Distance, its embeddings).', 'npm run build-corpus\nnpm run build-embeddings'),
+      step('Build the published corpus (and, for distance, its embeddings).', 'npm run build-corpus\nnpm run build-embeddings'),
       step('Put the PDF in papers/, extract it and save its own abstract. Then check runs/my-paper/paper/extraction.md.', 'npm run extract -- --case my-paper --pdf papers/paper.pdf\nnpm run original-abstract -- --case my-paper --pdf papers/paper.pdf'),
       step('Run a pilot, then the full test.', 'npm run test-run -- --case my-paper --pilot\nnpm run test-run -- --case my-paper'),
       step('Reload this page.'))));

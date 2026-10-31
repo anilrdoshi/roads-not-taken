@@ -232,7 +232,7 @@ export async function runTest({caseDir, testDir, llm, corpus, embedder, tasks, s
   }});
   if (result.budgetHit) return {stoppedAt: 'review'};
 
-  // 3. Score every paper, the original included, for Fit to each field and Novelty, scoreReplicates
+  // 3. Score every paper, the original included, for field fit to each field and novelty, scoreReplicates
   // times in separate calls; reports use the mean (src/scores.js). Every paper is compared with
   // literature published up to the original paper's year. Scorings run round by round, so a
   // spending cap stops between rounds rather than leaving papers scored once.
@@ -279,7 +279,7 @@ export async function runTest({caseDir, testDir, llm, corpus, embedder, tasks, s
   if (result.budgetHit) return {stoppedAt: 'score'};
 
   // 4. Evidence fit: how well each paper's theory predicts the evidence, in separate calls that see
-  // the evidence, scoreReplicates times like Field fit. Fit is the geometric mean of the two
+  // the evidence, scoreReplicates times like field fit. Overall fit is the geometric mean of the two
   // (src/scores.js). A run scored before this step existed gets only this step when rerun.
   const evidenceItems = [];
   for (let replicate = 1; replicate <= scoreReplicates; replicate++) for (const item of papers) evidenceItems.push({...item, replicate});

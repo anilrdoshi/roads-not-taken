@@ -1,4 +1,4 @@
-// The original paper's own abstract, used only to embed the original (for Distance
+// The original paper's own abstract, used only to embed the original (for distance
 // and for its retrieval query) so that it compares directly with published abstracts. The
 // extraction keeps a third-person paraphrase instead, which is what Claude sees. The abstract is
 // kept in the case's git-ignored paper/private/ folder and never written to logs, reports or the

@@ -1,4 +1,4 @@
-// Computes the Distance measures (embeddings) for a saved run (no model calls, no API key), then
+// Computes the distance measures (embeddings) for a saved run (no model calls, no API key), then
 // rebuilds its report and, for a full test, its explorer bundle. Needs the corpus embeddings.
 // Usage: npm run distance -- --case <name> [--dir test]
 import {parseArgs} from 'node:util';

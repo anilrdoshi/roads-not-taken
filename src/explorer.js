@@ -21,7 +21,7 @@ export async function buildExplorerData({caseId, caseDir, testDir, corpus, pilot
   const summary = await buildReport({caseDir, testDir});
   const alternatives = await readJsonl(path.join(testDir, 'alternatives.jsonl'));
   const reviews = new Map((await readJsonl(path.join(testDir, 'reviews.jsonl'))).map(row => [row.id, row.review]));
-  // Claude's Fit (Field fit and Evidence fit) and Novelty, averaged over each paper's scorings.
+  // Claude's overall fit (field fit and evidence fit) and novelty, averaged over each paper's scorings.
   const scores = await loadScores(testDir);
   const rowById = new Map(summary.rows.map(row => [row.id, row]));
   const distance = await loadDistance(testDir);
@@ -35,7 +35,7 @@ export async function buildExplorerData({caseId, caseDir, testDir, corpus, pilot
     for (const item of score.novelty.closest || []) cited.add(item.id);
   };
   for (const score of scores.values()) for (const row of score.rows) noteCited(row);
-  // And of each paper's nearest published articles by Distance.
+  // And of each paper's nearest published articles by distance.
   for (const measures of Object.values(distance?.papers || {})) for (const hit of measures.nearest) cited.add(hit.id);
   const records = {};
   for (const id of cited) {
@@ -44,8 +44,8 @@ export async function buildExplorerData({caseId, caseDir, testDir, corpus, pilot
   }
 
   const slimScore = score => score && {
-    // The mean, each scoring, and the variance across scorings, for Fit, Field fit and Evidence fit
-    // in each field and for Novelty. Fit is null until Evidence fit is scored.
+    // The mean, each scoring, and the variance across scorings, for overall fit, field fit and
+    // evidence fit in each field and for novelty. Overall fit is null until evidence fit is scored.
     fit: Object.fromEntries(Object.entries(score.fit).map(([field, entry]) => [field, entry && {score: entry.score, scores: entry.scores, variance: entry.variance}])),
     fieldFit: Object.fromEntries(Object.entries(score.fieldFit).map(([field, entry]) => [field, entry && {score: entry.score, scores: entry.scores, variance: entry.variance, reason: entry.reason, closest: entry.closest}])),
     evidenceFit: score.evidenceFit && {score: score.evidenceFit.score, scores: score.evidenceFit.scores, variance: score.evidenceFit.variance, reason: score.evidenceFit.reason,
