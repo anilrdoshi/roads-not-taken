@@ -16,7 +16,6 @@
     "validate-embeddings": "node scripts/validate-embeddings.mjs",
     "build-taxonomy": "node scripts/build-taxonomy.mjs",
     "extract": "node scripts/extract.mjs",
-    "original-abstract": "node scripts/original-abstract.mjs",
     "test-run": "node scripts/run-test.mjs",
     "report": "node scripts/report.mjs",
     "distance": "node scripts/distance.mjs",

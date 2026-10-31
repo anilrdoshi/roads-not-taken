@@ -2,9 +2,10 @@
 // and for its retrieval query) so that it compares directly with published abstracts. The
 // extraction keeps a third-person paraphrase instead, which is what Claude sees. The abstract is
 // kept in the case's git-ignored paper/private/ folder and never written to logs, reports or the
-// explorer bundle.
+// explorer bundle. Extraction saves it from the main PDF; if it cannot be found there, the user
+// pastes it into the file by hand.
 import {readFile} from 'node:fs/promises';
-import {existsSync} from 'node:fs';
+import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 
@@ -22,7 +23,7 @@ export async function loadOriginalAbstract(caseDir) {
 export function readPdfText(pdfPath, pages = 3) {
   if (process.platform !== 'darwin') {
     try {
-      return execFileSync('pdftotext', ['-l', String(pages), '-enc', 'UTF-8', path.resolve(pdfPath), '-'], {encoding: 'utf8', maxBuffer: 1 << 24});
+      return execFileSync('pdftotext', ['-l', String(pages), '-enc', 'UTF-8', path.resolve(pdfPath), '-'], {encoding: 'utf8', maxBuffer: 1 << 24, stdio: ['ignore', 'pipe', 'pipe']});
     } catch (error) {
       if (error.code === 'ENOENT') throw new Error('Reading PDF text needs macOS or pdftotext (poppler-utils). Paste the abstract into the file by hand instead.');
       throw error;
@@ -36,7 +37,7 @@ export function readPdfText(pdfPath, pages = 3) {
     for (let i = 0; i < Math.min(Number(argv[1]), doc.pageCount); i++) text += doc.pageAtIndex(i).string.js + '\\n';
     return text;
   }`;
-  return execFileSync('osascript', ['-l', 'JavaScript', '-e', script, path.resolve(pdfPath), String(pages)], {encoding: 'utf8', maxBuffer: 1 << 24});
+  return execFileSync('osascript', ['-l', 'JavaScript', '-e', script, path.resolve(pdfPath), String(pages)], {encoding: 'utf8', maxBuffer: 1 << 24, stdio: ['ignore', 'pipe', 'pipe']});
 }
 
 // TeX fonts often come through PDFKit with ligatures as private or stray characters.
@@ -54,4 +55,24 @@ export function abstractFromPdfText(text) {
     .replace(/([a-z])-\n([a-z])/g, '$1$2')
     .replace(/\s+/g, ' ')
     .trim() || null;
+}
+
+// Reads the abstract from the focal paper's PDF and saves it. Returns {file, abstract, unusual} when
+// it is saved, or {file, error, kept} when it is not; kept says whether an earlier abstract (perhaps
+// pasted by hand) is still in the file. The folder exists either way, for pasting by hand.
+export function saveOriginalAbstract(caseDir, pdfPath) {
+  const file = originalAbstractFile(caseDir);
+  mkdirSync(path.dirname(file), {recursive: true});
+  let abstract;
+  try {
+    abstract = abstractFromPdfText(readPdfText(pdfPath));
+  } catch (error) {
+    // A missing reader has its own message; any other failure would print the whole command.
+    const message = error.message.startsWith('Reading PDF text needs') ? error.message : `Could not read the text of ${pdfPath}.`;
+    return {file, error: message, kept: existsSync(file)};
+  }
+  if (!abstract) return {file, error: `No "Abstract" heading found in the first pages of ${pdfPath}.`, kept: existsSync(file)};
+  writeFileSync(file, abstract + '\n');
+  const unusual = [...new Set(abstract.match(/[^\x20-\x7e‘’“”–— -ÿ]/g) || [])];
+  return {file, abstract, unusual};
 }

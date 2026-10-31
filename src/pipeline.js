@@ -240,7 +240,7 @@ export async function runTest({caseDir, testDir, llm, corpus, embedder, tasks, s
   const retrieval = corpus.vectors && embedder ? 'hybrid' : 'bm25';
   if (retrieval === 'hybrid' && embedder.model !== corpus.embedding.model) throw new Error(`The corpus was embedded with ${corpus.embedding.model}, not ${embedder.model}.`);
   if (corpus.vectors && !embedder) log('score: corpus embeddings found but no embedder given; retrieving by BM25 only');
-  // Retrieval for the original uses its own abstract when one is saved (npm run original-abstract);
+  // Retrieval for the original uses its own abstract when one is saved (npm run extract saves it);
   // Claude is still shown the extraction's paraphrase.
   const ownAbstract = await loadOriginalAbstract(caseDir);
   const papers = [
