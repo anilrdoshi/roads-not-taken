@@ -8,6 +8,7 @@ The tool works on one focal paper at a time. You bring the focal paper (a PDF) a
 
 | To | Do this | You need |
 |---|---|---|
+| See results for four example focal papers | [Open the example explorer](https://anilrdoshi.github.io/roads-not-taken/example/roads-not-taken-explorer.html) in your browser, or download it from [`example/`](example/) and open it from disk | A browser |
 | Try the tool without installing anything | [Open it in GitHub Codespaces](https://codespaces.new/anilrdoshi/roads-not-taken). Dependencies install and the explorer opens on port 4373, empty until you run a focal paper. | A GitHub account |
 | Install it on your machine | Clone the repository ([step 1](#set-up-once)), `npm ci`, then `npm run app` and open http://127.0.0.1:4373/ | Node.js 20.12 or later |
 | Check that it works | `npm run check` (offline tests with a mock model) | Nothing more |
@@ -167,6 +168,7 @@ All calls use Claude Opus 5.5 with adaptive thinking at high effort and JSON-sch
 .devcontainer/  GitHub Codespaces setup
 .github/        workflow: offline tests
 config/         fields, journals, theories, keyword codes
+example/        the explorer of four example focal papers, anonymized (one HTML file)
 corpus/         manifest.json, ids.txt and embeddings.json (records.jsonl and embeddings.bin are rebuilt locally)
 papers/         your PDFs (git-ignored; you create it in step 4)
 runs/           your cases, one folder per focal paper (git-ignored; created by the first extraction)
